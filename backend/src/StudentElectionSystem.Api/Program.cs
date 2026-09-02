@@ -16,7 +16,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Application Services Composition Root
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
-builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserService>();
+builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserServiceImpl>();
 
 var app = builder.Build();
 

@@ -7,16 +7,16 @@ namespace StudentElectionSystem.Application.UseCases.Authentication;
 public class LoginUseCase : ILoginUseCase
 {
     private readonly IUserRepository _userRepository;
-    private readonly IPasswordHasher _passwordHasher;
+    private readonly IPasswordHasherService _passwordHasherService;
     private readonly ITokenService _tokenService;
 
     public LoginUseCase(
         IUserRepository userRepository,
-        IPasswordHasher passwordHasher,
+        IPasswordHasherService passwordHasherService,
         ITokenService tokenService)
     {
         _userRepository = userRepository;
-        _passwordHasher = passwordHasher;
+        _passwordHasherService = passwordHasherService;
         _tokenService = tokenService;
     }
 
@@ -31,7 +31,7 @@ public class LoginUseCase : ILoginUseCase
             return null; // Let the controller return 401 Unauthorized
         }
 
-        if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+        if (!_passwordHasherService.VerifyPassword(request.Password, user.PasswordHash))
         {
             return null;
         }

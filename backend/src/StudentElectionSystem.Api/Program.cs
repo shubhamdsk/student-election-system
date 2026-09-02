@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using StudentElectionSystem.Application.Interfaces.Services;
+using StudentElectionSystem.Application.UseCases.Authentication;
 using StudentElectionSystem.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +11,12 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddAuthorization();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// Application Services Composition Root
+builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
+builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserService>();
 
 var app = builder.Build();
 
@@ -20,6 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

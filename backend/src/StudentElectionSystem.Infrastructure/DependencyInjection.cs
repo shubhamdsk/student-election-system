@@ -18,6 +18,7 @@ public static class DependencyInjection
             options.UseSqlServer(connectionString));
 
         services.AddScoped<StudentElectionSystem.Application.Interfaces.Persistence.IUserRepository, StudentElectionSystem.Infrastructure.Persistence.Repositories.UserRepository>();
+        services.AddScoped<StudentElectionSystem.Application.Interfaces.Persistence.IStudentRepository, StudentElectionSystem.Infrastructure.Persistence.Repositories.StudentRepository>();
 
         // Authentication Services
         services.AddScoped<IPasswordHasherService, PasswordHasherServiceImpl>();

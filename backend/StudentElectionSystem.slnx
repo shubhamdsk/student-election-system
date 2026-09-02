@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/StudentElectionSystem.Api/StudentElectionSystem.Api.csproj" />
+    <Project Path="src/StudentElectionSystem.Application/StudentElectionSystem.Application.csproj" />
+    <Project Path="src/StudentElectionSystem.Domain/StudentElectionSystem.Domain.csproj" />
+    <Project Path="src/StudentElectionSystem.Infrastructure/StudentElectionSystem.Infrastructure.csproj" />
+  </Folder>
+</Solution>

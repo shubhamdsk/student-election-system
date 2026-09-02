@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using StudentElectionSystem.Application.Interfaces.Authentication;
+using StudentElectionSystem.Infrastructure.Authentication;
 using StudentElectionSystem.Infrastructure.Persistence;
 
 namespace StudentElectionSystem.Infrastructure;
@@ -17,8 +20,8 @@ public static class DependencyInjection
         services.AddScoped<StudentElectionSystem.Application.Interfaces.Persistence.IUserRepository, StudentElectionSystem.Infrastructure.Persistence.Repositories.UserRepository>();
 
         // Authentication Services
-        services.AddScoped<StudentElectionSystem.Application.Interfaces.Authentication.IPasswordHasher, StudentElectionSystem.Infrastructure.Authentication.BCryptPasswordHasher>();
-        services.AddScoped<StudentElectionSystem.Application.Interfaces.Authentication.ITokenService, StudentElectionSystem.Infrastructure.Authentication.JwtTokenService>();
+        services.AddScoped<IPasswordHasherService, PasswordHasherServiceImpl>();
+        services.AddScoped<ITokenService, TokenServiceImpl>();
 
         services.AddHttpContextAccessor();
 

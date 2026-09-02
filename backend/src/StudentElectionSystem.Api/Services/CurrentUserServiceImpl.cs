@@ -4,11 +4,11 @@ using System.Security.Claims;
 
 namespace StudentElectionSystem.Api.Services;
 
-public class CurrentUserService : ICurrentUserService
+public class CurrentUserServiceImpl : ICurrentUserService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    public CurrentUserServiceImpl(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }

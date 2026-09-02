@@ -8,11 +8,11 @@ using System.Text;
 
 namespace StudentElectionSystem.Infrastructure.Authentication;
 
-public class JwtTokenService : ITokenService
+public class TokenServiceImpl : ITokenService
 {
     private readonly JwtSettings _jwtSettings;
 
-    public JwtTokenService(IOptions<JwtSettings> jwtOptions)
+    public TokenServiceImpl(IOptions<JwtSettings> jwtOptions)
     {
         _jwtSettings = jwtOptions.Value;
     }

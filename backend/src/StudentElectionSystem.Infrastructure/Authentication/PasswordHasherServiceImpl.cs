@@ -2,7 +2,7 @@ using StudentElectionSystem.Application.Interfaces.Authentication;
 
 namespace StudentElectionSystem.Infrastructure.Authentication;
 
-public class BCryptPasswordHasher : IPasswordHasher
+public class PasswordHasherServiceImpl : IPasswordHasherService
 {
     public string HashPassword(string password)
     {

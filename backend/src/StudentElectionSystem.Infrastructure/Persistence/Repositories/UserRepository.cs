@@ -13,10 +13,22 @@ public class UserRepository : IUserRepository
         _dbContext = dbContext;
     }
 
+    public async Task<bool> ExistsByNormalizedEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Users
+            .AnyAsync(u => u.NormalizedEmail == normalizedEmail, cancellationToken);
+    }
+
     public async Task<User?> GetByNormalizedEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Users
             .SingleOrDefaultAsync(u => u.NormalizedEmail == normalizedEmail, cancellationToken);
+    }
+
+    public async Task AddAsync(User user, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.Users.AddAsync(user, cancellationToken);
+        // Note: SaveChangesAsync is called separately for atomicity across entities.
     }
 
     public async Task UpdateAsync(User user, CancellationToken cancellationToken = default)

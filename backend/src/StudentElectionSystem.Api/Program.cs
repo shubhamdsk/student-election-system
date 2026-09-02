@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using StudentElectionSystem.Application.Interfaces.Services;
 using StudentElectionSystem.Application.UseCases.Authentication;
+using StudentElectionSystem.Application.UseCases.Student;
 using StudentElectionSystem.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Application Services Composition Root
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
+builder.Services.AddScoped<IRegisterStudentUseCase, RegisterStudentUseCase>();
 builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserServiceImpl>();
 
 var app = builder.Build();

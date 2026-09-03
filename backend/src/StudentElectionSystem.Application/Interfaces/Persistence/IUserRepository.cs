@@ -4,6 +4,7 @@ namespace StudentElectionSystem.Application.Interfaces.Persistence;
 
 public interface IUserRepository
 {
+    Task<bool> AnyAdminExistsAsync(CancellationToken cancellationToken = default);
     Task<bool> ExistsByNormalizedEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default);
     Task<User?> GetByNormalizedEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default);
     Task AddAsync(User user, CancellationToken cancellationToken = default);

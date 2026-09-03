@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentElectionSystem.Application.Interfaces.Persistence;
 using StudentElectionSystem.Domain.Entities;
+using StudentElectionSystem.Domain.Enums;
 
 namespace StudentElectionSystem.Infrastructure.Persistence.Repositories;
 
@@ -11,6 +12,12 @@ public class UserRepository : IUserRepository
     public UserRepository(AppDbContext dbContext)
     {
         _dbContext = dbContext;
+    }
+
+    public async Task<bool> AnyAdminExistsAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Users
+            .AnyAsync(u => u.Role == UserRole.Admin, cancellationToken);
     }
 
     public async Task<bool> ExistsByNormalizedEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default)

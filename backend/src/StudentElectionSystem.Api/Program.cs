@@ -3,6 +3,9 @@ using StudentElectionSystem.Application.Interfaces.Services;
 using StudentElectionSystem.Application.UseCases.Authentication;
 using StudentElectionSystem.Application.UseCases.Student;
 using StudentElectionSystem.Infrastructure;
+using StudentElectionSystem.Api.Configuration;
+using StudentElectionSystem.Api.Services;
+
 
 using Microsoft.OpenApi.Models;
 
@@ -10,7 +13,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.Configure<AdminBootstrapSettings>(builder.Configuration.GetSection(AdminBootstrapSettings.SectionName));
+
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -47,9 +53,15 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 // Application Services Composition Root
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<IRegisterStudentUseCase, RegisterStudentUseCase>();
+builder.Services.AddScoped<IGetPendingStudentsUseCase, GetPendingStudentsUseCase>();
+builder.Services.AddScoped<IGetStudentDetailsUseCase, GetStudentDetailsUseCase>();
+builder.Services.AddScoped<IApproveStudentUseCase, ApproveStudentUseCase>();
+builder.Services.AddScoped<IRejectStudentUseCase, RejectStudentUseCase>();
 builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserServiceImpl>();
+builder.Services.AddScoped<IAdminBootstrapService, AdminBootstrapServiceImpl>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -59,7 +71,12 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Student Election System API v1");
     });
+
+    using var scope = app.Services.CreateScope();
+    var bootstrapService = scope.ServiceProvider.GetRequiredService<IAdminBootstrapService>();
+    await bootstrapService.EnsureAdminExistsAsync();
 }
+
 
 app.UseHttpsRedirection();
 

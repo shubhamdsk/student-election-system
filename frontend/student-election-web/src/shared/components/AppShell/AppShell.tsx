@@ -1,10 +1,7 @@
-import type { ReactNode } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '@core/hooks/useAuth'
+import type { AppShellProps } from '@shared/types/component.types'
 import './AppShell.scss'
-
-interface NavigationItem { label: string; to: string }
-interface AppShellProps { title: string; navigationItems: NavigationItem[]; children?: ReactNode }
 
 export function AppShell({ title, navigationItems }: AppShellProps) {
   const { logout } = useAuth()

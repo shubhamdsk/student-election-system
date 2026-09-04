@@ -1,0 +1,75 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.snackbar {
+  position: fixed;
+  z-index: 1000;
+  right: $space-lg;
+  bottom: $space-lg;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: $space-sm;
+  width: min(calc(100% - 2rem), 28rem);
+  padding: $space-md;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  background: white;
+  color: $color-heading;
+  box-shadow: 0 0.75rem 2rem rgba(23, 32, 51, 0.2);
+
+  &__indicator {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  &__message {
+    margin: 0;
+  }
+
+  &__close {
+    min-width: 2rem;
+    min-height: 2rem;
+    border: 0;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: inherit;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    @include focus-ring;
+  }
+
+  &--success {
+    border-color: #16803c;
+    color: #11652f;
+    background: #effbf3;
+  }
+
+  &--error {
+    border-color: $color-danger;
+    color: $color-danger;
+    background: #fff4f2;
+  }
+
+  &--warning {
+    border-color: #a15c00;
+    color: #744200;
+    background: #fff8e7;
+  }
+
+  &--info {
+    border-color: $color-primary;
+    color: #19437f;
+    background: #eff6ff;
+  }
+}
+
+@media (max-width: 36rem) {
+  .snackbar {
+    right: $space-md;
+    bottom: $space-md;
+  }
+}

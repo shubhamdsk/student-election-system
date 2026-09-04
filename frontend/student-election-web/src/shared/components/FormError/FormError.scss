@@ -1,0 +1,9 @@
+@use '@shared/styles/variables' as *;
+
+.form-error {
+    padding: $space-md;
+    border: 1px solid $color-danger;
+    border-radius: $radius-sm;
+    background: #fff4f2;
+    color: $color-danger;
+}

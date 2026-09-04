@@ -1,4 +1,5 @@
 import type { ApprovalStatus, Gender } from '@core/types/enums'
+import type { FieldErrors } from '@core/utils/form-errors'
 
 export interface RegisterStudentRequest {
   email: string
@@ -43,3 +44,35 @@ export interface StudentDetails extends PendingStudent {
 
 export interface RejectStudentRequest { reason: string }
 export interface PendingStudentsQuery { pageNumber?: number; pageSize?: number; search?: string }
+
+export type RegistrationField = keyof RegisterStudentRequest
+
+export interface RegistrationFormValues {
+  email: string
+  password: string
+  registrationNumber: string
+  fullName: string
+  department: string
+  yearOfStudy: string
+  gender: Gender | ''
+  phoneNumber: string
+}
+
+export interface CurrentStudentProfile {
+  studentId: string
+  userId: string
+  fullName: string
+  email: string
+  registrationNumber: string
+  department: string
+  yearOfStudy: number
+  gender: Gender
+  phoneNumber: string | null
+  approvalStatus: ApprovalStatus
+}
+
+export interface RegistrationFormProps {
+  isSubmitting: boolean
+  fieldErrors: FieldErrors<RegistrationField>
+  onSubmit(request: RegisterStudentRequest): Promise<void>
+}

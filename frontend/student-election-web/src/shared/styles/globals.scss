@@ -2,6 +2,17 @@
 @use 'typography';
 @use 'variables' as *;
 
-body { min-height: 100vh; background: $color-background; }
-#root { min-height: 100vh; }
-.standalone-page { width: min(100% - 2rem, 72rem); margin: 0 auto; padding: $space-xl 0; }
+body {
+    min-height: 100dvh;
+    background: $color-background;
+}
+
+#root {
+    min-height: 100dvh;
+}
+
+.standalone-page {
+    width: min(100% - 2rem, 72rem);
+    margin: 0 auto;
+    padding: $space-xl 0;
+}

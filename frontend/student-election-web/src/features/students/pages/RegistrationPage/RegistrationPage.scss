@@ -1,0 +1,60 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.registration-page {
+  display: grid;
+  min-height: 100%;
+  align-items: safe center;
+  justify-items: center;
+  padding: clamp($space-sm, 1.5dvh, $space-md) 0;
+
+  &__card {
+    width: min(100%, 52rem);
+    margin: 0 auto;
+    padding: clamp($space-md, 2.5vw, $space-lg);
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: white;
+    box-shadow: 0 1rem 2.5rem rgba(23, 32, 51, 0.08);
+  }
+
+  &__eyebrow {
+    margin: 0 0 $space-xs;
+    color: $color-primary;
+    font-weight: 700;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: clamp(1.625rem, 4vw, 2rem);
+  }
+
+  &__intro {
+    margin: $space-xs 0 $space-md;
+  }
+
+  &__footer {
+    margin: $space-md 0 0;
+    text-align: center;
+  }
+
+  &__action {
+    display: inline-block;
+    margin-top: $space-md;
+    padding: $space-sm $space-lg;
+    border-radius: $radius-sm;
+    background: $color-primary;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    @include focus-ring;
+  }
+
+  &--success {
+    text-align: center;
+  }
+
+  &--success &__card {
+    max-width: 38rem;
+  }
+}

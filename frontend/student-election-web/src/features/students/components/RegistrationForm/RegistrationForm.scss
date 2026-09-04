@@ -1,0 +1,78 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.registration-form {
+  display: grid;
+  gap: $space-md;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem $space-md;
+  }
+
+  &__field {
+    display: grid;
+    gap: $space-xs;
+
+    label {
+      font-weight: 600;
+
+      span {
+        color: $color-danger;
+      }
+    }
+
+    select {
+      width: 100%;
+      padding: 0.7rem $space-md;
+      border: 1px solid $color-border;
+      border-radius: $radius-sm;
+      background: white;
+      @include focus-ring;
+    }
+
+    p {
+      margin: 0;
+      min-height: 1.25rem;
+      color: $color-danger;
+      font-size: 0.875rem;
+      visibility: hidden;
+    }
+
+    &-error--visible {
+      visibility: visible;
+    }
+
+    &--invalid select {
+      border-color: $color-danger;
+    }
+  }
+
+  &__submit {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: $space-sm $space-lg;
+    border: 0;
+    border-radius: $radius-sm;
+    background: $color-primary;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    @include focus-ring;
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.7;
+    }
+  }
+}
+
+@media (max-width: 42rem) {
+  .registration-form {
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+
+  }
+}

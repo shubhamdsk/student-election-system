@@ -1,10 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom'
 import { useAuth } from '@core/hooks/useAuth'
-import type { UserRole } from '@core/types/enums'
-
-interface RoleRouteProps {
-  allowedRole: UserRole
-}
+import type { RoleRouteProps } from '@core/types/routing'
 
 export function RoleRoute({ allowedRole }: RoleRouteProps) {
   const { role } = useAuth()

@@ -1,7 +1,10 @@
 @use '@shared/styles/variables' as *;
 
 .public-layout {
-  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  overflow: hidden;
 
   &__header {
     display: flex;
@@ -12,7 +15,42 @@
     border-bottom: 1px solid $color-border;
   }
 
-  &__brand { color: $color-heading; font-weight: 700; text-decoration: none; }
-  &__nav { display: flex; gap: $space-md; }
-  &__content { width: min(100% - 2rem, 72rem); margin: 0 auto; padding: $space-xl 0; }
+  &__brand {
+    color: $color-heading;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-md;
+  }
+
+  &__content {
+    width: 100%;
+    min-height: 0;
+    margin: 0 auto;
+    padding: $space-md;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+}
+
+@media (max-width: 36rem) {
+  .public-layout {
+    &__header {
+      align-items: flex-start;
+      padding: $space-md;
+    }
+
+    &__nav {
+      justify-content: flex-end;
+    }
+
+    &__content {
+      padding-top: $space-md;
+    }
+  }
 }

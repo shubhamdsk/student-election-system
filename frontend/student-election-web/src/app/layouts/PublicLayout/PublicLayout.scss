@@ -1,0 +1,18 @@
+@use '@shared/styles/variables' as *;
+
+.public-layout {
+  min-height: 100vh;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-md;
+    padding: $space-md $space-xl;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__brand { color: $color-heading; font-weight: 700; text-decoration: none; }
+  &__nav { display: flex; gap: $space-md; }
+  &__content { width: min(100% - 2rem, 72rem); margin: 0 auto; padding: $space-xl 0; }
+}

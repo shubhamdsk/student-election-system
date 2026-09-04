@@ -20,5 +20,6 @@ public interface ICandidateRepository
     // Admin specific
     Task<(IEnumerable<Candidate> Items, int TotalCount)> GetPendingCandidatesAsync(int page, int pageSize, CancellationToken cancellationToken = default);
     Task<Candidate?> GetCandidateWithDetailsAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Candidate>> GetApprovedCandidatesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

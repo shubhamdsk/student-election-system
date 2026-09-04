@@ -78,9 +78,17 @@ public class CandidateRepository : ICandidateRepository
     public async Task<Candidate?> GetCandidateWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Candidates
-            .Include(c => c.Election)
             .Include(c => c.Student)
+            .Include(c => c.Election)
             .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+    }
+
+    public async Task<IEnumerable<Candidate>> GetApprovedCandidatesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Candidates
+            .Include(c => c.Student)
+            .Where(c => c.ElectionId == electionId && c.IsApproved)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)

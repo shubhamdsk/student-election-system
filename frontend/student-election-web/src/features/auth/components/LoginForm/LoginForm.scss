@@ -1,0 +1,7 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.login-form {
+  display: grid; gap: $space-md;
+  &__submit { min-height: 2.75rem; padding: $space-sm $space-md; border: 0; border-radius: $radius-sm; background: $color-primary; color: white; font-weight: 600; cursor: pointer; @include focus-ring; &:disabled { cursor: wait; opacity: 0.7; } }
+}

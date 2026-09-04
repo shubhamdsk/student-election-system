@@ -1,7 +1,8 @@
 export const USER_ROLES = ['Admin', 'Student'] as const
 export type UserRole = (typeof USER_ROLES)[number]
 
-export type ApprovalStatus = 'Pending' | 'Approved' | 'Rejected'
+export const APPROVAL_STATUSES = ['Pending', 'Approved', 'Rejected'] as const
+export type ApprovalStatus = (typeof APPROVAL_STATUSES)[number]
 export type ElectionStatus =
   | 'Draft'
   | 'Nominations'

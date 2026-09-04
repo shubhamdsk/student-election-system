@@ -3,9 +3,41 @@
 .app-shell {
   min-height: 100vh;
 
-  &__header { display: flex; justify-content: space-between; align-items: center; padding: $space-md $space-xl; background: $color-primary; color: white; }
-  &__title { margin: 0; color: inherit; font-size: 1.25rem; }
-  &__logout { padding: $space-sm $space-md; border: 1px solid white; border-radius: $radius-sm; background: transparent; color: white; cursor: pointer; }
-  &__nav { display: flex; flex-wrap: wrap; gap: $space-md; padding: $space-md $space-xl; border-bottom: 1px solid $color-border; }
-  &__content { width: min(100% - 2rem, 72rem); margin: 0 auto; padding: $space-xl 0; }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-md $space-xl;
+    background: $color-primary;
+    color: white;
+  }
+
+  &__title {
+    margin: 0;
+    color: inherit;
+    font-size: 1.25rem;
+  }
+
+  &__logout {
+    padding: $space-sm $space-md;
+    border: 1px solid white;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+  }
+
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-md;
+    padding: $space-md $space-xl;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__content {
+    width: min(100% - 2rem, 72rem);
+    margin: 0 auto;
+    padding: $space-xl 0;
+  }
 }

@@ -2,7 +2,7 @@ import { apiClient } from '@core/api/api-client'
 import type { EmptyResponseData, PagedResult } from '@core/types/api'
 import { buildQueryString } from '@core/utils/query-params'
 import type {
-  PendingStudent, PendingStudentsQuery, RegisterStudentRequest,
+  CurrentStudentProfile, PendingStudent, PendingStudentsQuery, RegisterStudentRequest,
   RegisterStudentResponse, RejectStudentRequest, StudentDetails,
 } from '../types/student.types'
 
@@ -10,7 +10,11 @@ const STUDENTS_ENDPOINT = '/students'
 const resourcePath = (studentId: string) => `${STUDENTS_ENDPOINT}/${encodeURIComponent(studentId)}`
 
 export class StudentService {
-  async register(request: RegisterStudentRequest): Promise<RegisterStudentResponse> {
+  async getCurrentStudent(accessToken?: string): Promise<CurrentStudentProfile> {
+    return (await apiClient.get<CurrentStudentProfile>(`${STUDENTS_ENDPOINT}/me`, { accessToken })).data
+  }
+
+  async registerStudent(request: RegisterStudentRequest): Promise<RegisterStudentResponse> {
     return (await apiClient.post<RegisterStudentRequest, RegisterStudentResponse>(`${STUDENTS_ENDPOINT}/register`, request)).data
   }
 

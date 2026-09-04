@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudentElectionSystem.Application.Common.Models;
 using StudentElectionSystem.Application.DTOs.Student;
 using StudentElectionSystem.Application.UseCases.Student;
+using StudentElectionSystem.Application.UseCases.Student.GetCurrent;
 
 namespace StudentElectionSystem.Api.Controllers;
 
@@ -19,19 +20,34 @@ public class StudentsController : ControllerBase
     private readonly IGetStudentDetailsUseCase _getStudentDetailsUseCase;
     private readonly IApproveStudentUseCase _approveStudentUseCase;
     private readonly IRejectStudentUseCase _rejectStudentUseCase;
+    private readonly IGetCurrentStudentUseCase _getCurrentStudentUseCase;
 
     public StudentsController(
         IRegisterStudentUseCase registerStudentUseCase,
         IGetPendingStudentsUseCase getPendingStudentsUseCase,
         IGetStudentDetailsUseCase getStudentDetailsUseCase,
         IApproveStudentUseCase approveStudentUseCase,
-        IRejectStudentUseCase rejectStudentUseCase)
+        IRejectStudentUseCase rejectStudentUseCase,
+        IGetCurrentStudentUseCase getCurrentStudentUseCase)
     {
         _registerStudentUseCase = registerStudentUseCase;
         _getPendingStudentsUseCase = getPendingStudentsUseCase;
         _getStudentDetailsUseCase = getStudentDetailsUseCase;
         _approveStudentUseCase = approveStudentUseCase;
         _rejectStudentUseCase = rejectStudentUseCase;
+        _getCurrentStudentUseCase = getCurrentStudentUseCase;
+    }
+
+    [HttpGet("me")]
+    [Authorize(Roles = "Student")]
+    [ProducesResponseType(typeof(ApiResponse<CurrentStudentProfileDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCurrentStudent(CancellationToken cancellationToken)
+    {
+        var result = await _getCurrentStudentUseCase.ExecuteAsync(cancellationToken);
+        return Ok(ApiResponse.Success(result, "Student profile retrieved successfully."));
     }
 
     [HttpPost("register")]

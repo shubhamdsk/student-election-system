@@ -4,7 +4,10 @@ import { AUTH_SESSION_EXPIRED_EVENT } from '@core/constants/auth.constants'
 import type { ApiResponse, ValidationErrorData } from '@core/types/api'
 import { ApiError } from './ApiError'
 
-type RequestOptions = Omit<RequestInit, 'body'> & { body?: unknown }
+type RequestOptions = Omit<RequestInit, 'body'> & {
+  body?: unknown
+  accessToken?: string
+}
 
 function getValidationErrors(data: unknown) {
   if (!data || typeof data !== 'object' || !('errors' in data)) return undefined
@@ -35,7 +38,8 @@ async function parseEnvelope<T>(response: Response): Promise<ApiResponse<T>> {
 }
 
 async function request<T>(path: string, options: RequestOptions = {}) {
-  const token = authSessionStorage.getToken()
+  const { accessToken, ...requestOptions } = options
+  const token = accessToken ?? authSessionStorage.getToken()
   const headers = new Headers(options.headers)
   headers.set('Accept', 'application/json')
   if (options.body !== undefined) headers.set('Content-Type', 'application/json')
@@ -44,7 +48,7 @@ async function request<T>(path: string, options: RequestOptions = {}) {
   let response: Response
   try {
     response = await fetch(`${environment.apiBaseUrl}${path}`, {
-      ...options,
+      ...requestOptions,
       headers,
       body: options.body === undefined ? undefined : JSON.stringify(options.body),
     })

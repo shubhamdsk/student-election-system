@@ -140,6 +140,54 @@ public class ElectionsController : ControllerBase
         }
     }
 
+    [HttpPut("{id}/close-voting")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CloseVoting(
+        [FromRoute] Guid id,
+        [FromServices] StudentElectionSystem.Application.UseCases.Election.CloseVoting.ICloseVotingUseCase closeVotingUseCase,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await closeVotingUseCase.ExecuteAsync(id, cancellationToken);
+            return Ok(new { Message = "Voting closed successfully." });
+        }
+        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
+        {
+            return NotFound(new { Message = ex.Message });
+        }
+        catch (StudentElectionSystem.Application.Exceptions.ConflictException ex)
+        {
+            return Conflict(new { Message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}/publish-results")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> PublishResults(
+        [FromRoute] Guid id,
+        [FromServices] StudentElectionSystem.Application.UseCases.Election.PublishResults.IPublishResultsUseCase publishResultsUseCase,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            await publishResultsUseCase.ExecuteAsync(id, cancellationToken);
+            return Ok(new { Message = "Results published successfully." });
+        }
+        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
+        {
+            return NotFound(new { Message = ex.Message });
+        }
+        catch (StudentElectionSystem.Application.Exceptions.ConflictException ex)
+        {
+            return Conflict(new { Message = ex.Message });
+        }
+    }
+
     [HttpPut("{id}/start-voting")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

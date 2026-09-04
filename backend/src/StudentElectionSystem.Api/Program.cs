@@ -84,6 +84,9 @@ builder.Services.AddScoped<IRejectCandidateUseCase, RejectCandidateUseCase>();
 builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Voting.StartVoting.IStartVotingUseCase, StudentElectionSystem.Application.UseCases.Voting.StartVoting.StartVotingUseCase>();
 builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates.IGetVotingCandidatesUseCase, StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates.GetVotingCandidatesUseCase>();
 builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Voting.CastVote.ICastVoteUseCase, StudentElectionSystem.Application.UseCases.Voting.CastVote.CastVoteUseCase>();
+builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Election.CloseVoting.ICloseVotingUseCase, StudentElectionSystem.Application.UseCases.Election.CloseVoting.CloseVotingUseCase>();
+builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Election.PublishResults.IPublishResultsUseCase, StudentElectionSystem.Application.UseCases.Election.PublishResults.PublishResultsUseCase>();
+builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Election.GetResults.IGetElectionResultsUseCase, StudentElectionSystem.Application.UseCases.Election.GetResults.GetElectionResultsUseCase>();
 builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserServiceImpl>();
 builder.Services.AddScoped<IAdminBootstrapService, AdminBootstrapServiceImpl>();
 

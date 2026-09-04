@@ -1,0 +1,13 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.login-page {
+  max-width: 28rem;
+  margin: $space-xl auto;
+
+  &__title { margin-top: 0; }
+  &__form { display: grid; gap: $space-md; padding: $space-xl; border: 1px solid $color-border; border-radius: $radius-md; background: white; }
+  &__field { display: grid; gap: $space-xs; label { font-weight: 600; } input { padding: $space-sm $space-md; border: 1px solid $color-border; border-radius: $radius-sm; font: inherit; @include focus-ring; } }
+  &__error { margin: 0; color: $color-danger; }
+  &__submit { padding: $space-sm $space-md; border: 0; border-radius: $radius-sm; background: $color-primary; color: white; font: inherit; cursor: pointer; @include focus-ring; &:disabled { cursor: wait; opacity: 0.7; } }
+}

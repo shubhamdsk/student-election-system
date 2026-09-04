@@ -1,0 +1,2 @@
+@use '@shared/styles/variables' as *;
+.home-page { padding: 4rem 0; text-align: center; &__title { margin-top: 0; } &__action { display: inline-block; margin-top: $space-lg; padding: $space-sm $space-lg; border-radius: $radius-sm; background: $color-primary; color: white; text-decoration: none; } }

@@ -55,6 +55,41 @@ public static class DependencyInjection
                     System.Text.Encoding.UTF8.GetBytes(jwtSettings.Key)),
                 ClockSkew = TimeSpan.Zero
             };
+
+            options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+            {
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
+                    if (!context.Response.HasStarted)
+                    {
+                        context.Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+                        var response = StudentElectionSystem.Application.Common.Models.ApiResponse.Failure("Authentication is required.");
+                        await Microsoft.AspNetCore.Http.HttpResponseWritingExtensions.WriteAsync(
+                            context.Response, 
+                            System.Text.Json.JsonSerializer.Serialize(response, new System.Text.Json.JsonSerializerOptions 
+                            { 
+                                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase 
+                            }));
+                    }
+                },
+                OnForbidden = async context =>
+                {
+                    if (!context.Response.HasStarted)
+                    {
+                        context.Response.StatusCode = Microsoft.AspNetCore.Http.StatusCodes.Status403Forbidden;
+                        context.Response.ContentType = "application/json";
+                        var response = StudentElectionSystem.Application.Common.Models.ApiResponse.Failure("You do not have permission to perform this action.");
+                        await Microsoft.AspNetCore.Http.HttpResponseWritingExtensions.WriteAsync(
+                            context.Response, 
+                            System.Text.Json.JsonSerializer.Serialize(response, new System.Text.Json.JsonSerializerOptions 
+                            { 
+                                PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase 
+                            }));
+                    }
+                }
+            };
         });
 
         return services;

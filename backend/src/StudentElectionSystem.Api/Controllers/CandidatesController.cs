@@ -1,23 +1,24 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentElectionSystem.Application.Common.Models;
 using StudentElectionSystem.Application.DTOs.Candidate;
+using StudentElectionSystem.Application.Exceptions;
 using StudentElectionSystem.Application.UseCases.Candidate.Apply;
+using StudentElectionSystem.Application.UseCases.Candidate.Approve;
+using StudentElectionSystem.Application.UseCases.Candidate.GetDetails;
 using StudentElectionSystem.Application.UseCases.Candidate.GetMyApplications;
 using StudentElectionSystem.Application.UseCases.Candidate.GetPending;
-using StudentElectionSystem.Application.UseCases.Candidate.GetDetails;
-using StudentElectionSystem.Application.UseCases.Candidate.Approve;
 using StudentElectionSystem.Application.UseCases.Candidate.Reject;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StudentElectionSystem.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/candidates")]
 [Authorize]
 public class CandidatesController : ControllerBase
 {
@@ -44,31 +45,19 @@ public class CandidatesController : ControllerBase
         _rejectCandidateUseCase = rejectCandidateUseCase;
     }
 
-    // ── Student Endpoints ────────────────────────────────────────────────────
-
     /// <summary>
     /// Apply as a candidate for a specific election (Student only).
     /// </summary>
     [HttpPost("elections/{electionId}/apply")]
     [Authorize(Roles = "Student")]
-    [ProducesResponseType(typeof(MyCandidateApplicationDto), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiResponse<MyCandidateApplicationDto>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Apply([FromRoute] Guid electionId, [FromBody] ApplyCandidateRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            var result = await _applyCandidateUseCase.ExecuteAsync(electionId, request, cancellationToken);
-            return CreatedAtAction(nameof(GetDetails), new { id = result.CandidateId }, result);
-        }
-        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
-        catch (StudentElectionSystem.Application.Exceptions.ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
+        var result = await _applyCandidateUseCase.ExecuteAsync(electionId, request, cancellationToken);
+        return CreatedAtAction(nameof(GetDetails), new { id = result.CandidateId }, ApiResponse.Success(result, "Candidate application submitted successfully."));
     }
 
     /// <summary>
@@ -76,35 +65,26 @@ public class CandidatesController : ControllerBase
     /// </summary>
     [HttpGet("me")]
     [Authorize(Roles = "Student")]
-    [ProducesResponseType(typeof(IEnumerable<MyCandidateApplicationDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<IEnumerable<MyCandidateApplicationDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMyApplications(CancellationToken cancellationToken)
     {
-        try
-        {
-            var result = await _getMyCandidateApplicationsUseCase.ExecuteAsync(cancellationToken);
-            return Ok(result);
-        }
-        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
+        var result = await _getMyCandidateApplicationsUseCase.ExecuteAsync(cancellationToken);
+        return Ok(ApiResponse.Success(result, "Candidate applications retrieved successfully."));
     }
-
-    // ── Admin Endpoints ──────────────────────────────────────────────────────
 
     /// <summary>
     /// List all pending candidate nominations (Admin only).
     /// </summary>
     [HttpGet("pending")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(typeof(PagedResult<PendingCandidateDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<PendingCandidateDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPending(
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 20,
         CancellationToken cancellationToken = default)
     {
         var result = await _getPendingCandidatesUseCase.ExecuteAsync(pageNumber, pageSize, cancellationToken);
-        return Ok(result);
+        return Ok(ApiResponse.Success(result, "Pending candidates retrieved successfully."));
     }
 
     /// <summary>
@@ -112,15 +92,17 @@ public class CandidatesController : ControllerBase
     /// </summary>
     [HttpGet("{id}")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(typeof(CandidateDetailsDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<CandidateDetailsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetails([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var result = await _getCandidateDetailsUseCase.ExecuteAsync(id, cancellationToken);
         if (result == null)
-            return NotFound();
+        {
+            throw new NotFoundException(nameof(Domain.Entities.Candidate), id);
+        }
 
-        return Ok(result);
+        return Ok(ApiResponse.Success(result, "Candidate details retrieved successfully."));
     }
 
     /// <summary>
@@ -128,24 +110,13 @@ public class CandidatesController : ControllerBase
     /// </summary>
     [HttpPut("{id}/approve")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Approve([FromRoute] Guid id, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _approveCandidateUseCase.ExecuteAsync(id, cancellationToken);
-            return Ok(new { Message = "Candidate approved successfully." });
-        }
-        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
-        catch (StudentElectionSystem.Application.Exceptions.ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
+        await _approveCandidateUseCase.ExecuteAsync(id, cancellationToken);
+        return Ok(ApiResponse.Success("Candidate approved successfully."));
     }
 
     /// <summary>
@@ -153,23 +124,13 @@ public class CandidatesController : ControllerBase
     /// </summary>
     [HttpPut("{id}/reject")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Reject([FromRoute] Guid id, [FromBody] RejectCandidateRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _rejectCandidateUseCase.ExecuteAsync(id, request, cancellationToken);
-            return Ok(new { Message = "Candidate rejected successfully." });
-        }
-        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
-        catch (StudentElectionSystem.Application.Exceptions.ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
+        await _rejectCandidateUseCase.ExecuteAsync(id, request, cancellationToken);
+        return Ok(ApiResponse.Success("Candidate rejected successfully."));
     }
 }

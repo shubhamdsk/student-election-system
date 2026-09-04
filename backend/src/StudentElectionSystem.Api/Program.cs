@@ -1,33 +1,83 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+using StudentElectionSystem.Api.Configuration;
+using StudentElectionSystem.Api.Converters;
+using StudentElectionSystem.Api.Middleware;
+using StudentElectionSystem.Api.Services;
+using StudentElectionSystem.Application.Common.Models;
 using StudentElectionSystem.Application.Interfaces.Services;
 using StudentElectionSystem.Application.UseCases.Authentication;
-using StudentElectionSystem.Application.UseCases.Student;
-using StudentElectionSystem.Application.UseCases.Election.Create;
-using StudentElectionSystem.Application.UseCases.Election.GetList;
-using StudentElectionSystem.Application.UseCases.Election.GetDetails;
-using StudentElectionSystem.Application.UseCases.Election.Update;
-using StudentElectionSystem.Application.UseCases.Election.Cancel;
-using StudentElectionSystem.Application.UseCases.Election.OpenNominations;
 using StudentElectionSystem.Application.UseCases.Candidate.Apply;
+using StudentElectionSystem.Application.UseCases.Candidate.Approve;
+using StudentElectionSystem.Application.UseCases.Candidate.GetDetails;
 using StudentElectionSystem.Application.UseCases.Candidate.GetMyApplications;
 using StudentElectionSystem.Application.UseCases.Candidate.GetPending;
-using StudentElectionSystem.Application.UseCases.Candidate.GetDetails;
-using StudentElectionSystem.Application.UseCases.Candidate.Approve;
 using StudentElectionSystem.Application.UseCases.Candidate.Reject;
+using StudentElectionSystem.Application.UseCases.Election.Cancel;
+using StudentElectionSystem.Application.UseCases.Election.CloseVoting;
+using StudentElectionSystem.Application.UseCases.Election.Create;
+using StudentElectionSystem.Application.UseCases.Election.GetDetails;
+using StudentElectionSystem.Application.UseCases.Election.GetList;
+using StudentElectionSystem.Application.UseCases.Election.GetResults;
+using StudentElectionSystem.Application.UseCases.Election.OpenNominations;
+using StudentElectionSystem.Application.UseCases.Election.PublishResults;
+using StudentElectionSystem.Application.UseCases.Election.Update;
+using StudentElectionSystem.Application.UseCases.Student;
+using StudentElectionSystem.Application.UseCases.Voting.CastVote;
+using StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates;
+using StudentElectionSystem.Application.UseCases.Voting.StartVoting;
 using StudentElectionSystem.Infrastructure;
-using StudentElectionSystem.Api.Configuration;
-using StudentElectionSystem.Api.Services;
-
-
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Configuration options
 builder.Services.Configure<AdminBootstrapSettings>(builder.Configuration.GetSection(AdminBootstrapSettings.SectionName));
 
-builder.Services.AddControllers();
+// Routing
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
+// Exception handling
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
+// Controllers and JSON Serialization
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.Converters.Add(new UtcDateTimeJsonConverter());
+        options.JsonSerializerOptions.Converters.Add(new NullableUtcDateTimeJsonConverter());
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
+// Standardized Model State Validation Response
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(e => e.Value?.Errors.Count > 0)
+            .ToDictionary(
+                kvp => JsonNamingPolicy.CamelCase.ConvertName(kvp.Key),
+                kvp => kvp.Value!.Errors.Select(e => string.IsNullOrWhiteSpace(e.ErrorMessage) ? "Invalid value." : e.ErrorMessage).ToArray()
+            );
+
+        var response = new ApiResponse<object>(
+            success: false,
+            message: "Validation failed.",
+            data: new { errors }
+        );
+
+        return new BadRequestObjectResult(response);
+    };
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -62,7 +112,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddAuthorization();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
-// Application Services Composition Root
+// Application Use Cases
 builder.Services.AddScoped<ILoginUseCase, LoginUseCase>();
 builder.Services.AddScoped<IRegisterStudentUseCase, RegisterStudentUseCase>();
 builder.Services.AddScoped<IGetPendingStudentsUseCase, GetPendingStudentsUseCase>();
@@ -81,17 +131,20 @@ builder.Services.AddScoped<IGetPendingCandidatesUseCase, GetPendingCandidatesUse
 builder.Services.AddScoped<IGetCandidateDetailsUseCase, GetCandidateDetailsUseCase>();
 builder.Services.AddScoped<IApproveCandidateUseCase, ApproveCandidateUseCase>();
 builder.Services.AddScoped<IRejectCandidateUseCase, RejectCandidateUseCase>();
-builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Voting.StartVoting.IStartVotingUseCase, StudentElectionSystem.Application.UseCases.Voting.StartVoting.StartVotingUseCase>();
-builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates.IGetVotingCandidatesUseCase, StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates.GetVotingCandidatesUseCase>();
-builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Voting.CastVote.ICastVoteUseCase, StudentElectionSystem.Application.UseCases.Voting.CastVote.CastVoteUseCase>();
-builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Election.CloseVoting.ICloseVotingUseCase, StudentElectionSystem.Application.UseCases.Election.CloseVoting.CloseVotingUseCase>();
-builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Election.PublishResults.IPublishResultsUseCase, StudentElectionSystem.Application.UseCases.Election.PublishResults.PublishResultsUseCase>();
-builder.Services.AddScoped<StudentElectionSystem.Application.UseCases.Election.GetResults.IGetElectionResultsUseCase, StudentElectionSystem.Application.UseCases.Election.GetResults.GetElectionResultsUseCase>();
-builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserServiceImpl>();
+builder.Services.AddScoped<IStartVotingUseCase, StartVotingUseCase>();
+builder.Services.AddScoped<IGetVotingCandidatesUseCase, GetVotingCandidatesUseCase>();
+builder.Services.AddScoped<ICastVoteUseCase, CastVoteUseCase>();
+builder.Services.AddScoped<ICloseVotingUseCase, CloseVotingUseCase>();
+builder.Services.AddScoped<IPublishResultsUseCase, PublishResultsUseCase>();
+builder.Services.AddScoped<IGetElectionResultsUseCase, GetElectionResultsUseCase>();
+
+// API-level services
+builder.Services.AddScoped<ICurrentUserService, CurrentUserServiceImpl>();
 builder.Services.AddScoped<IAdminBootstrapService, AdminBootstrapServiceImpl>();
 
 var app = builder.Build();
 
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -106,7 +159,6 @@ if (app.Environment.IsDevelopment())
     var bootstrapService = scope.ServiceProvider.GetRequiredService<IAdminBootstrapService>();
     await bootstrapService.EnsureAdminExistsAsync();
 }
-
 
 app.UseHttpsRedirection();
 

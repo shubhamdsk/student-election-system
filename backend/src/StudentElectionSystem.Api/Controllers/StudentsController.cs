@@ -1,14 +1,17 @@
-using Microsoft.AspNetCore.Mvc;
-using StudentElectionSystem.Application.DTOs.Student;
-using StudentElectionSystem.Application.Exceptions;
-using StudentElectionSystem.Application.UseCases.Student;
-using Microsoft.AspNetCore.Authorization;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using StudentElectionSystem.Application.Common.Models;
+using StudentElectionSystem.Application.DTOs.Student;
+using StudentElectionSystem.Application.UseCases.Student;
 
 namespace StudentElectionSystem.Api.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/students")]
 public class StudentsController : ControllerBase
 {
     private readonly IRegisterStudentUseCase _registerStudentUseCase;
@@ -32,27 +35,20 @@ public class StudentsController : ControllerBase
     }
 
     [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiResponse<RegisterStudentResponse>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register(
         [FromBody] RegisterStudentRequest request,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var response = await _registerStudentUseCase.ExecuteAsync(request, cancellationToken);
-            return StatusCode(StatusCodes.Status201Created, response);
-        }
-        catch (ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
+        var response = await _registerStudentUseCase.ExecuteAsync(request, cancellationToken);
+        return StatusCode(StatusCodes.Status201Created, ApiResponse.Success(response, "Student registered successfully."));
     }
 
     [HttpGet("pending")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<PagedResult<PendingStudentDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPendingStudents(
         [FromQuery] int pageNumber = 1, 
         [FromQuery] int pageSize = 10, 
@@ -60,79 +56,46 @@ public class StudentsController : ControllerBase
         CancellationToken cancellationToken = default)
     {
         var result = await _getPendingStudentsUseCase.ExecuteAsync(pageNumber, pageSize, search, cancellationToken);
-        return Ok(result);
+        return Ok(ApiResponse.Success(result, "Pending students retrieved successfully."));
     }
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<StudentDetailsDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetStudentDetails(
         [FromRoute] Guid id, 
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var result = await _getStudentDetailsUseCase.ExecuteAsync(id, cancellationToken);
-            return Ok(result);
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
+        var result = await _getStudentDetailsUseCase.ExecuteAsync(id, cancellationToken);
+        return Ok(ApiResponse.Success(result, "Student details retrieved successfully."));
     }
 
     [HttpPut("{id}/approve")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> ApproveStudent(
         [FromRoute] Guid id, 
         CancellationToken cancellationToken)
     {
-        try
-        {
-            await _approveStudentUseCase.ExecuteAsync(id, cancellationToken);
-            return Ok(new { Message = "Student approved successfully." });
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
-        catch (ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
+        await _approveStudentUseCase.ExecuteAsync(id, cancellationToken);
+        return Ok(ApiResponse.Success("Student approved successfully."));
     }
 
     [HttpPut("{id}/reject")]
     [Authorize(Roles = "Admin")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> RejectStudent(
         [FromRoute] Guid id, 
         [FromBody] RejectStudentRequest request,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            await _rejectStudentUseCase.ExecuteAsync(id, request, cancellationToken);
-            return Ok(new { Message = "Student rejected successfully." });
-        }
-        catch (NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
-        catch (ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new { Message = ex.Message });
-        }
+        await _rejectStudentUseCase.ExecuteAsync(id, request, cancellationToken);
+        return Ok(ApiResponse.Success("Student rejected successfully."));
     }
 }

@@ -1,18 +1,19 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using StudentElectionSystem.Application.DTOs.Voting;
-using StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates;
-using StudentElectionSystem.Application.UseCases.Voting.CastVote;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using StudentElectionSystem.Application.Common.Models;
+using StudentElectionSystem.Application.DTOs.Voting;
+using StudentElectionSystem.Application.UseCases.Voting.CastVote;
+using StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates;
 
 namespace StudentElectionSystem.Api.Controllers;
 
 [ApiController]
-[Route("api/elections/{electionId}/[controller]")]
+[Route("api/elections/{electionId}/votes")]
 [Authorize(Roles = "Student")]
 public class VotesController : ControllerBase
 {
@@ -28,44 +29,22 @@ public class VotesController : ControllerBase
     }
 
     [HttpGet("candidates")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<VotingCandidateDto>>> GetCandidates([FromRoute] Guid electionId, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(ApiResponse<IEnumerable<VotingCandidateDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetCandidates([FromRoute] Guid electionId, CancellationToken cancellationToken)
     {
-        try
-        {
-            var candidates = await _getVotingCandidatesUseCase.ExecuteAsync(electionId, cancellationToken);
-            return Ok(candidates);
-        }
-        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
+        var candidates = await _getVotingCandidatesUseCase.ExecuteAsync(electionId, cancellationToken);
+        return Ok(ApiResponse.Success(candidates, "Voting candidates retrieved successfully."));
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CastVote([FromRoute] Guid electionId, [FromBody] CastVoteRequest request, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _castVoteUseCase.ExecuteAsync(electionId, request, cancellationToken);
-            return Created(string.Empty, new { Message = "Vote cast successfully." });
-        }
-        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
-        {
-            return NotFound(new { Message = ex.Message });
-        }
-        catch (StudentElectionSystem.Application.Exceptions.ConflictException ex)
-        {
-            return Conflict(new { Message = ex.Message });
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return Unauthorized();
-        }
+        await _castVoteUseCase.ExecuteAsync(electionId, request, cancellationToken);
+        return StatusCode(StatusCodes.Status201Created, ApiResponse.Success("Vote cast successfully."));
     }
 }

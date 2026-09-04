@@ -97,7 +97,7 @@ public class VoteRepository : IVoteRepository
         return new ElectionResultsDto(
             election.Id,
             election.Title,
-            election.Status.ToString(),
+            election.Status,
             totalVotes,
             isTie,
             finalCandidates

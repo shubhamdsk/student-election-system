@@ -1,0 +1,37 @@
+// src/components/EmptyState/EmptyState.module.scss
+@use "../../shared/styles/variables" as *;
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-xl;
+  text-align: center;
+}
+
+.icon {
+  font-size: 2.5rem;
+  margin-bottom: $space-sm;
+  color: $color-primary;
+}
+
+.title {
+  font-family: $font-primary;
+  font-size: $font-size-lg;
+  font-weight: 600;
+  color: $color-heading;
+  margin: 0 0 $space-xs 0;
+}
+
+.description {
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  color: $color-text;
+  margin: 0 0 $space-md 0;
+  max-width: 400px;
+}
+
+.action {
+  margin-top: $space-xs;
+}

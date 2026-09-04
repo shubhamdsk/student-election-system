@@ -1,0 +1,38 @@
+// src/components/Navbar/Navbar.module.scss
+@use "../../shared/styles/variables" as *;
+
+.navbar {
+  height: 60px;
+  background: $color-background;
+  border-bottom: 1px solid $color-border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 $space-lg;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.brandText {
+  font-family: $font-primary;
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $color-heading;
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+}

@@ -1,13 +1,15 @@
+// src/features/students/components/StudentSearch/StudentSearch.scss
 @use '@shared/styles/variables' as *;
-@use '@shared/styles/mixins' as *;
 
 .student-search {
   display: grid;
   gap: $space-xs;
-  width: min(100%, 34rem);
+  width: min(100%, 32rem);
 
   label {
     font-weight: 600;
+    font-size: $font-size-sm;
+    color: $color-heading;
   }
 
   input {
@@ -15,9 +17,20 @@
     min-height: 2.75rem;
     padding: $space-sm $space-md;
     border: 1px solid $color-border;
-    border-radius: $radius-sm;
-    background: white;
-    color: $color-text;
-    @include focus-ring;
+    border-radius: $radius-md;
+    background: rgba(15, 23, 42, 0.6);
+    color: $color-heading;
+    font-size: $font-size-md;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: $color-text-tertiary;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
   }
 }

@@ -1,0 +1,58 @@
+// src/components/Sidebar/Sidebar.module.scss
+@use "../../shared/styles/variables" as *;
+
+.sidebar {
+  width: 240px;
+  background: $color-background;
+  border-right: 1px solid $color-border;
+  height: calc(100vh - 60px);
+  padding: $space-md $space-sm;
+  box-sizing: border-box;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xs;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-sm $space-md;
+  background: transparent;
+  border: none;
+  border-radius: $radius-md;
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  color: $color-text;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: rgba($color-primary, 0.08);
+    color: $color-primary;
+  }
+}
+
+.active {
+  background: $color-primary;
+  color: #fff;
+  font-weight: 600;
+
+  &:hover {
+    background: $color-primary;
+    color: #fff;
+  }
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  flex: 1;
+}

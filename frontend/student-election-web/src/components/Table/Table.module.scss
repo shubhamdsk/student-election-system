@@ -1,0 +1,52 @@
+// src/components/Table/Table.module.scss
+@use "../../shared/styles/variables" as *;
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+  background: $color-background;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.th {
+  padding: $space-sm $space-md;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $color-heading;
+  border-bottom: 1px solid $color-border;
+  background: rgba($color-primary, 0.05);
+}
+
+.tr {
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: rgba($color-primary, 0.03);
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $color-border;
+  }
+}
+
+.td {
+  padding: $space-sm $space-md;
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  color: $color-text;
+}
+
+.empty {
+  padding: $space-lg;
+  text-align: center;
+  color: $color-text;
+  font-size: $font-size-md;
+}

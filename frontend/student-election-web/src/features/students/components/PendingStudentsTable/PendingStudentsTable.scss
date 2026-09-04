@@ -1,44 +1,24 @@
+// src/features/students/components/PendingStudentsTable/PendingStudentsTable.scss
 @use '@shared/styles/variables' as *;
-@use '@shared/styles/mixins' as *;
 
 .pending-students-table {
   &__container {
     height: 100%;
     overflow: auto;
     border: 1px solid $color-border;
-    border-radius: $radius-md;
-    background: white;
-    box-shadow: 0 0.25rem 1rem rgba(23, 32, 51, 0.06);
+    border-radius: $radius-lg;
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: $glass-backdrop;
+    box-shadow: $shadow-card;
     scrollbar-gutter: stable;
-    scrollbar-color: #9aa7b8 #edf1f6;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(15, 23, 42, 0.4);
     scrollbar-width: thin;
   }
 
-  &__container::-webkit-scrollbar {
-    width: 0.625rem;
-    height: 0.625rem;
-  }
-
-  &__container::-webkit-scrollbar-track {
-    border-radius: $radius-md;
-    background: #edf1f6;
-  }
-
-  &__container::-webkit-scrollbar-thumb {
-    border: 2px solid #edf1f6;
-    border-radius: 999px;
-    background: #9aa7b8;
-  }
-
-  &__container::-webkit-scrollbar-thumb:hover {
-    background: #748399;
-  }
-
   &__table {
-    width: max-content;
-    min-width: 100%;
+    width: 100%;
     border-collapse: collapse;
-    font-size: 0.9375rem;
+    font-size: $font-size-sm;
   }
 
   &__caption {
@@ -51,130 +31,102 @@
 
   th,
   td {
-    padding: 0.875rem 1rem;
+    padding: 0.85rem $space-md;
     border-bottom: 1px solid $color-border;
     text-align: left;
     vertical-align: middle;
     white-space: nowrap;
+    color: $color-text;
   }
 
-  th:nth-child(1),
-  td:nth-child(1) {
-    min-width: 13.5rem;
-  }
-
-  th:nth-child(2),
-  td:nth-child(2) {
-    min-width: 11rem;
-  }
-
-  th:nth-child(3),
-  td:nth-child(3) {
-    min-width: 17rem;
-  }
-
-  th:nth-child(4),
-  td:nth-child(4) {
-    min-width: 10rem;
-  }
-
-  th:nth-child(7),
-  td:nth-child(7) {
-    min-width: 11rem;
-  }
+  // Column width allocations
+  th:nth-child(1), td:nth-child(1) { min-width: 13rem; } // Reg Number
+  th:nth-child(2), td:nth-child(2) { min-width: 12rem; } // Full Name
+  th:nth-child(3), td:nth-child(3) { min-width: 16rem; } // Email
+  th:nth-child(4), td:nth-child(4) { min-width: 11rem; } // Department
+  th:nth-child(5), td:nth-child(5) { min-width: 5rem; }  // Year
+  th:nth-child(6), td:nth-child(6) { min-width: 7.5rem; } // Status
+  th:nth-child(7), td:nth-child(7) { min-width: 12rem; } // Registered At
+  th:nth-child(8), td:nth-child(8) { min-width: 14rem; } // Actions
 
   th {
     position: sticky;
     top: 0;
-    z-index: 1;
-    background: #eef3fa;
-    color: $color-heading;
-    font-size: 0.875rem;
+    z-index: 10;
+    background: #1e293b;
+    color: #f8fafc;
+    font-size: 0.8125rem;
     font-weight: 700;
-    letter-spacing: 0.01em;
-    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.12);
   }
 
   tbody tr {
-    transition: background-color 120ms ease;
-  }
+    transition: background-color 150ms ease;
 
-  tbody tr:nth-child(even) {
-    background: #fafbfd;
-  }
+    &:nth-child(even) {
+      background: rgba(15, 23, 42, 0.25);
+    }
 
-  tbody tr:hover {
-    background: #f1f6fd;
-  }
-
-  tbody tr:last-child td {
-    border-bottom: 0;
+    &:hover {
+      background: rgba(99, 102, 241, 0.12);
+    }
   }
 
   th:last-child,
   td:last-child {
     position: sticky;
     right: 0;
-    width: 15.5rem;
-    min-width: 15.5rem;
-    box-shadow: -0.375rem 0 0.75rem rgba(23, 32, 51, 0.08);
+    width: 14rem;
+    min-width: 14rem;
+    box-shadow: -6px 0 12px rgba(0, 0, 0, 0.4);
   }
 
   th:last-child {
-    z-index: 3;
-    background: #eef3fa;
+    z-index: 20;
+    background: #1e293b;
   }
 
   td:last-child {
-    z-index: 2;
-    background: inherit;
-  }
-
-  tbody tr:nth-child(even) td:last-child {
-    background: #fafbfd;
+    z-index: 15;
+    background: #1e293b;
   }
 
   tbody tr:hover td:last-child {
-    background: #f1f6fd;
+    background: #253349;
   }
 
   &__status {
-    display: inline-block;
-    padding: $space-xs $space-sm;
+    display: inline-flex;
+    align-items: center;
+    padding: $space-xxs $space-sm;
     border-radius: 999px;
-    border: 1px solid #f4d675;
-    background: #fff8dc;
-    color: #755200;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
     font-weight: 600;
+    font-size: $font-size-xs;
   }
 
   &__actions {
     display: flex;
     justify-content: flex-end;
-    gap: $space-sm;
+    gap: $space-xs;
     white-space: nowrap;
-  }
-
-  &__actions .button {
-    box-shadow: 0 1px 2px rgba(23, 32, 51, 0.12);
   }
 
   &__state {
     display: flex;
-    min-height: 10rem;
+    min-height: 12rem;
     align-items: center;
     justify-content: center;
     margin: 0;
     border: 1px solid $color-border;
-    border-radius: $radius-md;
-    background: white;
+    border-radius: $radius-lg;
+    background: rgba(30, 41, 59, 0.6);
+    color: $color-text-secondary;
     text-align: center;
-    box-shadow: 0 0.25rem 1rem rgba(23, 32, 51, 0.06);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pending-students-table tbody tr {
-    transition: none;
+    box-shadow: $shadow-card;
   }
 }

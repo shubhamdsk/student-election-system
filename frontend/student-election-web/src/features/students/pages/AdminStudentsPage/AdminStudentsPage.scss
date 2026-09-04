@@ -1,3 +1,4 @@
+// src/features/students/pages/AdminStudentsPage/AdminStudentsPage.scss
 @use '@shared/styles/variables' as *;
 
 .admin-students-page {
@@ -10,13 +11,15 @@
 
   &__toolbar {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     justify-content: space-between;
     gap: $space-md;
-    padding: $space-md;
+    padding: $space-md $space-lg;
     border: 1px solid $color-border;
-    border-radius: $radius-md;
-    background: white;
+    border-radius: $radius-lg;
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: $glass-backdrop;
+    box-shadow: $shadow-card;
   }
 
   &__content {

@@ -1,5 +1,5 @@
+// src/features/students/components/StudentPagination/StudentPagination.scss
 @use '@shared/styles/variables' as *;
-@use '@shared/styles/mixins' as *;
 
 .student-pagination {
   display: flex;
@@ -7,11 +7,14 @@
   align-items: center;
   justify-content: space-between;
   gap: $space-md;
-  padding: $space-sm $space-md;
+  padding: $space-sm $space-lg;
   border: 1px solid $color-border;
-  border-radius: $radius-md;
-  background: white;
-  box-shadow: 0 0.125rem 0.5rem rgba(23, 32, 51, 0.04);
+  border-radius: $radius-lg;
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: $glass-backdrop;
+  box-shadow: $shadow-card;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
 
   p {
     margin: 0;
@@ -25,13 +28,23 @@
   }
 
   select {
-    min-height: 2.5rem;
+    min-height: 2.25rem;
     border: 1px solid $color-border;
-    border-radius: $radius-sm;
-    background: white;
-    color: $color-text;
+    border-radius: $radius-md;
+    background: rgba(15, 23, 42, 0.7);
+    color: $color-heading;
     padding: $space-xs $space-md;
-    @include focus-ring;
+    font-size: $font-size-sm;
+
+    option {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+    }
   }
 }
 

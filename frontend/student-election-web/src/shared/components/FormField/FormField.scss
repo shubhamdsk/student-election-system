@@ -1,42 +1,51 @@
+// src/shared/components/FormField/FormField.scss
 @use '@shared/styles/variables' as *;
-@use '@shared/styles/mixins' as *;
 
 .form-field {
   display: grid;
   gap: $space-xs;
+  margin-bottom: $space-xs;
 
   &__label {
-    font-weight: 600;
+    font-weight: 500;
+    font-size: $font-size-sm;
+    color: $color-text;
   }
 
-  &__required,
-  &__error {
+  &__required {
     color: $color-danger;
   }
 
   &__input {
     width: 100%;
-    padding: 0.7rem $space-md;
+    padding: 0.75rem $space-md;
     border: 1px solid $color-border;
-    border-radius: $radius-sm;
-    background: white;
-    color: $color-text;
-    @include focus-ring;
+    border-radius: $radius-md;
+    background: rgba(15, 23, 42, 0.6);
+    color: $color-heading;
+    font-size: $font-size-md;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: $color-text-tertiary;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
   }
 
   &__error {
     margin: 0;
     min-height: 1.25rem;
-    font-size: 0.875rem;
+    font-size: $font-size-xs;
+    color: $color-danger;
     visibility: hidden;
 
     &--visible {
       visibility: visible;
-    }
-
-    &--visible::before {
-      content: 'Error: ';
-      font-weight: 600;
     }
   }
 

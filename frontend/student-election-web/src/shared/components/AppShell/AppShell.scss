@@ -1,60 +1,105 @@
+// src/shared/components/AppShell/AppShell.scss
 @use '@shared/styles/variables' as *;
 
 .app-shell {
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr);
-  height: 100dvh;
+  height: 100vh;
   overflow: hidden;
 
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: $space-md $space-xl;
-    background: $color-primary;
-    color: white;
+    padding: $space-sm $space-xl;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: $glass-backdrop;
+    border-bottom: 1px solid $color-border;
+    color: $color-heading;
   }
 
   &__title {
     margin: 0;
-    color: inherit;
-    font-size: 1.25rem;
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $color-heading;
+    letter-spacing: -0.01em;
   }
 
   &__logout {
-    padding: $space-sm $space-md;
-    border: 1px solid white;
-    border-radius: $radius-sm;
-    background: transparent;
-    color: white;
+    padding: $space-xs $space-md;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: rgba(255, 255, 255, 0.05);
+    color: $color-text;
+    font-size: $font-size-sm;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
   }
 
   &__nav {
     display: flex;
     flex-wrap: wrap;
-    gap: $space-md;
-    padding: $space-md $space-xl;
+    gap: $space-xs;
+    padding: $space-xs $space-xl;
+    background: rgba(30, 41, 59, 0.4);
     border-bottom: 1px solid $color-border;
+
+    a {
+      padding: $space-xs $space-md;
+      border-radius: $radius-sm;
+      font-size: $font-size-sm;
+      font-weight: 500;
+      color: $color-text-secondary;
+      text-decoration: none;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: $color-heading;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      &.active {
+        color: #ffffff;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8));
+        font-weight: 600;
+        box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+      }
+    }
   }
 
   &__content {
     width: min(100% - 2rem, 72rem);
     min-height: 0;
     margin: 0 auto;
-    padding: $space-xl 0;
+    padding: $space-lg 0;
     overflow-y: auto;
     overscroll-behavior: contain;
   }
 
   &__content--wide {
     width: 100%;
-    padding: $space-md $space-lg;
+    max-width: 1280px;
+    padding: $space-lg $space-xl;
   }
 }
 
 @media (max-width: 48rem) {
-  .app-shell__content--wide {
-    padding: $space-md;
+  .app-shell {
+    &__header,
+    &__nav {
+      padding: $space-sm $space-md;
+    }
+
+    &__content--wide {
+      padding: $space-md;
+    }
   }
 }

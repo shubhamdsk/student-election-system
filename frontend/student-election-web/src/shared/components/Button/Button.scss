@@ -1,3 +1,4 @@
+// src/shared/components/Button/Button.scss
 @use '@shared/styles/variables' as *;
 @use '@shared/styles/mixins' as *;
 
@@ -6,60 +7,94 @@
   align-items: center;
   justify-content: center;
   gap: $space-sm;
-  min-height: 2.625rem;
+  min-height: 2.5rem;
   border: 1px solid transparent;
-  border-radius: $radius-sm;
+  border-radius: $radius-md;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
   font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
-  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  transition: all 0.2s ease;
   @include focus-ring;
 
   &:not(:disabled):hover {
-    filter: brightness(0.96);
-    box-shadow: 0 0.25rem 0.625rem rgba(23, 32, 51, 0.14);
     transform: translateY(-1px);
   }
 
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
   &--small {
-    min-height: 2.25rem;
+    min-height: 2rem;
     padding: $space-xs $space-sm;
-    font-size: 0.875rem;
+    font-size: $font-size-xs;
   }
 
   &--medium {
-    padding: $space-sm $space-md;
+    padding: $space-xs $space-md;
   }
 
   &--primary {
-    background: $color-primary;
-    color: white;
+    background: linear-gradient(135deg, $color-primary, $color-secondary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+
+    &:not(:disabled):hover {
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5);
+    }
   }
 
   &--secondary {
-    border-color: $color-border;
-    background: white;
-    color: $color-text;
+    border: 1px solid $color-border;
+    background: rgba(255, 255, 255, 0.07);
+    color: $color-heading;
+
+    &:not(:disabled):hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    &:disabled {
+      background: rgba(255, 255, 255, 0.02);
+      border-color: rgba(255, 255, 255, 0.05);
+      color: #64748b;
+    }
   }
 
   &--success {
-    background: #247a45;
-    color: white;
+    background: #10b981;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+
+    &:not(:disabled):hover {
+      background: #059669;
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    }
   }
 
   &--danger {
-    background: $color-danger;
-    color: white;
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+
+    &:not(:disabled):hover {
+      background: #dc2626;
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+    }
   }
 
   &--ghost {
     background: transparent;
-    color: $color-primary;
+    color: #818cf8;
+
+    &:not(:disabled):hover {
+      background: rgba(99, 102, 241, 0.12);
+      color: #a5b4fc;
+    }
   }
 }
 

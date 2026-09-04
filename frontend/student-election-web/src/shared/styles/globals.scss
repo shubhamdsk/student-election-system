@@ -1,18 +1,47 @@
+// src/shared/styles/globals.scss
 @use 'reset';
 @use 'typography';
 @use 'variables' as *;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-    min-height: 100dvh;
-    background: $color-background;
+  min-height: 100vh;
+  background: $color-background;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(6, 182, 212, 0.05) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: $color-text;
+  font-family: $font-primary;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
-    min-height: 100dvh;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: #818cf8;
+  }
 }
 
 .standalone-page {
-    width: min(100% - 2rem, 72rem);
-    margin: 0 auto;
-    padding: $space-xl 0;
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: $space-xl 0;
 }

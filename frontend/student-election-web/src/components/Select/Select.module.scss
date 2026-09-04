@@ -1,0 +1,44 @@
+// src/components/Select/Select.module.scss
+@use "../../shared/styles/variables" as *;
+
+.selectWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $space-md;
+}
+
+.label {
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  color: $color-text;
+  margin-bottom: $space-xs;
+}
+
+.select {
+  background: rgba($color-surface, 0.25);
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  padding: $space-xs $space-sm;
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  color: $color-text;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='16'%20height='16'%20viewBox='0%200%2016%2016'%3E%3Cpath%20fill='%23666'%20d='M4%207l4%204%204-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-sm center;
+
+  &:focus {
+    outline: none;
+    border-color: $color-primary;
+  }
+}
+
+.error {
+  border-color: $color-danger;
+}
+
+.errorMessage {
+  margin-top: $space-xs;
+  font-size: $font-size-xs;
+  color: $color-danger;
+}

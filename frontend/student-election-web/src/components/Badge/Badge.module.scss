@@ -1,0 +1,36 @@
+// src/components/Badge/Badge.module.scss
+@use "../../shared/styles/variables" as *;
+
+.badge {
+  display: inline-block;
+  padding: $space-xxs $space-sm;
+  border-radius: $radius-sm;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: #fff;
+}
+
+.primary {
+  background-color: $color-primary;
+}
+
+.secondary {
+  background-color: $color-heading;
+}
+
+.success {
+  background-color: #10b981; // emerald
+}
+
+.warning {
+  background-color: #f59e0b; // amber
+}
+
+.error {
+  background-color: $color-danger;
+}
+
+.info {
+  background-color: #3b82f6; // blue
+}

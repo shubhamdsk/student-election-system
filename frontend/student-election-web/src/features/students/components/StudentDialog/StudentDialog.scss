@@ -1,16 +1,19 @@
+// src/features/students/components/StudentDialog/StudentDialog.scss
 @use '@shared/styles/variables' as *;
-@use '@shared/styles/mixins' as *;
 
 .student-dialog {
   width: min(calc(100% - 2rem), 38rem);
-  max-height: calc(100dvh - 2rem);
+  max-height: calc(100vh - 2rem);
   padding: 0;
-  border: 0;
-  border-radius: $radius-md;
-  box-shadow: 0 1.25rem 3rem rgba(23, 32, 51, 0.25);
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: #1e293b;
+  color: $color-text;
+  box-shadow: $shadow-card, 0 0 30px rgba(0, 0, 0, 0.7);
 
   &::backdrop {
-    background: rgba(23, 32, 51, 0.55);
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: $glass-backdrop;
   }
 
   &__header {
@@ -18,26 +21,40 @@
     align-items: center;
     justify-content: space-between;
     gap: $space-md;
-    padding: $space-lg;
+    padding: $space-md $space-lg;
     border-bottom: 1px solid $color-border;
+    background: rgba(15, 23, 42, 0.5);
   }
 
   &__header h2 {
     margin: 0;
-    font-size: 1.25rem;
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $color-heading;
   }
 
   &__close {
-    color: $color-text;
+    color: $color-text-secondary;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+
+    &:hover {
+      color: #ffffff;
+    }
   }
 
   &__content {
     overflow-y: auto;
     padding: $space-lg;
+    color: $color-text;
   }
 
   &__message {
     margin: 0;
+    color: $color-text;
+    line-height: 1.5;
   }
 
   &__actions {
@@ -54,16 +71,25 @@
 
   &__field label {
     font-weight: 600;
+    font-size: $font-size-sm;
+    color: $color-heading;
   }
 
   &__field textarea {
     min-height: 8rem;
     resize: vertical;
-    padding: $space-sm;
+    padding: $space-sm $space-md;
     border: 1px solid $color-border;
-    border-radius: $radius-sm;
+    border-radius: $radius-md;
+    background: rgba(15, 23, 42, 0.6);
+    color: $color-heading;
     font: inherit;
-    @include focus-ring;
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
   }
 
   &__field textarea[aria-invalid='true'] {
@@ -74,12 +100,13 @@
     min-height: 1.5rem;
     margin: 0;
     color: $color-danger;
-    font-size: 0.875rem;
+    font-size: $font-size-xs;
   }
 
   &__count {
     margin: $space-xs 0 0;
     text-align: right;
-    font-size: 0.875rem;
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
   }
 }

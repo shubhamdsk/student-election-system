@@ -20,6 +20,14 @@ public sealed class Candidate : BaseEntity
     /// <summary>The Id of the <see cref="Election"/> this nomination belongs to.</summary>
     public Guid ElectionId { get; private set; }
 
+    // ── Navigation Properties ────────────────────────────────────────────────
+
+    /// <summary>Navigation to the student who submitted this nomination.</summary>
+    public Student Student { get; private set; } = null!;
+
+    /// <summary>Navigation to the election this nomination belongs to.</summary>
+    public Election Election { get; private set; } = null!;
+
     // ── Nomination Details ────────────────────────────────────────────────────
 
     /// <summary>
@@ -48,6 +56,20 @@ public sealed class Candidate : BaseEntity
     /// <summary>UTC timestamp when the nomination was approved. Null until approved.</summary>
     public DateTime? ApprovedAt { get; private set; }
 
+    /// <summary>
+    /// Indicates whether an Admin has rejected this nomination.
+    /// Rejected candidates are not eligible.
+    /// </summary>
+    public bool IsRejected { get; private set; }
+
+    /// <summary>UTC timestamp when the nomination was rejected. Null until rejected.</summary>
+    public DateTime? RejectedAt { get; private set; }
+
+    /// <summary>
+    /// The reason provided by the Admin for rejecting the nomination.
+    /// </summary>
+    public string? RejectionReason { get; private set; }
+
     // ── Constructor ───────────────────────────────────────────────────────────
 
     /// <summary>
@@ -64,6 +86,7 @@ public sealed class Candidate : BaseEntity
         Manifesto = manifesto;
         NominatedAt = DateTime.UtcNow;
         IsApproved = false;
+        IsRejected = false;
     }
 
     // ── Domain Behaviour ─────────────────────────────────────────────────────
@@ -78,10 +101,41 @@ public sealed class Candidate : BaseEntity
     {
         if (IsApproved)
             throw new InvalidOperationException("This candidate nomination is already approved.");
+            
+        if (IsRejected)
+            throw new InvalidOperationException("This candidate nomination has been rejected.");
 
         IsApproved = true;
         ApprovedByAdminId = adminId;
         ApprovedAt = DateTime.UtcNow;
+        MarkUpdated();
+    }
+
+    /// <summary>
+    /// Rejects this candidate nomination.
+    /// </summary>
+    /// <param name="adminId">The Id of the Admin rejecting the nomination.</param>
+    /// <param name="reason">The reason for rejection.</param>
+    /// <exception cref="InvalidOperationException">Thrown if the nomination is already approved or rejected.</exception>
+    public void Reject(Guid adminId, string reason)
+    {
+        if (IsApproved)
+            throw new InvalidOperationException("This candidate nomination is already approved.");
+            
+        if (IsRejected)
+            throw new InvalidOperationException("This candidate nomination is already rejected.");
+
+        if (string.IsNullOrWhiteSpace(reason))
+            throw new ArgumentException("A rejection reason must be provided.", nameof(reason));
+
+        IsRejected = true;
+        RejectedAt = DateTime.UtcNow;
+        RejectionReason = reason;
+        
+        // Use ApprovedByAdminId to store the reviewer for now, 
+        // or add RejectedByAdminId if needed. For simplicity, we just set the reviewer.
+        ApprovedByAdminId = adminId; 
+        
         MarkUpdated();
     }
 

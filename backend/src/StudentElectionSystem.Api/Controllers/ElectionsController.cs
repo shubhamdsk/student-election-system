@@ -7,6 +7,7 @@ using StudentElectionSystem.Application.UseCases.Election.GetList;
 using StudentElectionSystem.Application.UseCases.Election.GetDetails;
 using StudentElectionSystem.Application.UseCases.Election.Update;
 using StudentElectionSystem.Application.UseCases.Election.Cancel;
+using StudentElectionSystem.Application.UseCases.Election.OpenNominations;
 using StudentElectionSystem.Application.Common.Models;
 using StudentElectionSystem.Domain.Enums;
 using System;
@@ -25,19 +26,22 @@ public class ElectionsController : ControllerBase
     private readonly IGetElectionDetailsUseCase _getElectionDetailsUseCase;
     private readonly IUpdateElectionUseCase _updateElectionUseCase;
     private readonly ICancelElectionUseCase _cancelElectionUseCase;
+    private readonly IOpenNominationsUseCase _openNominationsUseCase;
 
     public ElectionsController(
         ICreateElectionUseCase createElectionUseCase,
         IGetElectionsUseCase getElectionsUseCase,
         IGetElectionDetailsUseCase getElectionDetailsUseCase,
         IUpdateElectionUseCase updateElectionUseCase,
-        ICancelElectionUseCase cancelElectionUseCase)
+        ICancelElectionUseCase cancelElectionUseCase,
+        IOpenNominationsUseCase openNominationsUseCase)
     {
         _createElectionUseCase = createElectionUseCase;
         _getElectionsUseCase = getElectionsUseCase;
         _getElectionDetailsUseCase = getElectionDetailsUseCase;
         _updateElectionUseCase = updateElectionUseCase;
         _cancelElectionUseCase = cancelElectionUseCase;
+        _openNominationsUseCase = openNominationsUseCase;
     }
 
     [HttpPost]
@@ -100,6 +104,27 @@ public class ElectionsController : ControllerBase
         {
             await _cancelElectionUseCase.ExecuteAsync(id, cancellationToken);
             return Ok();
+        }
+        catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
+        {
+            return NotFound(new { Message = ex.Message });
+        }
+        catch (StudentElectionSystem.Application.Exceptions.ConflictException ex)
+        {
+            return Conflict(new { Message = ex.Message });
+        }
+    }
+
+    [HttpPut("{id}/open-nominations")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> OpenNominations([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _openNominationsUseCase.ExecuteAsync(id, cancellationToken);
+            return Ok(new { Message = "Nominations opened successfully." });
         }
         catch (StudentElectionSystem.Application.Exceptions.NotFoundException ex)
         {

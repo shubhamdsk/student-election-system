@@ -23,6 +23,15 @@ public class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
         builder.Property(c => c.ApprovedAt)
             .HasColumnType("datetime2");
 
+        builder.Property(c => c.IsRejected)
+            .IsRequired();
+
+        builder.Property(c => c.RejectedAt)
+            .HasColumnType("datetime2");
+
+        builder.Property(c => c.RejectionReason)
+            .HasMaxLength(1000);
+
         builder.Property(c => c.CreatedAt)
             .HasColumnType("datetime2")
             .IsRequired();
@@ -31,9 +40,14 @@ public class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
             .HasColumnType("datetime2");
 
         // Relationships
-        builder.HasOne<Student>()
+        builder.HasOne(c => c.Student)
             .WithMany()
             .HasForeignKey(c => c.StudentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(c => c.Election)
+            .WithMany(e => e.Candidates)
+            .HasForeignKey(c => c.ElectionId)
             .OnDelete(DeleteBehavior.Restrict);
             
         builder.HasOne<User>()

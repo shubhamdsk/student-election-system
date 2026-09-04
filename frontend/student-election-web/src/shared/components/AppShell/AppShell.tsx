@@ -3,7 +3,7 @@ import { useAuth } from '@core/hooks/useAuth'
 import type { AppShellProps } from '@shared/types/component.types'
 import './AppShell.scss'
 
-export function AppShell({ title, navigationItems }: AppShellProps) {
+export function AppShell({ title, navigationItems, isWideContent = false }: AppShellProps) {
   const { logout } = useAuth()
   const navigate = useNavigate()
 
@@ -21,7 +21,7 @@ export function AppShell({ title, navigationItems }: AppShellProps) {
       <nav className="app-shell__nav" aria-label={`${title} navigation`}>
         {navigationItems.map((item) => <NavLink key={item.to} to={item.to} end>{item.label}</NavLink>)}
       </nav>
-      <main className="app-shell__content"><Outlet /></main>
+      <main className={`app-shell__content${isWideContent ? ' app-shell__content--wide' : ''}`}><Outlet /></main>
     </div>
   )
 }

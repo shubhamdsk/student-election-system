@@ -1,0 +1,74 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  min-height: 2.625rem;
+  border: 1px solid transparent;
+  border-radius: $radius-sm;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+  @include focus-ring;
+
+  &:not(:disabled):hover {
+    filter: brightness(0.96);
+    box-shadow: 0 0.25rem 0.625rem rgba(23, 32, 51, 0.14);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &--small {
+    min-height: 2.25rem;
+    padding: $space-xs $space-sm;
+    font-size: 0.875rem;
+  }
+
+  &--medium {
+    padding: $space-sm $space-md;
+  }
+
+  &--primary {
+    background: $color-primary;
+    color: white;
+  }
+
+  &--secondary {
+    border-color: $color-border;
+    background: white;
+    color: $color-text;
+  }
+
+  &--success {
+    background: #247a45;
+    color: white;
+  }
+
+  &--danger {
+    background: $color-danger;
+    color: white;
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $color-primary;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+
+    &:not(:disabled):hover {
+      transform: none;
+    }
+  }
+}

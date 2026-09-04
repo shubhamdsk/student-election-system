@@ -1,0 +1,43 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.student-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-md;
+  padding: $space-sm $space-md;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  background: white;
+  box-shadow: 0 0.125rem 0.5rem rgba(23, 32, 51, 0.04);
+
+  p {
+    margin: 0;
+  }
+
+  label,
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  select {
+    min-height: 2.5rem;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: white;
+    color: $color-text;
+    padding: $space-xs $space-md;
+    @include focus-ring;
+  }
+}
+
+@media (max-width: 36rem) {
+  .student-pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

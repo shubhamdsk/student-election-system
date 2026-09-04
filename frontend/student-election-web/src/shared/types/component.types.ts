@@ -1,4 +1,14 @@
-import type { InputHTMLAttributes } from 'react'
+import type { ButtonHTMLAttributes, InputHTMLAttributes } from 'react'
+
+export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'danger' | 'ghost'
+export type ButtonSize = 'small' | 'medium'
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: ButtonVariant
+  size?: ButtonSize
+  isLoading?: boolean
+  loadingLabel?: string
+}
 
 export interface NavigationItem {
   label: string
@@ -8,6 +18,7 @@ export interface NavigationItem {
 export interface AppShellProps {
   title: string
   navigationItems: NavigationItem[]
+  isWideContent?: boolean
 }
 
 export interface FormErrorProps {

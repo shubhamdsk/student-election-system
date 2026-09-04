@@ -1,0 +1,23 @@
+@use '@shared/styles/variables' as *;
+@use '@shared/styles/mixins' as *;
+
+.student-search {
+  display: grid;
+  gap: $space-xs;
+  width: min(100%, 34rem);
+
+  label {
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: $space-sm $space-md;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: white;
+    color: $color-text;
+    @include focus-ring;
+  }
+}

@@ -1,7 +1,10 @@
 @use '@shared/styles/variables' as *;
 
 .app-shell {
-  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  height: 100dvh;
+  overflow: hidden;
 
   &__header {
     display: flex;
@@ -37,7 +40,21 @@
 
   &__content {
     width: min(100% - 2rem, 72rem);
+    min-height: 0;
     margin: 0 auto;
     padding: $space-xl 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  &__content--wide {
+    width: 100%;
+    padding: $space-md $space-lg;
+  }
+}
+
+@media (max-width: 48rem) {
+  .app-shell__content--wide {
+    padding: $space-md;
   }
 }

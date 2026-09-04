@@ -2,6 +2,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using StudentElectionSystem.Application.Interfaces.Services;
 using StudentElectionSystem.Application.UseCases.Authentication;
 using StudentElectionSystem.Application.UseCases.Student;
+using StudentElectionSystem.Application.UseCases.Election.Create;
+using StudentElectionSystem.Application.UseCases.Election.GetList;
+using StudentElectionSystem.Application.UseCases.Election.GetDetails;
+using StudentElectionSystem.Application.UseCases.Election.Update;
+using StudentElectionSystem.Application.UseCases.Election.Cancel;
 using StudentElectionSystem.Infrastructure;
 using StudentElectionSystem.Api.Configuration;
 using StudentElectionSystem.Api.Services;
@@ -57,6 +62,11 @@ builder.Services.AddScoped<IGetPendingStudentsUseCase, GetPendingStudentsUseCase
 builder.Services.AddScoped<IGetStudentDetailsUseCase, GetStudentDetailsUseCase>();
 builder.Services.AddScoped<IApproveStudentUseCase, ApproveStudentUseCase>();
 builder.Services.AddScoped<IRejectStudentUseCase, RejectStudentUseCase>();
+builder.Services.AddScoped<ICreateElectionUseCase, CreateElectionUseCase>();
+builder.Services.AddScoped<IGetElectionsUseCase, GetElectionsUseCase>();
+builder.Services.AddScoped<IGetElectionDetailsUseCase, GetElectionDetailsUseCase>();
+builder.Services.AddScoped<IUpdateElectionUseCase, UpdateElectionUseCase>();
+builder.Services.AddScoped<ICancelElectionUseCase, CancelElectionUseCase>();
 builder.Services.AddScoped<ICurrentUserService, StudentElectionSystem.Api.Services.CurrentUserServiceImpl>();
 builder.Services.AddScoped<IAdminBootstrapService, AdminBootstrapServiceImpl>();
 

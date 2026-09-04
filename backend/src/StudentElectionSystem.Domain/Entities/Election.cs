@@ -227,14 +227,15 @@ public sealed class Election : BaseEntity
     // ── Configuration Updates (Draft only) ───────────────────────────────────
 
     /// <summary>
-    /// Updates the election's title and description.
+    /// Updates the election's title, description, and candidate cap.
     /// Only permitted while the election is in <see cref="ElectionStatus.Draft"/>.
     /// </summary>
-    public void UpdateDetails(string title, string? description)
+    public void UpdateDetails(string title, string? description, int? maxCandidates)
     {
         EnsureStatus(ElectionStatus.Draft, "update election details");
         Title = title;
         Description = description;
+        MaxCandidates = maxCandidates;
         MarkUpdated();
     }
 

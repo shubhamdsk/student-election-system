@@ -33,6 +33,12 @@ public class StudentRepository : IStudentRepository
             .FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
     }
 
+    public async Task<Student?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Students
+            .FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
+    }
+
     public async Task<PagedResult<PendingStudentDto>> GetPendingStudentsAsync(int pageNumber, int pageSize, string? search, CancellationToken cancellationToken = default)
     {
         var query = from s in _dbContext.Students

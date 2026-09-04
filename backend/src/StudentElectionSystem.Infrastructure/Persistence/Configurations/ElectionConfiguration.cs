@@ -54,7 +54,7 @@ public class ElectionConfiguration : IEntityTypeConfiguration<Election>
         // We configure the navigations that Election owns.
         
         builder.HasMany(e => e.Candidates)
-            .WithOne()
+            .WithOne(c => c.Election)
             .HasForeignKey(c => c.ElectionId)
             .OnDelete(DeleteBehavior.Restrict);
 

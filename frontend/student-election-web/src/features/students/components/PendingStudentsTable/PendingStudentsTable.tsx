@@ -1,7 +1,8 @@
 // src/features/students/components/PendingStudentsTable/PendingStudentsTable.tsx
 import { useMemo } from 'react'
 import { formatUtcDateTime } from '@core/utils/date'
-import Table, { type Column } from '@components/Table/Table'
+import Table from '@components/Table/Table'
+import type { Column } from '@shared/types/table.types'
 import { Button } from '@shared/components/Button/Button'
 import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
 import type { PendingStudentsTableProps } from '../../types/admin-student.types'

@@ -15,16 +15,6 @@ export interface PendingStudentsTableProps {
   onReject(student: PendingStudent): void
 }
 
-export interface StudentPaginationProps {
-  pageNumber: number
-  pageSize: number
-  totalCount: number
-  totalPages: number
-  isDisabled: boolean
-  onPageChange(pageNumber: number): void
-  onPageSizeChange(pageSize: number): void
-}
-
 export interface StudentDetailsDialogProps {
   student?: StudentDetails
   isLoading: boolean

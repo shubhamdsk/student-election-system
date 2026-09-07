@@ -7,19 +7,19 @@ const ELECTIONS_ENDPOINT = '/elections'
 const resourcePath = (electionId: string) => `${ELECTIONS_ENDPOINT}/${encodeURIComponent(electionId)}`
 
 export class ElectionService {
-  async create(request: CreateElectionRequest): Promise<ElectionDetails> {
+  async createElection(request: CreateElectionRequest): Promise<ElectionDetails> {
     return (await apiClient.post<CreateElectionRequest, ElectionDetails>(ELECTIONS_ENDPOINT, request)).data
   }
-  async getList(query: ElectionsQuery = {}): Promise<PagedResult<ElectionListItem>> {
+  async getElections(query: ElectionsQuery = {}): Promise<PagedResult<ElectionListItem>> {
     return (await apiClient.get<PagedResult<ElectionListItem>>(`${ELECTIONS_ENDPOINT}${buildQueryString(query)}`)).data
   }
-  async getById(electionId: string): Promise<ElectionDetails> {
+  async getElectionById(electionId: string): Promise<ElectionDetails> {
     return (await apiClient.get<ElectionDetails>(resourcePath(electionId))).data
   }
-  async update(electionId: string, request: UpdateElectionRequest): Promise<void> {
+  async updateElection(electionId: string, request: UpdateElectionRequest): Promise<void> {
     await apiClient.put<UpdateElectionRequest, EmptyResponseData>(resourcePath(electionId), request)
   }
-  async cancel(electionId: string): Promise<void> { await this.transition(electionId, 'cancel') }
+  async cancelElection(electionId: string): Promise<void> { await this.transition(electionId, 'cancel') }
   async openNominations(electionId: string): Promise<void> { await this.transition(electionId, 'open-nominations') }
   async startVoting(electionId: string): Promise<void> { await this.transition(electionId, 'start-voting') }
   async closeVoting(electionId: string): Promise<void> { await this.transition(electionId, 'close-voting') }

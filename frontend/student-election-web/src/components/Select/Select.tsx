@@ -18,7 +18,8 @@ export const Select: React.FC<SelectProps> = ({
   id,
   ...rest
 }) => {
-  const selectId = id || useId();
+  const generatedId = useId();
+  const selectId = id || generatedId;
   return (
     <div className={`${styles.selectWrapper} ${className || ""}`}>
       {label && (

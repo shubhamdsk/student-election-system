@@ -1,6 +1,9 @@
 @use '../../shared/styles/variables' as *;
 
 .tableWrapper {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -68,6 +71,13 @@
     border-right: 1px solid rgba(148, 163, 184, 0.16);
   }
 
+  :global(.ag-cell-value) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   :global(.ag-header-cell-label) {
     justify-content: center;
   }
@@ -127,4 +137,35 @@
   --ag-header-font-weight: 700;
   --ag-row-border-color: rgba(148, 163, 184, 0.16);
   --ag-wrapper-border-radius: #{$radius-md};
+}
+
+.tableControls {
+  display: flex;
+  justify-content: flex-end;
+  padding: $space-xs $space-sm;
+  border-bottom: 1px solid $color-border;
+  background: rgba(30, 41, 59, 0.92);
+}
+
+.maximizeButton {
+  width: 2rem;
+  min-width: 2rem;
+  padding: 0;
+
+  img {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.grid {
+  min-height: 0;
+}
+
+.maximized {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  border-radius: 0;
+  box-shadow: 0 0 0 100vmax rgba(15, 23, 42, 0.92);
 }

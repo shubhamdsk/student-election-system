@@ -1,0 +1,17 @@
+@use '@shared/styles/variables' as *;
+
+.election-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-sm $space-md;
+  &__field { display: grid; align-content: start; gap: $space-xs; }
+  &__field--wide { grid-column: 1 / -1; }
+  label { color: $color-heading; font-size: $font-size-sm; font-weight: 600; }
+  input, textarea { width: 100%; padding: $space-sm $space-md; border: 1px solid $color-border; border-radius: $radius-md; background: rgba(15, 23, 42, .7); color: $color-heading; font: inherit; color-scheme: dark; }
+  input { min-height: 2.625rem; }
+  textarea { min-height: 6rem; resize: vertical; }
+  input:focus, textarea:focus { outline: none; border-color: $color-primary; box-shadow: 0 0 0 3px rgba(99, 102, 241, .2); }
+  input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: $color-danger; }
+  &__error { min-height: 1.25rem; margin: 0; color: #fca5a5; font-size: $font-size-xs; }
+}
+@media (max-width: 40rem) { .election-form { grid-template-columns: 1fr; &__field--wide { grid-column: auto; } } }

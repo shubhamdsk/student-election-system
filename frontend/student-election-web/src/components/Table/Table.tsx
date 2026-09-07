@@ -1,5 +1,6 @@
 // src/components/Table/Table.tsx
-import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { AgGridReact } from 'ag-grid-react'
 import {
   AllCommunityModule,
@@ -9,30 +10,14 @@ import {
   type ColDefField,
 } from 'ag-grid-community'
 import styles from './Table.module.scss'
+import { Button } from '@shared/components/Button/Button'
+import maximizeIcon from '@shared/assets/icons/maximize.svg'
+import restoreIcon from '@shared/assets/icons/restore.svg'
+import type { TableProps } from '@shared/types/table.types'
+
+export type { Column, TableProps } from '@shared/types/table.types'
 
 ModuleRegistry.registerModules([AllCommunityModule])
-
-export interface Column<T> {
-  key: string;
-  header: string;
-  render?: (row: T, rowIndex: number) => ReactNode;
-  width?: string;
-  align?: 'left' | 'center' | 'right';
-  sticky?: 'left' | 'right';
-  sortable?: boolean;
-  filterable?: boolean;
-}
-
-export interface TableProps<T> {
-  columns: Column<T>[];
-  data: T[];
-  keyExtractor: (row: T) => string | number;
-  emptyMessage?: string;
-  loading?: boolean;
-  loadingContent?: ReactNode;
-  caption?: string;
-  className?: string;
-}
 
 export function Table<T>({
   columns,
@@ -43,25 +28,50 @@ export function Table<T>({
   loadingContent,
   caption,
   className,
+  canMaximize = true,
 }: TableProps<T>) {
+  const [maximizedContainer, setMaximizedContainer] = useState<HTMLElement | null>(null)
+  const isMaximized = Boolean(maximizedContainer)
+
+  useEffect(() => {
+    if (!isMaximized) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMaximizedContainer(null)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [isMaximized])
+
+  const toggleMaximize = () => {
+    if (isMaximized) {
+      setMaximizedContainer(null)
+      return
+    }
+    setMaximizedContainer(document.querySelector<HTMLElement>('.app-shell__content'))
+  }
+
   const columnDefs: ColDef<T>[] = columns.map((column) => ({
     colId: column.key,
     field: column.key as ColDefField<T>,
     headerName: column.header,
     width: column.width ? parseFloat(column.width) * 16 : undefined,
     minWidth: column.width ? parseFloat(column.width) * 16 : 120,
+    maxWidth: column.maxWidth ? parseFloat(column.maxWidth) * 16 : undefined,
     pinned: column.sticky,
     sortable: column.sortable ?? true,
     filter: column.filterable ?? true,
     resizable: true,
-    cellStyle: { textAlign: column.align ?? 'left' },
+    cellStyle: {
+      textAlign: column.align ?? 'left',
+      justifyContent: column.align === 'center' ? 'center' : column.align === 'right' ? 'flex-end' : 'flex-start',
+    },
     cellRenderer: column.render
       ? (params: { data: T; node: { rowIndex: number | null } }) =>
           column.render?.(params.data, params.node.rowIndex ?? 0)
       : undefined,
   }))
 
-  const tableClassName = [styles.tableWrapper, className].filter(Boolean).join(' ')
+  const tableClassName = [styles.tableWrapper, isMaximized ? styles.maximized : '', className].filter(Boolean).join(' ')
 
   if (loading || data.length === 0) {
     return (
@@ -71,24 +81,36 @@ export function Table<T>({
     )
   }
 
-  return (
+  const tableContent = (
     <div className={tableClassName} role="region" aria-label={caption}>
-      <AgGridReact<T>
-        theme={themeQuartz}
-        rowData={data}
-        columnDefs={columnDefs}
-        defaultColDef={{
-          sortable: true,
-          filter: true,
-          resizable: true,
-          unSortIcon: true,
-        }}
-        getRowId={(params) => String(keyExtractor(params.data))}
-        suppressCellFocus
-        animateRows
-      />
+      {canMaximize && <div className={styles.tableControls}>
+        <Button
+          className={styles.maximizeButton}
+          variant="secondary"
+          size="small"
+          aria-label={isMaximized ? 'Restore table' : 'Maximize table'}
+          aria-pressed={isMaximized}
+          title={isMaximized ? 'Restore table' : 'Maximize table'}
+          onClick={toggleMaximize}
+        >
+          <img src={isMaximized ? restoreIcon : maximizeIcon} alt="" aria-hidden="true" />
+        </Button>
+      </div>}
+      <div className={styles.grid}>
+        <AgGridReact<T>
+          theme={themeQuartz}
+          rowData={data}
+          columnDefs={columnDefs}
+          defaultColDef={{ sortable: true, filter: true, resizable: true, unSortIcon: true }}
+          getRowId={(params) => String(keyExtractor(params.data))}
+          suppressCellFocus
+          animateRows
+        />
+      </div>
     </div>
-  );
+  )
+
+  return maximizedContainer ? createPortal(tableContent, maximizedContainer) : tableContent
 }
 
 export default Table;

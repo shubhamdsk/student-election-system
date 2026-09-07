@@ -3,9 +3,9 @@ import { ApproveStudentDialog } from '../../components/ApproveStudentDialog/Appr
 import { PendingStudentsTable } from '../../components/PendingStudentsTable/PendingStudentsTable'
 import { RejectStudentDialog } from '../../components/RejectStudentDialog/RejectStudentDialog'
 import { StudentDetailsDialog } from '../../components/StudentDetailsDialog/StudentDetailsDialog'
-import { StudentPagination } from '../../components/StudentPagination/StudentPagination'
+import { Pagination } from '@shared/components/Pagination/Pagination'
 import { StudentSearch } from '../../components/StudentSearch/StudentSearch'
-import { useDebouncedValue } from '../../hooks/useDebouncedValue'
+import { useDebouncedValue } from '@shared/hooks/useDebouncedValue'
 import { usePendingStudents } from '../../hooks/usePendingStudents'
 import { useStudentApprovalActions } from '../../hooks/useStudentApprovalActions'
 import { useStudentDetails } from '../../hooks/useStudentDetails'
@@ -71,7 +71,8 @@ export function AdminStudentsPage() {
           onReject={setRejectionStudent}
         />
       </div>
-      <StudentPagination
+      <Pagination
+        ariaLabel="Pending students pagination"
         pageNumber={result.pageNumber || pageNumber}
         pageSize={pageSize}
         totalCount={result.totalCount}

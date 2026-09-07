@@ -1,40 +1,35 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+// src/features/students/hooks/usePendingStudents.ts
+import { useQuery } from '@tanstack/react-query'
 import type { PagedResult } from '@core/types/api'
-import { useSnackbar } from '@shared/hooks/useSnackbar'
+import { studentKeys } from '@core/query/queryKeys'
 import { studentService } from '../services/StudentService'
 import type { PendingStudent } from '../types/student.types'
 
 const EMPTY_RESULT: PagedResult<PendingStudent> = {
-  items: [], pageNumber: 1, pageSize: 10, totalCount: 0, totalPages: 0,
+  items: [],
+  pageNumber: 1,
+  pageSize: 10,
+  totalCount: 0,
+  totalPages: 0,
 }
 
 export function usePendingStudents(pageNumber: number, pageSize: number, search: string) {
-  const { showError } = useSnackbar()
-  const [result, setResult] = useState(EMPTY_RESULT)
-  const [isLoading, setIsLoading] = useState(true)
-  const requestId = useRef(0)
+  const trimmedSearch = search.trim()
 
-  const load = useCallback(async () => {
-    const currentRequestId = ++requestId.current
-    setIsLoading(true)
-    try {
-      const nextResult = await studentService.getPendingStudents({
-        pageNumber, pageSize, search: search.trim() || undefined,
-      })
-      if (currentRequestId === requestId.current) setResult(nextResult)
-    } catch (error: unknown) {
-      if (currentRequestId !== requestId.current) return
-      const message = error instanceof Error ? error.message : 'Unable to load pending students.'
-      showError(message)
-    } finally {
-      if (currentRequestId === requestId.current) setIsLoading(false)
-    }
-  }, [pageNumber, pageSize, search, showError])
+  const { data, isLoading, refetch } = useQuery({
+    queryKey: studentKeys.pending(pageNumber, pageSize, trimmedSearch),
+    queryFn: () =>
+      studentService.getPendingStudents({
+        pageNumber,
+        pageSize,
+        search: trimmedSearch || undefined,
+      }),
+    placeholderData: (previousData) => previousData,
+  })
 
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => { void load() }, 0)
-    return () => window.clearTimeout(timeoutId)
-  }, [load])
-
-  return { result, isLoading, refresh: load }
+  return {
+    result: data ?? EMPTY_RESULT,
+    isLoading,
+    refresh: refetch,
+  }
 }

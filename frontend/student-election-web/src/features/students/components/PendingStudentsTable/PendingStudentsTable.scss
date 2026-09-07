@@ -1,132 +1,27 @@
-// src/features/students/components/PendingStudentsTable/PendingStudentsTable.scss
 @use '@shared/styles/variables' as *;
 
 .pending-students-table {
-  &__container {
-    height: 100%;
-    overflow: auto;
-    border: 1px solid $color-border;
-    border-radius: $radius-lg;
-    background: rgba(30, 41, 59, 0.6);
-    backdrop-filter: $glass-backdrop;
-    box-shadow: $shadow-card;
-    scrollbar-gutter: stable;
-    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(15, 23, 42, 0.4);
-    scrollbar-width: thin;
-  }
-
-  &__table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: $font-size-sm;
-  }
-
-  &__caption {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-  }
-
-  th,
-  td {
-    padding: 0.85rem $space-md;
-    border-bottom: 1px solid $color-border;
-    text-align: left;
-    vertical-align: middle;
-    white-space: nowrap;
-    color: $color-text;
-  }
-
-  // Column width allocations
-  th:nth-child(1), td:nth-child(1) { min-width: 13rem; } // Reg Number
-  th:nth-child(2), td:nth-child(2) { min-width: 12rem; } // Full Name
-  th:nth-child(3), td:nth-child(3) { min-width: 16rem; } // Email
-  th:nth-child(4), td:nth-child(4) { min-width: 11rem; } // Department
-  th:nth-child(5), td:nth-child(5) { min-width: 5rem; }  // Year
-  th:nth-child(6), td:nth-child(6) { min-width: 7.5rem; } // Status
-  th:nth-child(7), td:nth-child(7) { min-width: 12rem; } // Registered At
-  th:nth-child(8), td:nth-child(8) { min-width: 14rem; } // Actions
-
-  th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: #1e293b;
-    color: #f8fafc;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.12);
-  }
-
-  tbody tr {
-    transition: background-color 150ms ease;
-
-    &:nth-child(even) {
-      background: rgba(15, 23, 42, 0.25);
-    }
-
-    &:hover {
-      background: rgba(99, 102, 241, 0.12);
-    }
-  }
-
-  th:last-child,
-  td:last-child {
-    position: sticky;
-    right: 0;
-    width: 14rem;
-    min-width: 14rem;
-    box-shadow: -6px 0 12px rgba(0, 0, 0, 0.4);
-  }
-
-  th:last-child {
-    z-index: 20;
-    background: #1e293b;
-  }
-
-  td:last-child {
-    z-index: 15;
-    background: #1e293b;
-  }
-
-  tbody tr:hover td:last-child {
-    background: #253349;
-  }
-
   &__status {
     display: inline-flex;
+    align-self: center;
     align-items: center;
-    padding: $space-xxs $space-sm;
+    flex: 0 0 auto;
+    height: 1.5rem;
+    padding: 0 $space-sm;
     border-radius: 999px;
-    border: 1px solid rgba(245, 158, 11, 0.35);
-    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid #a16207;
+    background: #3b2f16;
     color: #fbbf24;
     font-weight: 600;
     font-size: $font-size-xs;
+    line-height: 1;
+    white-space: nowrap;
   }
 
   &__actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     gap: $space-xs;
     white-space: nowrap;
-  }
-
-  &__state {
-    display: flex;
-    min-height: 12rem;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    border: 1px solid $color-border;
-    border-radius: $radius-lg;
-    background: rgba(30, 41, 59, 0.6);
-    color: $color-text-secondary;
-    text-align: center;
-    box-shadow: $shadow-card;
   }
 }

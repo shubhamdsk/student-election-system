@@ -17,9 +17,7 @@
     padding: $space-md $space-lg;
     border: 1px solid $color-border;
     border-radius: $radius-lg;
-    background: rgba(30, 41, 59, 0.6);
-    backdrop-filter: $glass-backdrop;
-    box-shadow: $shadow-card;
+    background: $color-surface;
   }
 
   &__content {

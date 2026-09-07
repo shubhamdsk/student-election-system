@@ -6,4 +6,4 @@ const navigationItems = [
   { label: 'Results', to: '/admin/results' },
 ]
 
-export function AdminLayout() { return <AppShell title="Administration" navigationItems={navigationItems} /> }
+export function AdminLayout() { return <AppShell title="Administration" navigationItems={navigationItems} isWideContent /> }

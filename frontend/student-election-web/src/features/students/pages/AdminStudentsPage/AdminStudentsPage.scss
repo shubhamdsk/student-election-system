@@ -1,0 +1,28 @@
+// src/features/students/pages/AdminStudentsPage/AdminStudentsPage.scss
+@use '@shared/styles/variables' as *;
+
+.admin-students-page {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: $space-md;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+
+  &__toolbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: $space-md;
+    padding: $space-md $space-lg;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    background: $color-surface;
+  }
+
+  &__content {
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+}

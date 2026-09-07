@@ -1,0 +1,21 @@
+// src/components/ConfirmationDialog/ConfirmationDialog.module.scss
+@use "../../shared/styles/variables" as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: $space-md;
+}
+
+.message {
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  color: $color-text;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-sm;
+}

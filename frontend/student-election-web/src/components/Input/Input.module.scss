@@ -1,0 +1,62 @@
+// src/components/Input/Input.module.scss
+
+@use "../../shared/styles/variables" as *;
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $spacing-medium;
+}
+
+.label {
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  margin-bottom: $spacing-xxs;
+}
+
+.inputContainer {
+  display: flex;
+  align-items: center;
+  background: rgba($color-surface, 0.25);
+  border-radius: $border-radius-medium;
+  padding: $spacing-xxs $spacing-xs;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease;
+
+  &:focus-within {
+    border-color: $color-primary;
+  }
+}
+
+.prefix,
+.suffix {
+  display: flex;
+  align-items: center;
+  color: $color-text-secondary;
+  margin: 0 $spacing-xxs;
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: $font-primary;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+
+  &::placeholder {
+    color: $color-text-tertiary;
+  }
+}
+
+.error {
+  border-color: $color-error;
+}
+
+.errorMessage {
+  margin-top: $spacing-xxs;
+  font-size: $font-size-xs;
+  color: $color-error;
+}

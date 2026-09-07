@@ -1,39 +1,65 @@
+// src/features/auth/pages/LoginPage/LoginPage.scss
 @use '@shared/styles/variables' as *;
 @use '@shared/styles/mixins' as *;
 
 .login-page {
-  display: grid;
-  min-height: 100%;
-  align-items: safe center;
-  justify-items: center;
-  padding: clamp($space-sm, 2dvh, $space-md) 0;
+  display: flex;
+  min-height: calc(100vh - 160px);
+  align-items: center;
+  justify-content: center;
+  padding: $space-lg 0;
 
   &__card {
-    width: min(100%, 30rem);
-    padding: clamp($space-lg, 4vw, $space-xl);
+    width: min(100%, 28rem);
+    padding: $space-xl;
     border: 1px solid $color-border;
-    border-radius: $radius-md;
-    background: white;
-    box-shadow: 0 1rem 2.5rem rgba(23, 32, 51, 0.08);
+    border-radius: $radius-lg;
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: $glass-backdrop;
+    box-shadow: $shadow-card, $shadow-glow;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+    }
   }
 
   &__eyebrow {
-    margin: 0 0 $space-xs;
-    color: $color-primary;
+    margin: 0 0 $space-xxs;
+    color: #818cf8;
+    font-size: $font-size-xs;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   &__title {
     margin: 0;
-    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    font-size: $font-size-xl;
+    font-weight: 700;
+    color: $color-heading;
   }
 
   &__intro {
-    margin: $space-sm 0 $space-lg;
+    margin: $space-xs 0 $space-lg;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
   }
 
   &__footer {
-    margin: $space-md 0 0;
+    margin: $space-lg 0 0;
     text-align: center;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+
+    a {
+      color: #818cf8;
+      font-weight: 600;
+
+      &:hover {
+        color: #a5b4fc;
+        text-decoration: underline;
+      }
+    }
   }
 }

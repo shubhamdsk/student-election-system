@@ -1,5 +1,5 @@
+// src/features/students/components/RegistrationForm/RegistrationForm.scss
 @use '@shared/styles/variables' as *;
-@use '@shared/styles/mixins' as *;
 
 .registration-form {
   display: grid;
@@ -16,7 +16,9 @@
     gap: $space-xs;
 
     label {
-      font-weight: 600;
+      font-weight: 500;
+      font-size: $font-size-sm;
+      color: $color-text;
 
       span {
         color: $color-danger;
@@ -25,18 +27,31 @@
 
     select {
       width: 100%;
-      padding: 0.7rem $space-md;
+      padding: 0.75rem $space-md;
       border: 1px solid $color-border;
-      border-radius: $radius-sm;
-      background: white;
-      @include focus-ring;
+      border-radius: $radius-md;
+      background: rgba(15, 23, 42, 0.6);
+      color: $color-heading;
+      font-size: $font-size-md;
+      transition: all 0.2s ease;
+
+      option {
+        background: #1e293b;
+        color: #f8fafc;
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+      }
     }
 
     p {
       margin: 0;
       min-height: 1.25rem;
       color: $color-danger;
-      font-size: 0.875rem;
+      font-size: $font-size-xs;
       visibility: hidden;
     }
 
@@ -51,15 +66,22 @@
 
   &__submit {
     width: 100%;
-    min-height: 2.75rem;
+    min-height: 2.85rem;
     padding: $space-sm $space-lg;
     border: 0;
-    border-radius: $radius-sm;
-    background: $color-primary;
+    border-radius: $radius-md;
+    background: linear-gradient(135deg, $color-primary, $color-secondary);
     color: white;
+    font-size: $font-size-md;
     font-weight: 600;
     cursor: pointer;
-    @include focus-ring;
+    box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    transition: all 0.25s ease;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
 
     &:disabled {
       cursor: wait;
@@ -73,6 +95,5 @@
     &__grid {
       grid-template-columns: 1fr;
     }
-
   }
 }

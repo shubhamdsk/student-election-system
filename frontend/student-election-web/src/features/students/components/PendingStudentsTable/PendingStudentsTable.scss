@@ -1,0 +1,27 @@
+@use '@shared/styles/variables' as *;
+
+.pending-students-table {
+  &__status {
+    display: inline-flex;
+    align-self: center;
+    align-items: center;
+    flex: 0 0 auto;
+    height: 1.5rem;
+    padding: 0 $space-sm;
+    border-radius: 999px;
+    border: 1px solid #a16207;
+    background: #3b2f16;
+    color: #fbbf24;
+    font-weight: 600;
+    font-size: $font-size-xs;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: center;
+    gap: $space-xs;
+    white-space: nowrap;
+  }
+}

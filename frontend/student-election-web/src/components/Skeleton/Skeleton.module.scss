@@ -1,0 +1,22 @@
+// src/components/Skeleton/Skeleton.module.scss
+@use "../../shared/styles/variables" as *;
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba($color-border, 0.4) 25%,
+    rgba($color-border, 0.8) 37%,
+    rgba($color-border, 0.4) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}

@@ -1,0 +1,43 @@
+// src/features/students/components/StudentDetailsDialog/StudentDetailsDialog.scss
+@use '@shared/styles/variables' as *;
+
+.student-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-md;
+  margin: 0;
+
+  div {
+    min-width: 0;
+    padding: $space-sm;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: $radius-sm;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  dt {
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  dd {
+    margin: $space-xs 0 0;
+    color: $color-heading;
+    font-weight: 500;
+    font-size: $font-size-sm;
+    overflow-wrap: anywhere;
+  }
+
+  &__wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 32rem) {
+  .student-details {
+    grid-template-columns: 1fr;
+  }
+}

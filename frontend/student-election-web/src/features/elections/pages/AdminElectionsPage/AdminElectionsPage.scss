@@ -1,0 +1,11 @@
+@use '@shared/styles/variables' as *;
+
+.admin-elections-page {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: $space-md;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  &__content { min-width: 0; min-height: 0; overflow: hidden; }
+}

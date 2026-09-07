@@ -3,6 +3,7 @@ import { AdminLayout } from '@app/layouts/AdminLayout/AdminLayout'
 import { PublicLayout } from '@app/layouts/PublicLayout/PublicLayout'
 import { StudentLayout } from '@app/layouts/StudentLayout/StudentLayout'
 import { LoginPage } from '@features/auth/pages/LoginPage/LoginPage'
+import { AdminElectionsPage } from '@features/elections/pages/AdminElectionsPage/AdminElectionsPage'
 import { RegistrationPage } from '@features/students/pages/RegistrationPage/RegistrationPage'
 import { AdminStudentsPage } from '@features/students/pages/AdminStudentsPage/AdminStudentsPage'
 import { PlaceholderPage } from '@shared/components/PlaceholderPage/PlaceholderPage'
@@ -40,7 +41,7 @@ export function AppRouter() {
           <Route path="admin" element={<AdminLayout />}>
             <Route index element={<PlaceholderPage title="Admin dashboard" />} />
             <Route path="students" element={<AdminStudentsPage />} />
-            <Route path="elections" element={<PlaceholderPage title="Election management" />} />
+            <Route path="elections" element={<AdminElectionsPage />} />
             <Route path="candidates" element={<PlaceholderPage title="Candidate management" />} />
             <Route path="results" element={<PlaceholderPage title="Election results" />} />
           </Route>

@@ -1,0 +1,21 @@
+@use '@shared/styles/variables' as *;
+
+.election-toolbar {
+  display: flex;
+  align-items: end;
+  gap: $space-md;
+  padding: $space-md $space-lg;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: $color-surface;
+
+  &__search, &__filter { display: grid; gap: $space-xs; }
+  &__search { flex: 1 1 25rem; }
+  &__filter { flex: 0 1 13rem; }
+  label { color: $color-heading; font-size: $font-size-sm; font-weight: 600; }
+  input, select { min-height: 2.5rem; padding: $space-sm $space-md; border: 1px solid $color-border; border-radius: $radius-md; background: rgba(15, 23, 42, .7); color: $color-heading; font: inherit; }
+  input:focus, select:focus { outline: none; border-color: $color-primary; box-shadow: 0 0 0 3px rgba(99, 102, 241, .2); }
+  option { background: #1e293b; }
+}
+
+@media (max-width: 48rem) { .election-toolbar { align-items: stretch; flex-direction: column; &__search, &__filter { flex: auto; } } }

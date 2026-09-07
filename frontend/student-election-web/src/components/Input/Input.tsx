@@ -1,5 +1,5 @@
 // src/components/Input/Input.tsx
-import React, { type InputHTMLAttributes } from "react";
+import React, { type InputHTMLAttributes, useId } from "react";
 import styles from "./Input.module.scss";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -20,7 +20,8 @@ export const Input: React.FC<InputProps> = ({
   type = "text",
   ...rest
 }) => {
-  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+  const generatedId = useId();
+  const inputId = id || generatedId;
   return (
     <div className={`${styles.inputWrapper} ${className || ""}`}>
       {label && (

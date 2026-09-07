@@ -1,0 +1,12 @@
+@use '@shared/styles/variables' as *;
+
+.election-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-md;
+  margin: 0;
+  dt { color: $color-text-secondary; font-size: $font-size-xs; font-weight: 700; text-transform: uppercase; }
+  dd { margin: $space-xs 0 0; color: $color-heading; overflow-wrap: anywhere; }
+  &__wide { grid-column: 1 / -1; }
+}
+@media (max-width: 36rem) { .election-details { grid-template-columns: 1fr; &__wide { grid-column: auto; } } }

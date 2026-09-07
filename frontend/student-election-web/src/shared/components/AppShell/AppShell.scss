@@ -76,6 +76,7 @@
   }
 
   &__content {
+    position: relative;
     width: min(100% - 2rem, 72rem);
     min-height: 0;
     margin: 0 auto;

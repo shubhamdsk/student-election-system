@@ -1,36 +1,30 @@
-import { useCallback, useRef, useState } from 'react'
-import { useSnackbar } from '@shared/hooks/useSnackbar'
+// src/features/students/hooks/useStudentDetails.ts
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { studentKeys } from '@core/query/queryKeys'
 import { studentService } from '../services/StudentService'
-import type { StudentDetails } from '../types/student.types'
 
 export function useStudentDetails() {
-  const { showError } = useSnackbar()
-  const [student, setStudent] = useState<StudentDetails>()
-  const [isLoading, setIsLoading] = useState(false)
-  const requestId = useRef(0)
+  const [selectedStudentId, setSelectedStudentId] = useState<string>()
 
-  const open = useCallback(async (studentId: string) => {
-    const currentRequestId = ++requestId.current
-    setStudent(undefined)
-    setIsLoading(true)
-    try {
-      const details = await studentService.getStudentById(studentId)
-      if (currentRequestId === requestId.current) {
-        setStudent(details)
-        setIsLoading(false)
-      }
-    } catch (error: unknown) {
-      if (currentRequestId !== requestId.current) return
-      showError(error instanceof Error ? error.message : 'Unable to load student details.')
-      setIsLoading(false)
-    }
-  }, [showError])
+  const { data: student, isLoading } = useQuery({
+    queryKey: studentKeys.detail(selectedStudentId),
+    queryFn: () => studentService.getStudentById(selectedStudentId!),
+    enabled: Boolean(selectedStudentId),
+  })
 
-  const close = useCallback(() => {
-    requestId.current += 1
-    setStudent(undefined)
-    setIsLoading(false)
-  }, [])
+  const open = (studentId: string) => {
+    setSelectedStudentId(studentId)
+  }
 
-  return { student, isLoading, open, close }
+  const close = () => {
+    setSelectedStudentId(undefined)
+  }
+
+  return {
+    student: selectedStudentId ? student : undefined,
+    isLoading: Boolean(selectedStudentId) && isLoading,
+    open,
+    close,
+  }
 }

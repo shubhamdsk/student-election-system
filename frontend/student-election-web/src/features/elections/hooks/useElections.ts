@@ -13,5 +13,10 @@ export function useElections(query: ElectionsQuery) {
     queryFn: () => electionService.getElections(normalizedQuery),
     placeholderData: (previousData) => previousData,
   })
-  return { result: result.data ?? EMPTY_RESULT, isLoading: result.isLoading || result.isFetching, refresh: result.refetch }
+  return {
+    result: result.data ?? EMPTY_RESULT,
+    error: result.error,
+    isLoading: result.isLoading || result.isFetching,
+    refresh: result.refetch,
+  }
 }

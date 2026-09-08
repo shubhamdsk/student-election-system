@@ -22,6 +22,7 @@ export function useMyCandidateApplications() {
 
   return {
     applications: query.data ?? EMPTY,
+    error: query.error,
     isLoading: query.isLoading || query.isFetching,
     refresh: query.refetch,
   }

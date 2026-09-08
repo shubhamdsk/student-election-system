@@ -1,0 +1,64 @@
+// src/components/Modal/Modal.module.scss
+@use "../../shared/styles/variables" as *;
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: $glass-backdrop;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #1e293b;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  width: min(calc(100% - 2rem), 38rem);
+  max-height: calc(100vh - 4rem);
+  overflow: hidden;
+  box-shadow: $shadow-card, 0 0 30px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-md $space-lg;
+  border-bottom: 1px solid $color-border;
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.title {
+  font-family: $font-primary;
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $color-heading;
+  margin: 0;
+}
+
+.closeButton {
+  background: transparent;
+  border: none;
+  color: $color-text-secondary;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+.body {
+  padding: $space-lg;
+  overflow-y: auto;
+  color: $color-text;
+}

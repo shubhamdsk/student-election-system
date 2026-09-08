@@ -4,9 +4,10 @@ const DEFAULT_DATE_TIME_FORMAT = new Intl.DateTimeFormat(undefined, {
 })
 
 export function formatUtcDateTime(
-  utcDateTime: string,
+  utcDateTime?: string | null,
   formatter: Intl.DateTimeFormat = DEFAULT_DATE_TIME_FORMAT,
 ): string {
+  if (!utcDateTime) return ''
   const date = new Date(utcDateTime)
   return Number.isNaN(date.getTime()) ? '' : formatter.format(date)
 }

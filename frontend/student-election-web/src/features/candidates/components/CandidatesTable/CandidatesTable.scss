@@ -1,0 +1,24 @@
+@use '@shared/styles/variables' as *;
+
+.candidates-table {
+  &__container {
+    .ag-cell[col-id='status'] .ag-cell-value {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      overflow: visible;
+    }
+
+    .ag-cell[col-id='actions'] .ag-cell-value {
+      overflow: visible;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    width: 100%;
+  }
+}

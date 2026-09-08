@@ -36,4 +36,9 @@ export interface CandidateDetails extends PendingCandidate {
   rejectionReason: string | null
 }
 
-export interface PendingCandidatesQuery { pageNumber?: number; pageSize?: number }
+export interface PendingCandidatesQuery {
+  pageNumber?: number
+  pageSize?: number
+  search?: string
+  electionId?: string
+}

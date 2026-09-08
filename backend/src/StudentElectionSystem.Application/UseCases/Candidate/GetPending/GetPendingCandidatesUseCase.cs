@@ -20,12 +20,23 @@ public class GetPendingCandidatesUseCase : IGetPendingCandidatesUseCase
         _userRepository = userRepository;
     }
 
-    public async Task<PagedResult<PendingCandidateDto>> ExecuteAsync(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<PagedResult<PendingCandidateDto>> ExecuteAsync(
+        int pageNumber,
+        int pageSize,
+        string? search,
+        Guid? electionId,
+        CancellationToken cancellationToken = default)
     {
         pageNumber = Math.Max(1, pageNumber);
         pageSize = Math.Max(1, Math.Min(pageSize, 100));
+        search = string.IsNullOrWhiteSpace(search) ? null : search.Trim();
 
-        var (items, totalCount) = await _candidateRepository.GetPendingCandidatesAsync(pageNumber, pageSize, cancellationToken);
+        var (items, totalCount) = await _candidateRepository.GetPendingCandidatesAsync(
+            pageNumber,
+            pageSize,
+            search,
+            electionId,
+            cancellationToken);
 
         var dtos = new List<PendingCandidateDto>();
         foreach (var c in items)

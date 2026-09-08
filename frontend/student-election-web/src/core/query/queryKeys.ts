@@ -19,8 +19,12 @@ export const electionKeys = {
 
 export const candidateKeys = {
   all: ['candidates'] as const,
+  pendingAll: () => [...candidateKeys.all, 'pending'] as const,
+  pending: (pageNumber: number, pageSize: number, search?: string, electionId?: string) =>
+    [...candidateKeys.pendingAll(), { pageNumber, pageSize, search: search || '', electionId: electionId || '' }] as const,
+  details: () => [...candidateKeys.all, 'detail'] as const,
   byElection: (electionId?: string) => [...candidateKeys.all, 'election', electionId] as const,
-  detail: (id?: string) => [...candidateKeys.all, 'detail', id] as const,
+  detail: (id?: string) => [...candidateKeys.details(), id] as const,
 }
 
 export const votingKeys = {

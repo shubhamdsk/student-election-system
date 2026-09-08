@@ -80,10 +80,12 @@ public class CandidatesController : ControllerBase
     [ProducesResponseType(typeof(ApiResponse<PagedResult<PendingCandidateDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPending(
         [FromQuery] int pageNumber = 1,
-        [FromQuery] int pageSize = 20,
+        [FromQuery] int pageSize = 10,
+        [FromQuery] string? search = null,
+        [FromQuery] Guid? electionId = null,
         CancellationToken cancellationToken = default)
     {
-        var result = await _getPendingCandidatesUseCase.ExecuteAsync(pageNumber, pageSize, cancellationToken);
+        var result = await _getPendingCandidatesUseCase.ExecuteAsync(pageNumber, pageSize, search, electionId, cancellationToken);
         return Ok(ApiResponse.Success(result, "Pending candidates retrieved successfully."));
     }
 

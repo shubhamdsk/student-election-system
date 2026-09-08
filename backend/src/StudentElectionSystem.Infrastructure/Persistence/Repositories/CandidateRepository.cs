@@ -57,17 +57,41 @@ public class CandidateRepository : ICandidateRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<(IEnumerable<Candidate> Items, int TotalCount)> GetPendingCandidatesAsync(int page, int pageSize, CancellationToken cancellationToken = default)
+    public async Task<(IEnumerable<Candidate> Items, int TotalCount)> GetPendingCandidatesAsync(
+        int page,
+        int pageSize,
+        string? search,
+        Guid? electionId,
+        CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Candidates
             .Include(c => c.Election)
             .Include(c => c.Student)
-            .Where(c => !c.IsApproved && !c.IsRejected);
-            
+            .Where(c => !c.IsApproved && !c.IsRejected)
+            .AsQueryable();
+
+        if (electionId.HasValue)
+        {
+            query = query.Where(c => c.ElectionId == electionId.Value);
+        }
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var normalizedSearch = search.Trim().ToUpperInvariant();
+            query = query.Where(c =>
+                c.Student.FullName.ToUpper().Contains(normalizedSearch) ||
+                c.Student.RegistrationNumber.ToUpper().Contains(normalizedSearch) ||
+                c.Election.Title.ToUpper().Contains(normalizedSearch) ||
+                _dbContext.Users.Any(u =>
+                    u.Id == c.Student.UserId &&
+                    u.NormalizedEmail.Contains(normalizedSearch)));
+        }
+
         var totalCount = await query.CountAsync(cancellationToken);
-        
+
         var items = await query
-            .OrderBy(c => c.CreatedAt)
+            .OrderByDescending(c => c.CreatedAt)
+            .ThenBy(c => c.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);

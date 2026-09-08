@@ -20,14 +20,26 @@ export class CandidateService {
   async getPending(query: PendingCandidatesQuery = {}): Promise<PagedResult<PendingCandidate>> {
     return (await apiClient.get<PagedResult<PendingCandidate>>(`${CANDIDATES_ENDPOINT}/pending${buildQueryString(query)}`)).data
   }
+  getPendingCandidates(query: PendingCandidatesQuery = {}): Promise<PagedResult<PendingCandidate>> {
+    return this.getPending(query)
+  }
   async getById(candidateId: string): Promise<CandidateDetails> {
     return (await apiClient.get<CandidateDetails>(resourcePath(candidateId))).data
+  }
+  getCandidateById(candidateId: string): Promise<CandidateDetails> {
+    return this.getById(candidateId)
   }
   async approve(candidateId: string): Promise<void> {
     await apiClient.put<undefined, EmptyResponseData>(`${resourcePath(candidateId)}/approve`, undefined)
   }
+  approveCandidate(candidateId: string): Promise<void> {
+    return this.approve(candidateId)
+  }
   async reject(candidateId: string, request: RejectCandidateRequest): Promise<void> {
     await apiClient.put<RejectCandidateRequest, EmptyResponseData>(`${resourcePath(candidateId)}/reject`, request)
+  }
+  rejectCandidate(candidateId: string, request: RejectCandidateRequest): Promise<void> {
+    return this.reject(candidateId, request)
   }
 }
 

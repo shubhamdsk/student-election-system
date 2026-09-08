@@ -1,115 +1,119 @@
-@use '../../shared/styles/variables' as *;
+// src/components/Table/Table.module.scss
+@use "../../shared/styles/variables" as *;
 
 .tableWrapper {
   position: relative;
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
   width: 100%;
   height: 100%;
   min-height: 0;
+  border-radius: $radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
   overflow: hidden;
-  border: 1px solid $color-border;
-  border-radius: $radius-md;
-  background: $color-background;
-  --ag-background-color: #0f172a;
-  --ag-foreground-color: #e2e8f0;
-  --ag-header-background-color: #1e293b;
-  --ag-header-foreground-color: #f8fafc;
-  --ag-odd-row-background-color: #111c2e;
-  --ag-row-hover-color: #1a2940;
-  --ag-border-color: rgba(148, 163, 184, 0.16);
-  --ag-header-column-separator-color: rgba(148, 163, 184, 0.2);
-  scrollbar-gutter: stable;
-  scrollbar-color: rgba(255, 255, 255, 0.2) rgba(15, 23, 42, 0.4);
-  scrollbar-width: thin;
 
-  :global(.ag-root-wrapper) {
-    height: 100%;
-    border: 0;
-    border-radius: inherit;
-    background: $color-background;
-    color: $color-text;
-    font-family: $font-primary;
+  &.maximized {
+    position: fixed;
+    inset: 1rem;
+    width: auto;   // cancels inherited width: 100% — inset alone defines all four edges
+    height: auto;
+    max-height: none;
+    z-index: 1000;
+    margin: 0;
+    // No controls bar in maximized mode — restore button is a separate portal
+  }
+}
+
+.tableControls {
+  display: flex;
+  justify-content: flex-end;
+  padding: $space-xs $space-sm;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30, 41, 59, 0.4);
+  flex-shrink: 0;
+}
+
+// The restore button renders as its own fixed element portalled into document.body,
+// completely independent of the table card so it's always above AG Grid's stacking context
+.restoreButtonPortal {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1001;
+}
+
+.maximizeButton {
+  padding: 4px;
+  min-height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 23, 42, 0.85);
+  color: #94a3b8;
+  cursor: pointer;
+  border-radius: $radius-sm;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+
+  &:hover {
+    color: #f8fafc;
+    background: rgba(99, 102, 241, 0.3);
+    border-color: rgba(99, 102, 241, 0.5);
   }
 
-  :global(.ag-header) {
-    background: #1e293b !important;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+  img {
+    width: 16px;
+    height: 16px;
+    filter: invert(0.8);
+    display: block;
   }
+}
 
-  :global(.ag-header-row),
-  :global(.ag-header-cell) {
-    background: #1e293b !important;
-  }
+.grid {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
 
-  :global(.ag-header-cell) {
-    color: $color-heading !important;
-    font-size: $font-size-sm;
-    font-weight: 700;
-  }
+  :global {
 
-  :global(.ag-header-cell-resize) {
-    background: rgba(148, 163, 184, 0.2);
-  }
+    .ag-theme-quartz,
+    .ag-theme-quartz-dark,
+    .ag-root-wrapper {
+      --ag-background-color: rgba(15, 23, 42, 0.6);
+      --ag-header-background-color: rgba(30, 41, 59, 0.8);
+      --ag-header-foreground-color: #f1f5f9;
+      --ag-foreground-color: #e2e8f0;
+      --ag-secondary-foreground-color: #94a3b8;
+      --ag-border-color: rgba(255, 255, 255, 0.08);
+      --ag-row-hover-color: rgba(99, 102, 241, 0.12);
+      --ag-selected-row-background-color: rgba(99, 102, 241, 0.2);
+      --ag-font-family: inherit;
+      --ag-font-size: 0.875rem;
+      --ag-cell-horizontal-padding: 1rem;
+      --ag-header-column-separator-display: block;
+      --ag-header-column-separator-color: rgba(255, 255, 255, 0.1);
 
-  :global(.ag-row) {
-    background: $color-background;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
-  }
+      border: none;
+      background: transparent;
 
-  :global(.ag-row-odd) {
-    background: #111c2e;
-  }
+      .ag-header-cell-label {
+        font-weight: 600;
+        color: #f8fafc;
+      }
 
-  :global(.ag-row-hover) {
-    background: #1a2940 !important;
-  }
+      .ag-row {
+        border-bottom-color: rgba(255, 255, 255, 0.06);
+        color: #e2e8f0;
+      }
 
-  :global(.ag-cell) {
-    color: $color-text;
-    font-size: $font-size-sm;
-    border-right: 1px solid rgba(148, 163, 184, 0.16);
-  }
-
-  :global(.ag-cell-value) {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  :global(.ag-header-cell-label) {
-    justify-content: center;
-  }
-
-  :global(.ag-cell) {
-    display: flex;
-    align-items: center;
-  }
-
-  :global(.ag-pinned-right-cols-container),
-  :global(.ag-pinned-right-header) {
-    border-left: 1px solid rgba(148, 163, 184, 0.2);
-    background: $color-background;
-  }
-
-  :global(.ag-pinned-right-cols-container .ag-row-odd) {
-    background: #111c2e;
-  }
-
-  :global(.ag-pinned-right-cols-container .ag-row-hover) {
-    background: #1a2940 !important;
-  }
-
-  :global(.ag-icon),
-  :global(.ag-header-cell-menu-button) {
-    color: $color-text-secondary;
-  }
-
-  :global(.ag-filter) {
-    background: #1e293b;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    color: $color-text;
+      .ag-cell {
+        display: flex;
+        align-items: center;
+      }
+    }
   }
 }
 
@@ -117,55 +121,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 12rem;
-  padding: $space-lg;
-  color: $color-text-secondary;
+  min-height: 300px;
+  padding: $space-xl;
+  color: #94a3b8;
+  font-size: $font-size-md;
   text-align: center;
-}
-
-.tableWrapper:global(.ag-theme-quartz) {
-  --ag-background-color: #0f172a;
-  --ag-foreground-color: #e2e8f0;
-  --ag-header-background-color: #1e293b;
-  --ag-header-foreground-color: #f8fafc;
-  --ag-odd-row-background-color: #111c2e;
-  --ag-row-hover-color: #1a2940;
-  --ag-border-color: rgba(148, 163, 184, 0.16);
-  --ag-header-column-separator-color: rgba(148, 163, 184, 0.2);
-  --ag-font-size: #{$font-size-sm};
-  --ag-header-font-size: #{$font-size-sm};
-  --ag-header-font-weight: 700;
-  --ag-row-border-color: rgba(148, 163, 184, 0.16);
-  --ag-wrapper-border-radius: #{$radius-md};
-}
-
-.tableControls {
-  display: flex;
-  justify-content: flex-end;
-  padding: $space-xs $space-sm;
-  border-bottom: 1px solid $color-border;
-  background: rgba(30, 41, 59, 0.92);
-}
-
-.maximizeButton {
-  width: 2rem;
-  min-width: 2rem;
-  padding: 0;
-
-  img {
-    width: 1rem;
-    height: 1rem;
-  }
-}
-
-.grid {
-  min-height: 0;
-}
-
-.maximized {
-  position: absolute;
-  inset: 0;
-  z-index: 50;
-  border-radius: 0;
-  box-shadow: 0 0 0 100vmax rgba(15, 23, 42, 0.92);
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: $radius-lg;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }

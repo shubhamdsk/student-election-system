@@ -7,4 +7,10 @@ export interface VotingCandidate {
   manifesto: string
 }
 
-export interface CastVoteRequest { candidateId: string }
+export interface CastVoteRequest {
+  candidateId: string
+}
+
+export interface VotingParticipationStatus {
+  hasVoted: boolean
+}

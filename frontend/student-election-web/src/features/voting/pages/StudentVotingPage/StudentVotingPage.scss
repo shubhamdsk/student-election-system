@@ -1,0 +1,314 @@
+@use '@shared/styles/variables' as *;
+
+.svp-page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+
+  &__nav {
+    display: flex;
+  }
+
+  &__back-btn {
+    background: none;
+    border: none;
+    color: $color-primary;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    cursor: pointer;
+    padding: $space-xs 0;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+  }
+
+  &__state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $space-sm;
+    min-height: 260px;
+    text-align: center;
+    color: $color-text-secondary;
+  }
+
+  &__empty-icon {
+    font-size: 2.5rem;
+  }
+
+  &__empty-text {
+    margin: 0;
+    font-size: $font-size-md;
+    font-weight: 500;
+    color: $color-text;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $space-sm;
+    padding: $space-lg;
+    border-radius: $radius-lg;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  &__header-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-sm;
+    flex-wrap: wrap;
+  }
+
+  &__heading {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: 800;
+    color: $color-heading;
+  }
+
+  &__description {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    line-height: 1.5;
+  }
+
+  &__meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-md;
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+
+    strong {
+      color: $color-text-secondary;
+    }
+  }
+
+  &__anonymity-banner {
+    display: flex;
+    align-items: center;
+    gap: $space-xs;
+    padding: $space-xs $space-sm;
+    border-radius: $radius-sm;
+    background: rgba(99, 102, 241, 0.08);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    font-size: $font-size-xs;
+  }
+
+  &__banner-icon {
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  &__notice {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-sm;
+    padding: $space-md $space-lg;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    line-height: 1.5;
+
+    &--warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #fcd34d;
+    }
+
+    &--success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #6ee7b7;
+    }
+  }
+
+  &__notice-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  &__notice-title {
+    display: block;
+    font-size: $font-size-md;
+    font-weight: 700;
+    color: #a7f3d0;
+
+  }
+
+  &__notice-text {
+    margin: $space-xxs 0 0;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: $space-md;
+  }
+
+  &__instructions {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xxs;
+  }
+
+  &__section-title {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__section-hint {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+
+  &__candidates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: $space-md;
+  }
+
+  &__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: $space-md;
+  }
+}
+
+// ─── Candidate Card ───────────────────────────────────────────────────────────
+.svp-card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius-lg;
+  background: rgba(30, 41, 59, 0.4);
+  padding: $space-lg;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.4);
+    background: rgba(30, 41, 59, 0.6);
+  }
+
+  &--selected {
+    border-color: $color-primary;
+    background: rgba(99, 102, 241, 0.12);
+    box-shadow: 0 0 0 1px $color-primary, 0 4px 20px rgba(99, 102, 241, 0.15);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+  }
+
+  &__radio-label {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    cursor: pointer;
+    user-select: none;
+    width: 100%;
+  }
+
+  &__radio-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+
+    &:focus-visible + .svp-card__radio-custom {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+  }
+
+  &__radio-custom {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    flex-shrink: 0;
+    transition: border-color 0.2s, background-color 0.2s;
+
+    .svp-card--selected & {
+      border-color: $color-primary;
+      background-color: $color-primary;
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: #ffffff;
+      }
+    }
+  }
+
+  &__name {
+    font-size: $font-size-md;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__meta {
+    display: flex;
+    gap: $space-xs;
+    flex-wrap: wrap;
+  }
+
+  &__meta-tag {
+    font-size: $font-size-xs;
+    padding: $space-xxs $space-xs;
+    border-radius: $radius-sm;
+    background: rgba(255, 255, 255, 0.06);
+    color: $color-text-secondary;
+    font-weight: 500;
+  }
+
+  &__manifesto {
+    margin-top: $space-xs;
+    padding-top: $space-sm;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__manifesto-heading {
+    margin: 0 0 $space-xxs;
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text-tertiary;
+    font-weight: 600;
+  }
+
+  &__manifesto-body {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .svp-page__candidates-grid {
+    grid-template-columns: 1fr;
+  }
+}

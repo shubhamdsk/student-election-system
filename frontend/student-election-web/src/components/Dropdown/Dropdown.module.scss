@@ -1,0 +1,24 @@
+// src/components/Dropdown/Dropdown.module.scss
+@use "../../shared/styles/variables" as *;
+
+.ui-dropdown {
+  position: relative;
+  display: inline-block;
+
+  &__trigger {
+    cursor: pointer;
+  }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + $space-xs);
+    right: 0;
+    min-width: 12rem;
+    background: #1e293b;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    box-shadow: $shadow-card, 0 10px 25px rgba(0, 0, 0, 0.5);
+    padding: $space-xs;
+    z-index: 500;
+  }
+}

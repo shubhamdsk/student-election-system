@@ -1,0 +1,29 @@
+@use '@shared/styles/variables' as *;
+
+.candidate-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.75rem;
+  padding: $space-xs $space-sm;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: $font-size-xs;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+
+  &--pending {
+    color: $color-warning;
+    background: rgba(245, 158, 11, .1);
+  }
+
+  &--approved {
+    color: $color-success;
+    background: rgba(16, 185, 129, .1);
+  }
+
+  &--rejected {
+    color: $color-danger;
+    background: rgba(239, 68, 68, .1);
+  }
+}

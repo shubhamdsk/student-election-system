@@ -5,6 +5,7 @@ export interface Column<T> {
   header: string
   render?: (row: T, rowIndex: number) => ReactNode
   width?: string
+  minWidth?: string
   maxWidth?: string
   align?: 'left' | 'center' | 'right'
   sticky?: 'left' | 'right'

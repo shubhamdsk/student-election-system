@@ -1,62 +1,63 @@
 // src/components/Input/Input.module.scss
-
 @use "../../shared/styles/variables" as *;
 
-.inputWrapper {
+.ui-input {
   display: flex;
   flex-direction: column;
-  margin-bottom: $spacing-medium;
-}
+  margin-bottom: $space-md;
 
-.label {
-  font-family: $font-primary;
-  font-size: $font-size-sm;
-  color: $color-text-primary;
-  margin-bottom: $spacing-xxs;
-}
-
-.inputContainer {
-  display: flex;
-  align-items: center;
-  background: rgba($color-surface, 0.25);
-  border-radius: $border-radius-medium;
-  padding: $spacing-xxs $spacing-xs;
-  border: 1px solid transparent;
-  transition: border-color 0.2s ease;
-
-  &:focus-within {
-    border-color: $color-primary;
+  &__label {
+    font-family: $font-primary;
+    font-size: $font-size-sm;
+    color: $color-text;
+    margin-bottom: $space-xs;
+    font-weight: 500;
   }
-}
 
-.prefix,
-.suffix {
-  display: flex;
-  align-items: center;
-  color: $color-text-secondary;
-  margin: 0 $spacing-xxs;
-}
+  &__container {
+    display: flex;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: $radius-md;
+    padding: $space-xs $space-sm;
+    border: 1px solid $color-border;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-.input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-family: $font-primary;
-  font-size: $font-size-md;
-  color: $color-text-primary;
-
-  &::placeholder {
-    color: $color-text-tertiary;
+    &:focus-within {
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
   }
-}
 
-.error {
-  border-color: $color-error;
-}
+  &__prefix,
+  &__suffix {
+    display: flex;
+    align-items: center;
+    color: $color-text-secondary;
+    margin: 0 $space-xs;
+  }
 
-.errorMessage {
-  margin-top: $spacing-xxs;
-  font-size: $font-size-xs;
-  color: $color-error;
+  &__field {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: $font-primary;
+    font-size: $font-size-md;
+    color: $color-heading;
+
+    &::placeholder {
+      color: $color-text-tertiary;
+    }
+  }
+
+  &--invalid &__container {
+    border-color: $color-danger;
+  }
+
+  &__error-message {
+    margin-top: $space-xs;
+    font-size: $font-size-xs;
+    color: $color-danger;
+  }
 }

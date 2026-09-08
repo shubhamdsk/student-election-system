@@ -11,10 +11,10 @@ export interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ header, footer, children, className }) => {
   return (
-    <div className={`${styles.card} ${className || ""}`}>
-      {header && <div className={styles.header}>{header}</div>}
-      <div className={styles.body}>{children}</div>
-      {footer && <div className={styles.footer}>{footer}</div>}
+    <div className={`${styles["ui-card"]} ${className || ""}`}>
+      {header && <div className={styles["ui-card__header"]}>{header}</div>}
+      <div className={styles["ui-card__body"]}>{children}</div>
+      {footer && <div className={styles["ui-card__footer"]}>{footer}</div>}
     </div>
   );
 };

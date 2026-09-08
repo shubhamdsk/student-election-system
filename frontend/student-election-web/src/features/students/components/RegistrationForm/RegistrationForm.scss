@@ -15,52 +15,14 @@
     display: grid;
     gap: $space-xs;
 
-    label {
+    .select-dropdown__label {
       font-weight: 500;
-      font-size: $font-size-sm;
       color: $color-text;
-
-      span {
-        color: $color-danger;
-      }
     }
 
-    select {
-      width: 100%;
-      padding: 0.75rem $space-md;
-      border: 1px solid $color-border;
-      border-radius: $radius-md;
+    .select-dropdown__trigger {
+      height: 3rem;
       background: rgba(15, 23, 42, 0.6);
-      color: $color-heading;
-      font-size: $font-size-md;
-      transition: all 0.2s ease;
-
-      option {
-        background: #1e293b;
-        color: #f8fafc;
-      }
-
-      &:focus {
-        outline: none;
-        border-color: $color-primary;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
-      }
-    }
-
-    p {
-      margin: 0;
-      min-height: 1.25rem;
-      color: $color-danger;
-      font-size: $font-size-xs;
-      visibility: hidden;
-    }
-
-    &-error--visible {
-      visibility: visible;
-    }
-
-    &--invalid select {
-      border-color: $color-danger;
     }
   }
 

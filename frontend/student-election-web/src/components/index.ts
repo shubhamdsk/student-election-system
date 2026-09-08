@@ -1,6 +1,5 @@
 export { Button, type ButtonProps } from "./Button/Button";
 export { Input, type InputProps } from "./Input/Input";
-export { Select, type SelectProps } from "./Select/Select";
 export { Checkbox, type CheckboxProps } from "./Checkbox/Checkbox";
 export { Badge, type BadgeProps, type BadgeVariant } from "./Badge/Badge";
 export { Modal, type ModalProps } from "./Modal/Modal";
@@ -15,3 +14,5 @@ export { ConfirmationDialog, type ConfirmationDialogProps } from "./Confirmation
 export { Tabs, type TabsProps, type TabItem } from "./Tabs/Tabs";
 export { Navbar, type NavbarProps } from "./Navbar/Navbar";
 export { Sidebar, type SidebarProps, type SidebarItem } from "./Sidebar/Sidebar";
+export { SelectDropdown, SelectDropdown as Select } from "../shared/components/SelectDropdown/SelectDropdown";
+export type { SelectDropdownProps, SelectDropdownProps as SelectProps, SelectDropdownOption } from "../shared/types/select-dropdown.types";

@@ -1,6 +1,6 @@
 // src/components/Button/Button.tsx
 import React from 'react';
-import styles from './Button.module.css';
+import styles from './Button.module.scss';
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary' | 'outline' | 'icon' | 'danger';
@@ -8,13 +8,12 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export const Button: React.FC<ButtonProps> = ({ variant = 'primary', className = '', children, ...rest }) => {
-  const variantClass = styles[variant] || '';
+  const variantClass = styles[`ui-button--${variant}`] || '';
   return (
-    <button className={`${styles.button} ${variantClass} ${className}`} {...rest}>
+    <button className={`${styles['ui-button']} ${variantClass} ${className}`} {...rest}>
       {children}
     </button>
   );
 };
 
 export default Button;
-

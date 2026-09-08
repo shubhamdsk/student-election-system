@@ -1,5 +1,5 @@
 // src/components/Input/Input.tsx
-import React, { type InputHTMLAttributes, useId } from "react";
+import React, { type InputHTMLAttributes } from "react";
 import styles from "./Input.module.scss";
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -20,26 +20,31 @@ export const Input: React.FC<InputProps> = ({
   type = "text",
   ...rest
 }) => {
-  const generatedId = useId();
-  const inputId = id || generatedId;
+  const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+  const rootClass = [
+    styles["ui-input"],
+    error ? styles["ui-input--invalid"] : "",
+    className,
+  ].filter(Boolean).join(" ");
+
   return (
-    <div className={`${styles.inputWrapper} ${className || ""}`}>
+    <div className={rootClass}>
       {label && (
-        <label htmlFor={inputId} className={styles.label}>
+        <label htmlFor={inputId} className={styles["ui-input__label"]}>
           {label}
         </label>
       )}
-      <div className={styles.inputContainer}>
-        {prefixIcon && <span className={styles.prefix}>{prefixIcon}</span>}
+      <div className={styles["ui-input__container"]}>
+        {prefixIcon && <span className={styles["ui-input__prefix"]}>{prefixIcon}</span>}
         <input
           id={inputId}
           type={type}
-          className={`${styles.input} ${error ? styles.error : ""}`}
+          className={styles["ui-input__field"]}
           {...rest}
         />
-        {suffixIcon && <span className={styles.suffix}>{suffixIcon}</span>}
+        {suffixIcon && <span className={styles["ui-input__suffix"]}>{suffixIcon}</span>}
       </div>
-      {error && <span className={styles.errorMessage}>{error}</span>}
+      {error && <span className={styles["ui-input__error-message"]}>{error}</span>}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import Table from '@components/Table/Table'
+import { Table } from '@components'
 import { formatUtcDateTime } from '@core/utils/date'
 import { Button } from '@shared/components/Button/Button'
 import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
@@ -25,5 +25,5 @@ export function ElectionsTable({ elections, isLoading, hasFilters, actionElectio
     </div> },
   ], [actionElectionId, onAction, onEdit, onView])
 
-  return <Table columns={columns} data={elections} keyExtractor={(election) => election.id} loading={isLoading} loadingContent={<LoadingSpinner label="Loading elections" />} emptyMessage={hasFilters ? 'No elections match the current filters.' : 'No elections found.'} caption="Election management" className="elections-table" />
+  return <Table columns={columns} data={elections} keyExtractor={(election: ElectionListItem) => election.id} loading={isLoading} loadingContent={<LoadingSpinner label="Loading elections" />} emptyMessage={hasFilters ? 'No elections match the current filters.' : 'No elections found.'} caption="Election management" className="elections-table" />
 }

@@ -11,8 +11,9 @@ export interface BadgeProps {
 }
 
 export const Badge: React.FC<BadgeProps> = ({ children, variant = "primary", className }) => {
+  const variantClass = styles[`ui-badge--${variant}`] || "";
   return (
-    <span className={`${styles.badge} ${styles[variant]} ${className || ""}`}>{children}</span>
+    <span className={`${styles["ui-badge"]} ${variantClass} ${className || ""}`}>{children}</span>
   );
 };
 

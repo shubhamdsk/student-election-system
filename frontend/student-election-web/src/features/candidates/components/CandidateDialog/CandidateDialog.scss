@@ -1,0 +1,111 @@
+@use '@shared/styles/variables' as *;
+
+.candidate-dialog {
+  width: min(calc(100% - 2rem), 44rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: #1e293b;
+  color: $color-text;
+  box-shadow: $shadow-card, 0 0 30px rgba(0, 0, 0, .7);
+
+  &::backdrop {
+    background: rgba(15, 23, 42, .8);
+    backdrop-filter: $glass-backdrop;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-md;
+    padding: $space-md $space-lg;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__header h2 {
+    margin: 0;
+    color: $color-heading;
+    font-size: $font-size-lg;
+  }
+
+  &__content {
+    max-height: calc(100dvh - 11rem);
+    overflow-y: auto;
+    padding: $space-lg;
+  }
+
+  &__message {
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $space-sm;
+    padding: 0 $space-lg $space-lg;
+  }
+
+  &__field {
+    display: grid;
+    gap: $space-xs;
+  }
+
+  &__field label {
+    color: $color-heading;
+    font-size: $font-size-sm;
+    font-weight: 600;
+  }
+
+  &__field textarea {
+    min-height: 8rem;
+    resize: vertical;
+    padding: $space-sm $space-md;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: rgba(15, 23, 42, .7);
+    color: $color-heading;
+    font: inherit;
+  }
+
+  &__field textarea:focus {
+    outline: none;
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
+  }
+
+  &__field textarea[aria-invalid='true'] {
+    border-color: $color-danger;
+  }
+
+  &__error {
+    min-height: 1.25rem;
+    margin: 0;
+    color: $color-danger;
+    font-size: $font-size-xs;
+  }
+
+  &__count {
+    margin: 0;
+    color: $color-text-tertiary;
+    font-size: $font-size-xs;
+    text-align: right;
+  }
+}
+
+@media (max-width: 32rem) {
+  .candidate-dialog {
+
+    &__header,
+    &__content {
+      padding: $space-md;
+    }
+
+    &__actions {
+      padding: 0 $space-md $space-md;
+    }
+  }
+}

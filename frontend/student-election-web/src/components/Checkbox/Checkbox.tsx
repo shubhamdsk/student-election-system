@@ -1,5 +1,5 @@
 // src/components/Checkbox/Checkbox.tsx
-import React, { type InputHTMLAttributes, useId } from "react";
+import React, { type InputHTMLAttributes } from "react";
 import styles from "./Checkbox.module.scss";
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -14,22 +14,21 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   className,
   ...rest
 }) => {
-  const generatedId = useId();
-  const checkboxId = id || generatedId;
+  const checkboxId = id || `checkbox-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
-    <div className={`${styles.checkboxWrapper} ${className || ""}`}> 
+    <div className={`${styles["ui-checkbox"]} ${className || ""}`}>
       <input
         type="checkbox"
         id={checkboxId}
-        className={styles.input}
+        className={styles["ui-checkbox__input"]}
         ref={(el) => {
           if (el) el.indeterminate = indeterminate;
         }}
         {...rest}
       />
       {label && (
-        <label htmlFor={checkboxId} className={styles.label}>
+        <label htmlFor={checkboxId} className={styles["ui-checkbox__label"]}>
           {label}
         </label>
       )}

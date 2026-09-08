@@ -1,0 +1,78 @@
+// src/components/Button/Button.module.scss
+@use "../../shared/styles/variables" as *;
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-sm;
+  min-height: 2.5rem;
+  padding: $space-xs $space-md;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  font-family: $font-primary;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:not(:disabled):hover {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &--primary {
+    background: linear-gradient(135deg, $color-primary, $color-secondary);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+
+    &:not(:disabled):hover {
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5);
+    }
+  }
+
+  &--secondary {
+    border: 1px solid $color-border;
+    background: rgba(255, 255, 255, 0.07);
+    color: $color-heading;
+
+    &:not(:disabled):hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+  }
+
+  &--outline {
+    background: transparent;
+    border: 1px solid $color-primary;
+    color: $color-primary;
+
+    &:not(:disabled):hover {
+      background: rgba(99, 102, 241, 0.1);
+    }
+  }
+
+  &--danger {
+    background: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+
+    &:not(:disabled):hover {
+      background: #dc2626;
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+    }
+  }
+
+  &--icon {
+    padding: $space-xs;
+    min-height: 2.25rem;
+    width: 2.25rem;
+    border-radius: $radius-sm;
+  }
+}

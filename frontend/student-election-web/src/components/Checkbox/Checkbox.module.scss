@@ -1,0 +1,44 @@
+// src/components/Checkbox/Checkbox.module.scss
+@use "../../shared/styles/variables" as *;
+
+.ui-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-xs;
+  cursor: pointer;
+
+  &__input {
+    appearance: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    border: 1px solid $color-border;
+    border-radius: $radius-sm;
+    background: rgba(15, 23, 42, 0.6);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    &:checked {
+      background: $color-primary;
+      border-color: $color-primary;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 0.8rem;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
+  }
+
+  &__label {
+    font-family: $font-primary;
+    font-size: $font-size-sm;
+    color: $color-text;
+    user-select: none;
+  }
+}

@@ -14,7 +14,6 @@ export const Dropdown: React.FC<DropdownProps> = ({ trigger, children, className
 
   const toggle = () => setOpen((prev) => !prev);
 
-  // Close when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -26,11 +25,17 @@ export const Dropdown: React.FC<DropdownProps> = ({ trigger, children, className
   }, []);
 
   return (
-    <div className={`${styles.dropdown} ${className || ""}`} ref={dropdownRef}>
-      <div className={styles.trigger} onClick={toggle} role="button" aria-haspopup="true" aria-expanded={open}>
+    <div className={`${styles["ui-dropdown"]} ${className || ""}`} ref={dropdownRef}>
+      <div
+        className={styles["ui-dropdown__trigger"]}
+        onClick={toggle}
+        role="button"
+        aria-haspopup="true"
+        aria-expanded={open}
+      >
         {trigger}
       </div>
-      {open && <div className={styles.menu}>{children}</div>}
+      {open && <div className={styles["ui-dropdown__menu"]}>{children}</div>}
     </div>
   );
 };

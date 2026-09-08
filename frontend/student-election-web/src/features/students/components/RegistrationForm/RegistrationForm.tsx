@@ -1,9 +1,10 @@
 import { useState, type FormEvent } from 'react'
-import type { Gender } from '@core/types/enums'
 import type { FieldErrors } from '@core/utils/form-errors'
 import { FormField } from '@shared/components/FormField/FormField'
 import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
 import { PasswordInput } from '@shared/components/PasswordInput/PasswordInput'
+import { SelectDropdown } from '@shared/components/SelectDropdown/SelectDropdown'
+import type { SelectDropdownOption } from '@shared/types/select-dropdown.types'
 import type { RegistrationField, RegistrationFormProps, RegistrationFormValues } from '../../types/student.types'
 import './RegistrationForm.scss'
 
@@ -13,7 +14,7 @@ const INITIAL_VALUES: RegistrationFormValues = {
 }
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const PHONE_PATTERN = /^\+?[\d\s().-]{7,20}$/
-const GENDERS: readonly { value: Gender; label: string }[] = [
+const GENDERS: SelectDropdownOption[] = [
   { value: 'Male', label: 'Male' }, { value: 'Female', label: 'Female' },
   { value: 'Other', label: 'Other' }, { value: 'PreferNotToSay', label: 'Prefer not to say' },
 ]
@@ -65,7 +66,6 @@ export function RegistrationForm({ isSubmitting, fieldErrors, onSubmit }: Regist
     })
   }
 
-  const genderErrorId = 'registration-gender-error'
   return (
     <form className="registration-form" onSubmit={handleSubmit} noValidate>
       <div className="registration-form__grid">
@@ -75,20 +75,7 @@ export function RegistrationForm({ isSubmitting, fieldErrors, onSubmit }: Regist
         <PasswordInput id="registration-password" label="Password" name="password" autoComplete="new-password" value={values.password} onChange={(event) => update('password', event.target.value)} error={errors.password} disabled={isSubmitting} required />
         <FormField id="registration-department" label="Department" name="department" value={values.department} onChange={(event) => update('department', event.target.value)} error={errors.department} disabled={isSubmitting} maxLength={100} required />
         <FormField id="registration-year" label="Year of study" name="yearOfStudy" type="number" inputMode="numeric" min={1} max={10} step={1} value={values.yearOfStudy} onChange={(event) => update('yearOfStudy', event.target.value)} error={errors.yearOfStudy} disabled={isSubmitting} required />
-        <div className={`registration-form__field${errors.gender ? ' registration-form__field--invalid' : ''}`}>
-          <label htmlFor="registration-gender">Gender <span aria-hidden="true">*</span></label>
-          <select id="registration-gender" name="gender" value={values.gender} onChange={(event) => update('gender', event.target.value)} disabled={isSubmitting} required aria-invalid={Boolean(errors.gender)} aria-describedby={errors.gender ? genderErrorId : undefined}>
-            <option value="">Select an option</option>
-            {GENDERS.map((gender) => <option key={gender.value} value={gender.value}>{gender.label}</option>)}
-          </select>
-          <p
-            id={genderErrorId}
-            className={errors.gender ? 'registration-form__field-error--visible' : undefined}
-            aria-hidden={!errors.gender}
-          >
-            {errors.gender ? `Error: ${errors.gender}` : ''}
-          </p>
-        </div>
+        <SelectDropdown className="registration-form__field" label="Gender" value={values.gender} options={[{ value: '', label: 'Select an option' }, ...GENDERS]} disabled={isSubmitting} required error={errors.gender} reserveErrorSpace onChange={(value) => update('gender', value)} />
         <FormField id="registration-phone" label="Phone number (optional)" name="phoneNumber" type="tel" autoComplete="tel" value={values.phoneNumber} onChange={(event) => update('phoneNumber', event.target.value)} error={errors.phoneNumber} disabled={isSubmitting} maxLength={20} />
       </div>
       <button className="registration-form__submit" type="submit" disabled={isSubmitting}>

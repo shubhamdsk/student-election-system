@@ -1,0 +1,112 @@
+@use '@shared/styles/variables' as *;
+
+.approval-check-page {
+  display: grid;
+  min-height: 100dvh;
+  padding: $space-lg;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 35%, rgba(99, 102, 241, 0.18), transparent 32rem),
+    $color-background;
+}
+
+.approval-check {
+  position: relative;
+  width: min(100%, 32rem);
+  overflow: hidden;
+  padding: $space-xl;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: $color-surface;
+  box-shadow: $shadow-card, $shadow-glow;
+  text-align: center;
+  backdrop-filter: $glass-backdrop;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 70%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $color-primary, transparent);
+    content: '';
+  }
+
+  &__icon {
+    position: relative;
+    display: grid;
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto $space-lg;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.12);
+    color: #c4b5fd;
+  }
+
+  &__icon-ring {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(99, 102, 241, 0.25);
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: approval-check-spin 1.4s linear infinite;
+  }
+
+  &__icon-mark {
+    font-size: $font-size-lg;
+    font-weight: 700;
+  }
+
+  &__eyebrow {
+    margin: 0 0 $space-xs;
+    color: #a5b4fc;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-heading;
+    font-size: $font-size-xl;
+    line-height: 1.25;
+  }
+
+  &__description {
+    max-width: 25rem;
+    margin: $space-sm auto 0;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+    line-height: 1.6;
+  }
+
+  &__status {
+    display: flex;
+    justify-content: center;
+    margin-top: $space-lg;
+    padding: $space-sm $space-md;
+    border: 1px solid rgba(99, 102, 241, 0.18);
+    border-radius: $radius-md;
+    background: rgba(15, 23, 42, 0.38);
+    color: $color-text;
+    font-size: $font-size-sm;
+  }
+}
+
+@keyframes approval-check-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 30rem) {
+  .approval-check {
+    padding: $space-lg;
+
+    &__title { font-size: $font-size-lg; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .approval-check__icon-ring { animation: none; }
+}

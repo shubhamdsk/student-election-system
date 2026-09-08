@@ -31,8 +31,8 @@ const LIFECYCLE_LABEL: Record<ElectionStatus, string> = {
   Draft: 'Election has not started yet.',
   Nominations: 'Candidate applications are open.',
   Voting: 'Voting is currently open.',
-  Closed: 'Voting has ended.',
-  ResultPublished: 'Results are available.',
+  Closed: 'Voting has ended. Results have not been published yet.',
+  ResultPublished: 'Results Published',
   Cancelled: 'Election has been cancelled.',
 }
 
@@ -57,11 +57,13 @@ interface ElectionCardProps {
   onViewDetails(election: ElectionListItem): void
   onApply(election: ElectionListItem): void
   onVote(election: ElectionListItem): void
+  onViewResults(election: ElectionListItem): void
 }
 
-function ElectionCard({ election, application, onViewDetails, onApply, onVote }: ElectionCardProps) {
+function ElectionCard({ election, application, onViewDetails, onApply, onVote, onViewResults }: ElectionCardProps) {
   const showApply = election.status === 'Nominations' && !application
   const showVote = election.status === 'Voting'
+  const showResults = election.status === 'ResultPublished'
 
   return (
     <article className="se-card" aria-label={election.title}>
@@ -105,6 +107,11 @@ function ElectionCard({ election, application, onViewDetails, onApply, onVote }:
           {showVote && (
             <Button variant="primary" size="small" onClick={() => onVote(election)}>
               Vote Now
+            </Button>
+          )}
+          {showResults && (
+            <Button variant="primary" size="small" onClick={() => onViewResults(election)}>
+              View Results
             </Button>
           )}
         </div>
@@ -203,6 +210,7 @@ export function StudentElectionsPage() {
                 onViewDetails={(e) => setDetailsId(e.id)}
                 onApply={(e) => setApplyElection(e)}
                 onVote={(e) => navigate(`/student/elections/${e.id}/vote`)}
+                onViewResults={(e) => navigate(`/student/elections/${e.id}/results`)}
               />
             </div>
           ))}
@@ -214,6 +222,7 @@ export function StudentElectionsPage() {
           election={detailsElection}
           isLoading={detailsLoading}
           onClose={() => setDetailsId(undefined)}
+          onViewResults={(electionId) => navigate(`/student/elections/${electionId}/results`)}
         />
       )}
 

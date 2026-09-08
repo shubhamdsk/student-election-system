@@ -1,0 +1,338 @@
+@use '@shared/styles/variables' as *;
+
+.sr-page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+  width: 100%;
+
+  &--state {
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+  }
+
+  >button:first-child {
+    align-self: flex-start;
+  }
+
+  &__header,
+  &__winners,
+  &__standings,
+  &__message {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: $radius-lg;
+    background: rgba(30, 41, 59, 0.55);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-lg;
+    padding: $space-lg;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: $space-md;
+    min-width: 0;
+  }
+
+  &__eyebrow,
+  &__winners-label {
+    margin: 0 0 $space-xs;
+    color: $color-primary;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0;
+    color: $color-heading;
+    font-size: $font-size-xl;
+    line-height: 1.25;
+  }
+
+  &__total {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: $space-xxs;
+    margin: 0;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+
+    strong {
+      color: $color-heading;
+      font-size: $font-size-xl;
+    }
+  }
+
+  &__notice {
+    padding: $space-md $space-lg;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: $radius-md;
+    background: rgba(148, 163, 184, 0.08);
+
+    h2,
+    p {
+      margin: 0;
+    }
+
+    h2 {
+      color: $color-heading;
+      font-size: $font-size-md;
+    }
+
+    p {
+      margin-top: $space-xs;
+      color: $color-text-secondary;
+      font-size: $font-size-sm;
+    }
+  }
+
+  &__winners,
+  &__standings {
+    padding: $space-lg;
+  }
+
+  &__winners {
+    border-color: rgba(245, 158, 11, 0.3);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(30, 41, 59, 0.6));
+  }
+
+  &__section-title {
+    margin: 0;
+    color: $color-heading;
+    font-size: $font-size-lg;
+  }
+
+  &__winner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: $space-md;
+    margin-top: $space-md;
+  }
+
+  &__section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-md;
+    margin-bottom: $space-md;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+  }
+
+  &__empty {
+    margin: 0;
+    color: $color-text-secondary;
+  }
+
+  &__message {
+    width: min(100%, 520px);
+    padding: $space-xl;
+    text-align: center;
+  }
+
+  &__message-title {
+    margin: 0;
+    color: $color-heading;
+    font-size: $font-size-lg;
+  }
+
+  &__message-text {
+    margin: $space-sm 0 0;
+    color: $color-text-secondary;
+  }
+
+  &__message-actions {
+    display: flex;
+    justify-content: center;
+    gap: $space-sm;
+    margin-top: $space-lg;
+    flex-wrap: wrap;
+  }
+}
+
+.sr-winner {
+  display: flex;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-md;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: $radius-md;
+  background: rgba(15, 23, 42, 0.45);
+
+  &__mark {
+    color: $color-warning;
+    font-size: 1.75rem;
+  }
+
+  &__details {
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__name {
+    margin: 0;
+    overflow: hidden;
+    color: $color-heading;
+    font-size: $font-size-md;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__meta {
+    margin: $space-xxs 0 0;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+  }
+
+  &__result {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: $color-text;
+    white-space: nowrap;
+  }
+
+  &__result span {
+    color: $color-warning;
+    font-size: $font-size-xs;
+  }
+}
+
+.sr-standings {
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sr-standing {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: $space-md;
+  padding: $space-md;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: $radius-md;
+  background: rgba(15, 23, 42, 0.35);
+
+  &--winner {
+    border-color: rgba(245, 158, 11, 0.25);
+  }
+
+  &__rank {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: $color-text-tertiary;
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+  }
+
+  &__rank strong {
+    color: $color-heading;
+    font-size: $font-size-lg;
+  }
+
+  &__candidate {
+    min-width: 0;
+  }
+
+  &__name-row {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+  }
+
+  &__name-row h3 {
+    margin: 0;
+    color: $color-heading;
+    font-size: $font-size-md;
+  }
+
+  &__candidate>p {
+    margin: $space-xxs 0 0;
+    color: $color-text-secondary;
+    font-size: $font-size-xs;
+  }
+
+  &__manifesto {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__winner-badge {
+    padding: $space-xxs $space-xs;
+    border-radius: 999px;
+    background: rgba(245, 158, 11, 0.12);
+    color: $color-warning;
+    font-size: $font-size-xs;
+    font-weight: 700;
+  }
+
+  &__votes {
+    color: $color-heading;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .sr-page {
+    &__header {
+      align-items: flex-start;
+    }
+
+    &__title-row {
+      flex-direction: column-reverse;
+      gap: $space-sm;
+    }
+
+    &__total {
+      align-items: flex-end;
+    }
+
+    &__winners,
+    &__standings {
+      padding: $space-md;
+    }
+  }
+
+  .sr-winner {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .sr-winner__result {
+    width: 100%;
+    align-items: flex-start;
+    padding-left: calc(1.75rem + #{$space-md});
+  }
+
+  .sr-standing {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: $space-sm;
+
+    &__votes {
+      grid-column: 2;
+    }
+
+    &__name-row {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: $space-xs;
+    }
+  }
+}

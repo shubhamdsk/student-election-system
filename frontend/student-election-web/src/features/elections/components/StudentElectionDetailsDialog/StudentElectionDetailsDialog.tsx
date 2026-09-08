@@ -10,7 +10,7 @@ const LIFECYCLE_MESSAGES: Record<ElectionStatus, string> = {
   Draft: 'This election has not started yet.',
   Nominations: 'Candidate applications are currently open.',
   Voting: 'Candidate applications are closed. Voting is currently open.',
-  Closed: 'Voting has ended.',
+  Closed: 'Voting has ended. Results have not been published yet.',
   ResultPublished: 'Results have been published.',
   Cancelled: 'This election has been cancelled.',
 }
@@ -19,9 +19,10 @@ interface StudentElectionDetailsDialogProps {
   election?: ElectionDetails
   isLoading: boolean
   onClose(): void
+  onViewResults?(electionId: string): void
 }
 
-export function StudentElectionDetailsDialog({ election, isLoading, onClose }: StudentElectionDetailsDialogProps) {
+export function StudentElectionDetailsDialog({ election, isLoading, onClose, onViewResults }: StudentElectionDetailsDialogProps) {
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) onClose()
   }
@@ -103,6 +104,9 @@ export function StudentElectionDetailsDialog({ election, isLoading, onClose }: S
 
         <footer className="election-details-dialog__footer">
           <Button variant="secondary" onClick={onClose}>Close</Button>
+          {election?.status === 'ResultPublished' && onViewResults && (
+            <Button onClick={() => onViewResults(election.id)}>View Results</Button>
+          )}
         </footer>
       </dialog>
     </div>

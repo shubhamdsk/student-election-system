@@ -31,9 +31,14 @@ public class ElectionRepository : IElectionRepository
             .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
-    public async Task<PagedResult<ElectionListItemDto>> GetPagedAsync(int pageNumber, int pageSize, string? search, ElectionStatus? status, CancellationToken cancellationToken = default)
+    public async Task<PagedResult<ElectionListItemDto>> GetPagedAsync(int pageNumber, int pageSize, string? search, ElectionStatus? status, IReadOnlyCollection<ElectionStatus>? allowedStatuses = null, CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Elections.AsQueryable();
+
+        if (allowedStatuses != null && allowedStatuses.Any())
+        {
+            query = query.Where(e => allowedStatuses.Contains(e.Status));
+        }
 
         if (status.HasValue)
         {
@@ -70,10 +75,16 @@ public class ElectionRepository : IElectionRepository
         return new PagedResult<ElectionListItemDto>(items, pageNumber, pageSize, totalCount);
     }
 
-    public async Task<ElectionDetailsDto?> GetDetailsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<ElectionDetailsDto?> GetDetailsByIdAsync(Guid id, IReadOnlyCollection<ElectionStatus>? allowedStatuses = null, CancellationToken cancellationToken = default)
     {
-        return await _dbContext.Elections
-            .Where(e => e.Id == id)
+        var query = _dbContext.Elections.Where(e => e.Id == id);
+
+        if (allowedStatuses != null && allowedStatuses.Any())
+        {
+            query = query.Where(e => allowedStatuses.Contains(e.Status));
+        }
+
+        return await query
             .Select(e => new ElectionDetailsDto
             {
                 Id = e.Id,

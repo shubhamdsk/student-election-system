@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useMemo, useState, type PropsWithChildren } from 'react'
-import { AUTH_SESSION_EXPIRED_EVENT } from '@core/constants/auth.constants'
-import { authService } from '@features/auth/services/AuthService'
-import { studentService } from '@features/students/services/StudentService'
-import { authSessionStorage } from './auth-session.storage'
 import { AuthContext } from './AuthContext'
+import { useQueryClient } from '@tanstack/react-query'
+import { authSessionStorage } from './auth-session.storage'
+import { authService } from '@features/auth/services/AuthService'
+import { AUTH_SESSION_EXPIRED_EVENT } from '@core/constants/auth.constants'
+import { studentService } from '@features/students/services/StudentService'
 import type { AuthContextValue, AuthSession, LoginRequest } from './auth.types'
+import { useCallback, useEffect, useMemo, useState, type PropsWithChildren } from 'react'
 
 export function AuthProvider({ children }: PropsWithChildren) {
+  const queryClient = useQueryClient()
   const [session, setSession] = useState<AuthSession | null>(() =>
     authSessionStorage.getSession(),
   )
@@ -14,7 +16,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const logout = useCallback(() => {
     authSessionStorage.clearSession()
     setSession(null)
-  }, [])
+    queryClient.clear()
+  }, [queryClient])
 
   useEffect(() => {
     window.addEventListener(AUTH_SESSION_EXPIRED_EVENT, logout)

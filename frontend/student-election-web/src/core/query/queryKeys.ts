@@ -25,6 +25,7 @@ export const candidateKeys = {
   details: () => [...candidateKeys.all, 'detail'] as const,
   byElection: (electionId?: string) => [...candidateKeys.all, 'election', electionId] as const,
   detail: (id?: string) => [...candidateKeys.details(), id] as const,
+  myApplications: () => [...candidateKeys.all, 'my-applications'] as const,
 }
 
 export const votingKeys = {

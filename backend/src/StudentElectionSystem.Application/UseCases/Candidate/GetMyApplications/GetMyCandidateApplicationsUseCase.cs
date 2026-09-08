@@ -41,6 +41,7 @@ public class GetMyCandidateApplicationsUseCase : IGetMyCandidateApplicationsUseC
             CandidateId = c.Id,
             ElectionId = c.ElectionId,
             ElectionTitle = c.Election?.Title ?? "Unknown",
+            ElectionStatus = c.Election?.Status ?? Domain.Enums.ElectionStatus.Draft,
             Status = GetCandidateStatus(c),
             Manifesto = c.Manifesto,
             CreatedAt = c.CreatedAt,

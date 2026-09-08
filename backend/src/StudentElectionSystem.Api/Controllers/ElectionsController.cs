@@ -22,7 +22,7 @@ namespace StudentElectionSystem.Api.Controllers;
 
 [ApiController]
 [Route("api/elections")]
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class ElectionsController : ControllerBase
 {
     private readonly ICreateElectionUseCase _createElectionUseCase;
@@ -58,6 +58,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<ElectionDetailsDto>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateElectionRequest request, CancellationToken cancellationToken)
@@ -67,6 +68,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Student")]
     [ProducesResponseType(typeof(ApiResponse<PagedResult<ElectionListItemDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetList(
         [FromQuery] int pageNumber = 1,
@@ -80,6 +82,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin,Student")]
     [ProducesResponseType(typeof(ApiResponse<ElectionDetailsDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDetails([FromRoute] Guid id, CancellationToken cancellationToken)
@@ -94,6 +97,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
@@ -105,6 +109,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpPut("{id}/cancel")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
@@ -115,6 +120,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpPut("{id}/open-nominations")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
@@ -125,6 +131,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpPut("{id}/start-voting")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
@@ -135,6 +142,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpPut("{id}/close-voting")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]
@@ -145,6 +153,7 @@ public class ElectionsController : ControllerBase
     }
 
     [HttpPut("{id}/publish-results")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status409Conflict)]

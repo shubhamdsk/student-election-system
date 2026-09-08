@@ -1,4 +1,5 @@
 using System;
+using StudentElectionSystem.Domain.Enums;
 
 namespace StudentElectionSystem.Application.DTOs.Candidate;
 
@@ -7,6 +8,7 @@ public class MyCandidateApplicationDto
     public Guid CandidateId { get; set; }
     public Guid ElectionId { get; set; }
     public string ElectionTitle { get; set; } = string.Empty;
+    public ElectionStatus ElectionStatus { get; set; }
     public string Status { get; set; } = string.Empty; // Pending, Approved, Rejected
     public string? Manifesto { get; set; }
     public DateTime CreatedAt { get; set; }

@@ -4,7 +4,9 @@ import { PublicLayout } from '@app/layouts/PublicLayout/PublicLayout'
 import { StudentLayout } from '@app/layouts/StudentLayout/StudentLayout'
 import { LoginPage } from '@features/auth/pages/LoginPage/LoginPage'
 import { AdminElectionsPage } from '@features/elections/pages/AdminElectionsPage/AdminElectionsPage'
+import { StudentElectionsPage } from '@features/elections/pages/StudentElectionsPage/StudentElectionsPage'
 import { AdminCandidatesPage } from '@features/candidates/pages/AdminCandidatesPage/AdminCandidatesPage'
+import { StudentCandidatesPage } from '@features/candidates/pages/StudentCandidatesPage/StudentCandidatesPage'
 import { RegistrationPage } from '@features/students/pages/RegistrationPage/RegistrationPage'
 import { AdminStudentsPage } from '@features/students/pages/AdminStudentsPage/AdminStudentsPage'
 import { PlaceholderPage } from '@shared/components/PlaceholderPage/PlaceholderPage'
@@ -30,8 +32,8 @@ export function AppRouter() {
           <Route element={<ApprovedStudentRoute />}>
             <Route path="student" element={<StudentLayout />}>
               <Route index element={<PlaceholderPage title="Student dashboard" />} />
-              <Route path="elections" element={<PlaceholderPage title="Elections" />} />
-              <Route path="candidates" element={<PlaceholderPage title="Candidates" />} />
+              <Route path="elections" element={<StudentElectionsPage />} />
+              <Route path="candidates" element={<StudentCandidatesPage />} />
               <Route path="voting" element={<PlaceholderPage title="Voting" />} />
               <Route path="results" element={<PlaceholderPage title="Results" />} />
             </Route>

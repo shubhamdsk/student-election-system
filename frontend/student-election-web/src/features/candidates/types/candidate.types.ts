@@ -7,6 +7,7 @@ export interface CandidateApplication {
   candidateId: string
   electionId: string
   electionTitle: string
+  electionStatus: ElectionStatus
   status: ApprovalStatus
   manifesto: string | null
   createdAt: string

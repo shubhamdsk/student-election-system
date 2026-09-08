@@ -12,7 +12,7 @@ public interface IElectionRepository
 {
     Task AddAsync(Election election, CancellationToken cancellationToken = default);
     Task<Election?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<PagedResult<ElectionListItemDto>> GetPagedAsync(int pageNumber, int pageSize, string? search, ElectionStatus? status, CancellationToken cancellationToken = default);
-    Task<ElectionDetailsDto?> GetDetailsByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<PagedResult<ElectionListItemDto>> GetPagedAsync(int pageNumber, int pageSize, string? search, ElectionStatus? status, IReadOnlyCollection<ElectionStatus>? allowedStatuses = null, CancellationToken cancellationToken = default);
+    Task<ElectionDetailsDto?> GetDetailsByIdAsync(Guid id, IReadOnlyCollection<ElectionStatus>? allowedStatuses = null, CancellationToken cancellationToken = default);
     Task SaveChangesAsync(CancellationToken cancellationToken = default);
 }

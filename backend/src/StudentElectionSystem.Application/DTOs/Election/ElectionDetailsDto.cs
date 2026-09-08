@@ -14,7 +14,7 @@ public class ElectionDetailsDto
     public DateTime VotingStartAt { get; set; }
     public DateTime VotingEndAt { get; set; }
     public int? MaxCandidates { get; set; }
-    public Guid CreatedByAdminId { get; set; }
+    public Guid? CreatedByAdminId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 }

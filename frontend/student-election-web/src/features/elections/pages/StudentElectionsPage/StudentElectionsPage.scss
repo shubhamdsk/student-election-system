@@ -1,0 +1,260 @@
+@use '@shared/styles/variables' as *;
+
+// ─── Screen-reader-only utility ──────────────────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+// ─── Page layout ─────────────────────────────────────────────────────────────
+.se-page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+  }
+
+  &__heading {
+    margin: 0;
+    font-size: $font-size-xl;
+    font-weight: 800;
+    color: $color-heading;
+    background: linear-gradient(135deg, $color-primary, $color-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &__subheading {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+  }
+
+  &__toolbar {
+    display: flex;
+    gap: $space-sm;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__search-wrap {
+    flex: 1 1 240px;
+  }
+
+  &__search {
+    width: 100%;
+    padding: $space-sm $space-md;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-md;
+    background: rgba(30, 41, 59, 0.5);
+    color: $color-text;
+    font-family: $font-primary;
+    font-size: $font-size-sm;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &::placeholder {
+      color: $color-text-tertiary;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+  }
+
+  &__filter-wrap {
+    flex: 0 0 auto;
+  }
+
+  &__status-filter {
+    padding: $space-sm $space-lg $space-sm $space-md;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: $radius-md;
+    background: rgba(30, 41, 59, 0.5);
+    color: $color-text;
+    font-family: $font-primary;
+    font-size: $font-size-sm;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $space-sm center;
+    transition: border-color 0.2s ease;
+
+    option {
+      background: #1e293b;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+  }
+
+  &__state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    font-size: $font-size-md;
+    color: $color-text-secondary;
+    text-align: center;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: $space-md;
+  }
+
+  // Application state badge inside the card footer
+  &__app-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: $space-xs $space-sm;
+    border-radius: 999px;
+    font-size: $font-size-xs;
+    font-weight: 700;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+
+    &--pending {
+      color: $color-warning;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    &--approved {
+      color: $color-success;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    &--rejected {
+      color: #f87171;
+      background: rgba(248, 113, 113, 0.08);
+    }
+  }
+}
+
+// ─── Election Card ────────────────────────────────────────────────────────────
+.se-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius-lg;
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 30px rgba(99, 102, 241, 0.15);
+    transform: translateY(-2px);
+  }
+
+  &__header {
+    padding: $space-lg $space-lg $space-md;
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-sm;
+    flex-wrap: wrap;
+  }
+
+  &__max-candidates {
+    font-size: $font-size-xs;
+    color: $color-text-tertiary;
+  }
+
+  &__title {
+    margin: $space-xs 0 0;
+    font-size: $font-size-md;
+    font-weight: 700;
+    color: $color-heading;
+    line-height: 1.35;
+  }
+
+  &__lifecycle {
+    margin: 0;
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    line-height: 1.5;
+  }
+
+  &__schedule {
+    padding: $space-md $space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $space-xs;
+    flex: 1;
+  }
+
+  &__schedule-row {
+    display: flex;
+    flex-direction: column;
+    gap: $space-xxs;
+    font-size: $font-size-xs;
+  }
+
+  &__schedule-label {
+    color: $color-text-secondary;
+    font-weight: 600;
+  }
+
+  &__schedule-range {
+    color: $color-text;
+  }
+
+  &__footer {
+    padding: $space-sm $space-lg $space-md;
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
+    flex-wrap: wrap;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__actions {
+    display: flex;
+    gap: $space-sm;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .se-page__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .se-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .se-card__actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

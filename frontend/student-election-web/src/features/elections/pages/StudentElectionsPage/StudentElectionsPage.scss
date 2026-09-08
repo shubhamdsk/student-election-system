@@ -151,6 +151,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  container-type: inline-size;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: $radius-lg;
   background: rgba(30, 41, 59, 0.5);
@@ -226,18 +227,28 @@
   }
 
   &__footer {
-    padding: $space-sm $space-lg $space-md;
+    padding: $space-sm $space-md $space-md;
     display: flex;
     align-items: center;
-    gap: $space-sm;
-    flex-wrap: wrap;
+    gap: $space-xs;
+    flex-wrap: nowrap;
     border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   &__actions {
     display: flex;
-    gap: $space-sm;
+    gap: $space-xs;
     margin-left: auto;
+    flex-wrap: nowrap;
+  }
+}
+
+@container (max-width: 32rem) {
+  .se-card__footer {
+    flex-wrap: wrap;
+  }
+
+  .se-card__actions {
     flex-wrap: wrap;
   }
 }

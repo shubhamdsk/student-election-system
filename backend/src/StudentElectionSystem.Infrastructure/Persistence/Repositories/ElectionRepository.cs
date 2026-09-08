@@ -54,7 +54,9 @@ public class ElectionRepository : IElectionRepository
         var totalCount = await query.CountAsync(cancellationToken);
 
         var items = await query
-            .OrderByDescending(e => e.CreatedAt)
+            .OrderByDescending(e => e.UpdatedAt ?? e.CreatedAt)
+            .ThenByDescending(e => e.CreatedAt)
+            .ThenByDescending(e => e.Id)
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .Select(e => new ElectionListItemDto

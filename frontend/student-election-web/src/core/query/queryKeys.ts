@@ -37,5 +37,6 @@ export const votingKeys = {
 
 export const resultKeys = {
   all: ['results'] as const,
-  election: (electionId?: string) => [...resultKeys.all, 'election', electionId] as const,
+  details: () => [...resultKeys.all, 'detail'] as const,
+  detail: (electionId?: string) => [...resultKeys.details(), electionId] as const,
 }

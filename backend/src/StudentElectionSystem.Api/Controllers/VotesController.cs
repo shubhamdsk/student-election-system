@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using StudentElectionSystem.Application.Common.Models;
 using StudentElectionSystem.Application.DTOs.Voting;
 using StudentElectionSystem.Application.UseCases.Voting.CastVote;
+using StudentElectionSystem.Application.UseCases.Voting.GetParticipation;
 using StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates;
 
 namespace StudentElectionSystem.Api.Controllers;
@@ -19,13 +20,16 @@ public class VotesController : ControllerBase
 {
     private readonly IGetVotingCandidatesUseCase _getVotingCandidatesUseCase;
     private readonly ICastVoteUseCase _castVoteUseCase;
+    private readonly IGetVotingParticipationUseCase _getVotingParticipationUseCase;
 
     public VotesController(
         IGetVotingCandidatesUseCase getVotingCandidatesUseCase,
-        ICastVoteUseCase castVoteUseCase)
+        ICastVoteUseCase castVoteUseCase,
+        IGetVotingParticipationUseCase getVotingParticipationUseCase)
     {
         _getVotingCandidatesUseCase = getVotingCandidatesUseCase;
         _castVoteUseCase = castVoteUseCase;
+        _getVotingParticipationUseCase = getVotingParticipationUseCase;
     }
 
     [HttpGet("candidates")]
@@ -35,6 +39,15 @@ public class VotesController : ControllerBase
     {
         var candidates = await _getVotingCandidatesUseCase.ExecuteAsync(electionId, cancellationToken);
         return Ok(ApiResponse.Success(candidates, "Voting candidates retrieved successfully."));
+    }
+
+    [HttpGet("participation")]
+    [ProducesResponseType(typeof(ApiResponse<VotingParticipationDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetParticipation([FromRoute] Guid electionId, CancellationToken cancellationToken)
+    {
+        var participation = await _getVotingParticipationUseCase.ExecuteAsync(electionId, cancellationToken);
+        return Ok(ApiResponse.Success(participation, "Voting participation status retrieved successfully."));
     }
 
     [HttpPost]

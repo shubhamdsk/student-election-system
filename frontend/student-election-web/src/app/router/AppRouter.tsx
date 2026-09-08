@@ -7,6 +7,8 @@ import { AdminElectionsPage } from '@features/elections/pages/AdminElectionsPage
 import { StudentElectionsPage } from '@features/elections/pages/StudentElectionsPage/StudentElectionsPage'
 import { AdminCandidatesPage } from '@features/candidates/pages/AdminCandidatesPage/AdminCandidatesPage'
 import { StudentCandidatesPage } from '@features/candidates/pages/StudentCandidatesPage/StudentCandidatesPage'
+import { StudentVotingPage } from '@features/voting/pages/StudentVotingPage/StudentVotingPage'
+import { StudentVotingListPage } from '@features/voting/pages/StudentVotingListPage/StudentVotingListPage'
 import { RegistrationPage } from '@features/students/pages/RegistrationPage/RegistrationPage'
 import { AdminStudentsPage } from '@features/students/pages/AdminStudentsPage/AdminStudentsPage'
 import { PlaceholderPage } from '@shared/components/PlaceholderPage/PlaceholderPage'
@@ -33,8 +35,9 @@ export function AppRouter() {
             <Route path="student" element={<StudentLayout />}>
               <Route index element={<PlaceholderPage title="Student dashboard" />} />
               <Route path="elections" element={<StudentElectionsPage />} />
+              <Route path="elections/:electionId/vote" element={<StudentVotingPage />} />
               <Route path="candidates" element={<StudentCandidatesPage />} />
-              <Route path="voting" element={<PlaceholderPage title="Voting" />} />
+              <Route path="voting" element={<StudentVotingListPage />} />
               <Route path="results" element={<PlaceholderPage title="Results" />} />
             </Route>
           </Route>

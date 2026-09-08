@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { ElectionStatus } from '@core/types/enums'
 import { formatUtcDateTime } from '@core/utils/date'
 import { useDebouncedValue } from '@shared/hooks/useDebouncedValue'
@@ -55,10 +56,13 @@ interface ElectionCardProps {
   application: CandidateApplication | undefined
   onViewDetails(election: ElectionListItem): void
   onApply(election: ElectionListItem): void
+  onVote(election: ElectionListItem): void
 }
 
-function ElectionCard({ election, application, onViewDetails, onApply }: ElectionCardProps) {
+function ElectionCard({ election, application, onViewDetails, onApply, onVote }: ElectionCardProps) {
   const showApply = election.status === 'Nominations' && !application
+  const showVote = election.status === 'Voting'
+
   return (
     <article className="se-card" aria-label={election.title}>
       <header className="se-card__header">
@@ -98,6 +102,11 @@ function ElectionCard({ election, application, onViewDetails, onApply }: Electio
               Apply as Candidate
             </Button>
           )}
+          {showVote && (
+            <Button variant="primary" size="small" onClick={() => onVote(election)}>
+              Vote Now
+            </Button>
+          )}
         </div>
       </footer>
     </article>
@@ -105,6 +114,7 @@ function ElectionCard({ election, application, onViewDetails, onApply }: Electio
 }
 
 export function StudentElectionsPage() {
+  const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState<ElectionStatus | ''>('')
   const [detailsId, setDetailsId] = useState<string>()
@@ -192,6 +202,7 @@ export function StudentElectionsPage() {
                 application={applicationsByElection.get(election.id)}
                 onViewDetails={(e) => setDetailsId(e.id)}
                 onApply={(e) => setApplyElection(e)}
+                onVote={(e) => navigate(`/student/elections/${e.id}/vote`)}
               />
             </div>
           ))}

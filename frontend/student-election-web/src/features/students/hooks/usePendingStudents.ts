@@ -16,7 +16,7 @@ const EMPTY_RESULT: PagedResult<PendingStudent> = {
 export function usePendingStudents(pageNumber: number, pageSize: number, search: string) {
   const trimmedSearch = search.trim()
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, error, isLoading, isFetching, refetch } = useQuery({
     queryKey: studentKeys.pending(pageNumber, pageSize, trimmedSearch),
     queryFn: () =>
       studentService.getPendingStudents({
@@ -29,7 +29,8 @@ export function usePendingStudents(pageNumber: number, pageSize: number, search:
 
   return {
     result: data ?? EMPTY_RESULT,
-    isLoading,
+    error,
+    isLoading: isLoading || isFetching,
     refresh: refetch,
   }
 }

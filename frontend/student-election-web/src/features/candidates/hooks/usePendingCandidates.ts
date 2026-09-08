@@ -26,5 +26,10 @@ export function usePendingCandidates(pageNumber: number, pageSize: number, searc
     }
   }, [query.error, query.isFetching, showError])
 
-  return { result: query.data ?? EMPTY_RESULT, isLoading: query.isLoading || query.isFetching, refresh: query.refetch }
+  return {
+    result: query.data ?? EMPTY_RESULT,
+    error: query.error,
+    isLoading: query.isLoading || query.isFetching,
+    refresh: query.refetch,
+  }
 }

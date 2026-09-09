@@ -1,5 +1,5 @@
 import { formatUtcDateTime } from '@core/utils/date'
-import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
+import { Skeleton } from '@components/Skeleton/Skeleton'
 import { ElectionStatusBadge } from '@features/elections/components/ElectionStatusBadge/ElectionStatusBadge'
 import { useMyCandidateApplications } from '@features/candidates/hooks/useMyCandidateApplications'
 import type { CandidateApplication } from '@features/candidates/types/candidate.types'
@@ -100,8 +100,20 @@ export function StudentCandidatesPage() {
       </header>
 
       {isLoading && (
-        <div className="scp-page__state">
-          <LoadingSpinner label="Loading your applications…" />
+        <div className="scp-page__list" role="status" aria-label="Loading your applications">
+          {[1, 2].map((i) => (
+            <div key={i} className="scp-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Skeleton width="60%" height="24px" />
+                <Skeleton width="100px" height="24px" borderRadius="12px" />
+              </div>
+              <Skeleton width="100%" height="40px" borderRadius="6px" />
+              <Skeleton width="100%" height="60px" borderRadius="6px" />
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Skeleton width="140px" height="16px" />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 

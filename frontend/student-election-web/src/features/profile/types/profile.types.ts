@@ -5,6 +5,8 @@ export interface ProfileFieldProps {
   label: string
   value?: string | null
   emptyText?: string
+  onCopy?: () => void
+  isCopied?: boolean
 }
 
 export interface ProfileSectionProps {

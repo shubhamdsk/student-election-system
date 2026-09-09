@@ -1,17 +1,18 @@
 import { SelectDropdown } from '@shared/components/SelectDropdown/SelectDropdown'
+import { SearchInput } from '@shared/components/SearchInput/SearchInput'
 import type { CandidateToolbarProps } from '../../types/candidate-management.types'
 import './CandidateToolbar.scss'
 
 export function CandidateToolbar({ search, electionId, elections, isLoadingElections, onSearchChange, onElectionChange }: CandidateToolbarProps) {
   return <div className="candidate-toolbar">
     <div className="candidate-toolbar__search">
-      <label htmlFor="candidate-search">Search candidates</label>
-      <input
+      <SearchInput
         id="candidate-search"
-        type="search"
+        label="Search candidates"
         value={search}
+        onChange={onSearchChange}
         placeholder="Search by student, registration number, email, or election"
-        onChange={(event) => onSearchChange(event.target.value)}
+        minChars={3}
       />
     </div>
     <div className="candidate-toolbar__filter">

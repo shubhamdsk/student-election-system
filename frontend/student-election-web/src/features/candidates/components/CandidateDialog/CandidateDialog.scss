@@ -3,16 +3,22 @@
 .candidate-dialog {
   width: min(calc(100% - 2rem), 44rem);
   max-height: calc(100dvh - 2rem);
-  padding: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
+  padding: 0;
   border: 1px solid $color-border;
   border-radius: $radius-lg;
   background: #1e293b;
   color: $color-text;
-  box-shadow: $shadow-card, 0 0 30px rgba(0, 0, 0, .7);
+  box-shadow: $shadow-card, 0 0 30px rgba(0, 0, 0, 0.7);
+
+  &:not([open]) {
+    display: none !important;
+  }
 
   &::backdrop {
-    background: rgba(15, 23, 42, .8);
+    background: rgba(15, 23, 42, 0.8);
     backdrop-filter: $glass-backdrop;
   }
 
@@ -23,16 +29,51 @@
     gap: $space-md;
     padding: $space-md $space-lg;
     border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
   }
 
   &__header h2 {
     margin: 0;
     color: $color-heading;
     font-size: $font-size-lg;
+    font-weight: 700;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    color: $color-text-secondary;
+    cursor: pointer;
+    font-size: $font-size-md;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.12);
+      color: $color-heading;
+      transform: scale(1.05);
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
   &__content {
-    max-height: calc(100dvh - 11rem);
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: $space-lg;
   }
@@ -42,11 +83,16 @@
     line-height: 1.6;
   }
 
-  &__actions {
+  &__actions,
+  &__footer {
     display: flex;
+    align-items: center;
     justify-content: flex-end;
-    gap: $space-sm;
-    padding: 0 $space-lg $space-lg;
+    gap: $space-md;
+    padding: $space-md $space-lg;
+    border-top: 1px solid $color-border;
+    background: rgba(15, 23, 42, 0.4);
+    flex-shrink: 0;
   }
 
   &__field {
@@ -58,6 +104,12 @@
     color: $color-heading;
     font-size: $font-size-sm;
     font-weight: 600;
+
+    span {
+      color: $color-danger;
+      font-weight: 700;
+      margin-left: 0.15rem;
+    }
   }
 
   &__field textarea {
@@ -66,7 +118,7 @@
     padding: $space-sm $space-md;
     border: 1px solid $color-border;
     border-radius: $radius-md;
-    background: rgba(15, 23, 42, .7);
+    background: rgba(15, 23, 42, 0.7);
     color: $color-heading;
     font: inherit;
   }
@@ -74,7 +126,7 @@
   &__field textarea:focus {
     outline: none;
     border-color: $color-primary;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, .2);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
   }
 
   &__field textarea[aria-invalid='true'] {
@@ -100,12 +152,9 @@
   .candidate-dialog {
 
     &__header,
-    &__content {
-      padding: $space-md;
-    }
-
+    &__content,
     &__actions {
-      padding: 0 $space-md $space-md;
+      padding: $space-md;
     }
   }
 }

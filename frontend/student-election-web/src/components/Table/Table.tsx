@@ -12,6 +12,7 @@ import {
   type GridApi,
 } from 'ag-grid-community'
 import styles from './Table.module.scss'
+import Skeleton from '../Skeleton/Skeleton'
 import { Button } from '@shared/components/Button/Button'
 import maximizeIcon from '@shared/assets/icons/maximize.svg'
 import restoreIcon from '@shared/assets/icons/restore.svg'
@@ -47,7 +48,6 @@ export function Table<T>({
   keyExtractor,
   emptyMessage = 'No data available',
   loading = false,
-  loadingContent,
   caption,
   className,
   canMaximize = true,
@@ -117,11 +117,31 @@ export function Table<T>({
   const tableClassName = [styles.tableWrapper, isMaximized ? styles.maximized : '', className]
     .filter(Boolean)
     .join(' ')
-
-  if (loading || safeData.length === 0) {
+  if (loading) {
     return (
-      <div className={`${tableClassName} ${styles.state}`} role="status" aria-busy={loading}>
-        {loading ? loadingContent || 'Loading...' : emptyMessage}
+      <div className={`${tableClassName} ${styles.state}`} role="status" aria-busy="true">
+        <div style={{ width: '100%', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
+            {columns.slice(0, 5).map((col, idx) => (
+              <Skeleton key={idx} width={col.width || '140px'} height="20px" />
+            ))}
+          </div>
+          {[1, 2, 3, 4, 5].map((rowIdx) => (
+            <div key={rowIdx} style={{ display: 'flex', gap: '1rem', alignItems: 'center', padding: '0.5rem 0' }}>
+              {columns.slice(0, 5).map((col, colIdx) => (
+                <Skeleton key={colIdx} width={col.width || '140px'} height="16px" />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (safeData.length === 0) {
+    return (
+      <div className={`${tableClassName} ${styles.state}`} role="status">
+        {emptyMessage}
       </div>
     )
   }

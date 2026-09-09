@@ -32,7 +32,11 @@ export function StudentElectionDetailsDialog({ election, isLoading, onClose, onV
       <dialog className="election-details-dialog" open aria-labelledby="election-details-title" aria-modal="true">
         <header className="election-details-dialog__header">
           <div className="election-details-dialog__title-row">
-            <h2 className="election-details-dialog__title" id="election-details-title">
+            <h2
+              className="election-details-dialog__title"
+              id="election-details-title"
+              title={election?.title}
+            >
               {isLoading ? 'Loading…' : election?.title ?? 'Election Details'}
             </h2>
             {election && <ElectionStatusBadge status={election.status} />}
@@ -62,13 +66,15 @@ export function StudentElectionDetailsDialog({ election, isLoading, onClose, onV
 
               <div className="election-details-dialog__lifecycle">
                 <span className={`election-details-dialog__lifecycle-pill election-details-dialog__lifecycle-pill--${election.status.toLowerCase()}`}>
-                  {LIFECYCLE_MESSAGES[election.status]}
+                  <span>ℹ️</span> {LIFECYCLE_MESSAGES[election.status]}
                 </span>
               </div>
 
               <div className="election-details-dialog__grid">
                 <section className="election-details-dialog__section">
-                  <h3 className="election-details-dialog__section-title">Nomination Period</h3>
+                  <h3 className="election-details-dialog__section-title">
+                    <span aria-hidden="true">📅</span> Nomination Period
+                  </h3>
                   <div className="election-details-dialog__date-row">
                     <span className="election-details-dialog__date-label">Opens</span>
                     <span className="election-details-dialog__date-value">{formatUtcDateTime(election.nominationStartAt)}</span>
@@ -80,7 +86,9 @@ export function StudentElectionDetailsDialog({ election, isLoading, onClose, onV
                 </section>
 
                 <section className="election-details-dialog__section">
-                  <h3 className="election-details-dialog__section-title">Voting Period</h3>
+                  <h3 className="election-details-dialog__section-title">
+                    <span aria-hidden="true">🗳️</span> Voting Period
+                  </h3>
                   <div className="election-details-dialog__date-row">
                     <span className="election-details-dialog__date-label">Opens</span>
                     <span className="election-details-dialog__date-value">{formatUtcDateTime(election.votingStartAt)}</span>
@@ -93,7 +101,9 @@ export function StudentElectionDetailsDialog({ election, isLoading, onClose, onV
 
                 {election.maxCandidates != null && (
                   <section className="election-details-dialog__section">
-                    <h3 className="election-details-dialog__section-title">Max Candidates</h3>
+                    <h3 className="election-details-dialog__section-title">
+                      <span aria-hidden="true">👥</span> Max Candidates
+                    </h3>
                     <p className="election-details-dialog__meta-value">{election.maxCandidates}</p>
                   </section>
                 )}

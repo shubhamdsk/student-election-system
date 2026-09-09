@@ -1,6 +1,7 @@
 import type { StudentSearchProps } from '../../types/admin-student.types'
 import { YEAR_OF_STUDY_OPTIONS } from '../../constants/student.constants'
 import { SelectDropdown } from '@shared/components/SelectDropdown/SelectDropdown'
+import { SearchInput } from '@shared/components/SearchInput/SearchInput'
 import './StudentSearch.scss'
 
 const YEAR_FILTER_OPTIONS = [
@@ -15,10 +16,15 @@ export function StudentSearch({
 
   return (
     <div className="student-search">
-      <div className="student-search__field student-search__field--query">
-        <label htmlFor="pending-student-search">Search</label>
-        <input id="pending-student-search" type="search" value={value} placeholder="Search name, registration no. or email" onChange={(event) => onChange(event.target.value)} />
-      </div>
+      <SearchInput
+        id="pending-student-search"
+        className="student-search__field student-search__field--query"
+        label="Search"
+        value={value}
+        onChange={onChange}
+        placeholder="Search name, registration no. or email"
+        minChars={3}
+      />
       <SelectDropdown
         className="student-search__field"
         label="Department"

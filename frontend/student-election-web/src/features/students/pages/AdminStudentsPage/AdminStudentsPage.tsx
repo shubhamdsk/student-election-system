@@ -5,7 +5,7 @@ import { RejectStudentDialog } from '../../components/RejectStudentDialog/Reject
 import { StudentDetailsDialog } from '../../components/StudentDetailsDialog/StudentDetailsDialog'
 import { Pagination } from '@shared/components/Pagination/Pagination'
 import { StudentSearch } from '../../components/StudentSearch/StudentSearch'
-import { useDebouncedValue } from '@shared/hooks/useDebouncedValue'
+import { useDebouncedSearch } from '@shared/hooks/useDebouncedSearch'
 import { usePendingStudents } from '../../hooks/usePendingStudents'
 import { useStudentApprovalActions } from '../../hooks/useStudentApprovalActions'
 import { useStudentDetails } from '../../hooks/useStudentDetails'
@@ -13,7 +13,6 @@ import type { PendingStudent } from '../../types/student.types'
 import './AdminStudentsPage.scss'
 
 const DEFAULT_PAGE_SIZE = 10
-const SEARCH_DELAY_MS = 400
 
 export function AdminStudentsPage() {
   const [pageNumber, setPageNumber] = useState(1)
@@ -23,7 +22,7 @@ export function AdminStudentsPage() {
   const [yearOfStudy, setYearOfStudy] = useState<number | ''>('')
   const [approvalStudent, setApprovalStudent] = useState<PendingStudent>()
   const [rejectionStudent, setRejectionStudent] = useState<PendingStudent>()
-  const debouncedSearch = useDebouncedValue(search, SEARCH_DELAY_MS)
+  const debouncedSearch = useDebouncedSearch(search, 300, 3)
   const { result, isLoading, refresh } = usePendingStudents(pageNumber, pageSize, debouncedSearch, department, yearOfStudy)
   const departments = [...new Set(result.items.map((student) => student.department).filter(Boolean))].sort()
   const details = useStudentDetails()

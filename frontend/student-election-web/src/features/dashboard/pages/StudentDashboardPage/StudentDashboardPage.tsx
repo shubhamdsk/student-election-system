@@ -3,7 +3,7 @@ import { formatUtcDateTime } from '@core/utils/date'
 import { CandidateStatusBadge } from '@features/candidates/components/CandidateStatusBadge/CandidateStatusBadge'
 import { ElectionStatusBadge } from '@features/elections/components/ElectionStatusBadge/ElectionStatusBadge'
 import { Button } from '@shared/components/Button/Button'
-import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
+import { Skeleton } from '@components/Skeleton/Skeleton'
 import { useStudentDashboard } from '../../hooks/useStudentDashboard'
 import { getActionPath } from '../../utils/dashboard.utils'
 import './StudentDashboardPage.scss'
@@ -36,7 +36,13 @@ export function StudentDashboardPage() {
         </div>
 
         {isAttentionLoading ? (
-          <div className="sd-section__state"><LoadingSpinner label="Checking current activity…" /></div>
+          <div className="sd-attention-list" role="status" aria-label="Checking current activity">
+            <div className="sd-attention" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <Skeleton width="30%" height="16px" />
+              <Skeleton width="65%" height="22px" />
+              <Skeleton width="90%" height="16px" />
+            </div>
+          </div>
         ) : dashboard.attentionItems.length > 0 ? (
           <div className="sd-attention-list" role="list">
             {dashboard.attentionItems.map((item) => (
@@ -75,7 +81,17 @@ export function StudentDashboardPage() {
             <Link to="/student/elections">View all</Link>
           </div>
           {dashboard.isElectionsLoading ? (
-            <div className="sd-section__state"><LoadingSpinner label="Loading elections…" /></div>
+            <div className="sd-election-list" role="status" aria-label="Loading elections">
+              {[1, 2].map((i) => (
+                <div key={i} className="sd-election" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Skeleton width="80px" height="22px" borderRadius="12px" />
+                    <Skeleton width="110px" height="16px" />
+                  </div>
+                  <Skeleton width="75%" height="20px" />
+                </div>
+              ))}
+            </div>
           ) : dashboard.electionsError ? (
             <div className="sd-section__state" role="alert">
               <span>Unable to load elections.</span>
@@ -105,7 +121,17 @@ export function StudentDashboardPage() {
             <Link to="/student/candidates">View all</Link>
           </div>
           {dashboard.isApplicationsLoading ? (
-            <div className="sd-section__state"><LoadingSpinner label="Loading applications…" /></div>
+            <div className="sd-application-list" role="status" aria-label="Loading applications">
+              {[1, 2].map((i) => (
+                <div key={i} className="sd-application" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Skeleton width="60%" height="20px" />
+                    <Skeleton width="70px" height="22px" borderRadius="12px" />
+                  </div>
+                  <Skeleton width="40%" height="16px" />
+                </div>
+              ))}
+            </div>
           ) : dashboard.applicationsError ? (
             <div className="sd-section__state" role="alert">
               <span>Unable to load your applications.</span>
@@ -139,7 +165,15 @@ export function StudentDashboardPage() {
           <h2 id="recent-results-title">Recent Results</h2>
         </div>
         {dashboard.isElectionsLoading ? (
-          <div className="sd-section__state"><LoadingSpinner label="Checking published results…" /></div>
+          <div className="sd-results" role="status" aria-label="Checking published results">
+            <div className="sd-result" style={{ padding: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
+                <Skeleton width="120px" height="14px" />
+                <Skeleton width="50%" height="20px" />
+              </div>
+              <Skeleton width="90px" height="32px" borderRadius="6px" />
+            </div>
+          </div>
         ) : dashboard.electionsError ? (
           <div className="sd-section__state">Results are temporarily unavailable.</div>
         ) : dashboard.recentResults.length > 0 ? (

@@ -10,6 +10,7 @@ export function RejectCandidateDialog({ candidate, isSubmitting, onCancel, onCon
   const dialogRef = useRef<HTMLDialogElement>(null)
   const [values, setValues] = useState(INITIAL_VALUES)
   const [error, setError] = useState('')
+
   useEffect(() => {
     const dialog = dialogRef.current
     if (candidate && dialog && !dialog.open) { setValues(INITIAL_VALUES); setError(''); dialog.showModal() }
@@ -24,11 +25,55 @@ export function RejectCandidateDialog({ candidate, isSubmitting, onCancel, onCon
     onConfirm(reason)
   }
 
-  return <dialog ref={dialogRef} className="candidate-dialog" aria-labelledby="reject-candidate-title" onCancel={(event) => { if (isSubmitting) event.preventDefault(); else onCancel() }}>
-    <form onSubmit={submit} noValidate>
-      <header className="candidate-dialog__header"><h2 id="reject-candidate-title">Reject candidate?</h2><Button variant="ghost" aria-label="Close rejection dialog" disabled={isSubmitting} onClick={onCancel}>Close</Button></header>
-      <div className="candidate-dialog__content"><div className="candidate-dialog__field"><label htmlFor="candidate-rejection-reason">Reason for rejecting {candidate?.studentFullName ?? 'candidate'} <span aria-hidden="true">*</span></label><textarea id="candidate-rejection-reason" value={values.reason} maxLength={MAX_REASON_LENGTH} disabled={isSubmitting} aria-invalid={Boolean(error)} aria-describedby="candidate-rejection-error candidate-rejection-count" onChange={(event) => { setValues({ reason: event.target.value }); setError('') }} /><p id="candidate-rejection-error" className="candidate-dialog__error" aria-live="polite">{error && `Error: ${error}`}</p><p id="candidate-rejection-count" className="candidate-dialog__count">{values.reason.length}/{MAX_REASON_LENGTH}</p></div></div>
-      <div className="candidate-dialog__actions"><Button variant="secondary" disabled={isSubmitting} onClick={onCancel}>Cancel</Button><Button variant="danger" type="submit" disabled={isSubmitting} isLoading={isSubmitting} loadingLabel="Rejecting">Reject</Button></div>
-    </form>
-  </dialog>
+  return (
+    <dialog
+      ref={dialogRef}
+      className="candidate-dialog"
+      aria-labelledby="reject-candidate-title"
+      onCancel={(event) => { if (isSubmitting) event.preventDefault(); else onCancel() }}
+    >
+      <form onSubmit={submit} noValidate style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+        <header className="candidate-dialog__header">
+          <h2 id="reject-candidate-title">Reject candidate?</h2>
+          <button
+            type="button"
+            className="candidate-dialog__close"
+            aria-label="Close dialog"
+            disabled={isSubmitting}
+            onClick={onCancel}
+          >
+            ✕
+          </button>
+        </header>
+        <div className="candidate-dialog__content">
+          <div className="candidate-dialog__field">
+            <label htmlFor="candidate-rejection-reason">
+              Reason for rejecting {candidate?.studentFullName ?? 'candidate'} <span aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="candidate-rejection-reason"
+              value={values.reason}
+              maxLength={MAX_REASON_LENGTH}
+              disabled={isSubmitting}
+              aria-invalid={Boolean(error)}
+              aria-describedby="candidate-rejection-error candidate-rejection-count"
+              onChange={(event) => { setValues({ reason: event.target.value }); setError('') }}
+            />
+            <p id="candidate-rejection-error" className="candidate-dialog__error" aria-live="polite">
+              {error && `Error: ${error}`}
+            </p>
+            <p id="candidate-rejection-count" className="candidate-dialog__count">
+              {values.reason.length}/{MAX_REASON_LENGTH}
+            </p>
+          </div>
+        </div>
+        <div className="candidate-dialog__actions">
+          <Button variant="secondary" disabled={isSubmitting} onClick={onCancel}>Cancel</Button>
+          <Button variant="danger" type="submit" disabled={isSubmitting} isLoading={isSubmitting} loadingLabel="Rejecting">
+            Reject
+          </Button>
+        </div>
+      </form>
+    </dialog>
+  )
 }

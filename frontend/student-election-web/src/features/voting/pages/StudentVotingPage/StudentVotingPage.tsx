@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { formatUtcDateTime } from '@core/utils/date'
+import { Skeleton } from '@components/Skeleton/Skeleton'
 import { Button } from '@shared/components/Button/Button'
-import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
 import { ElectionStatusBadge } from '@features/elections/components/ElectionStatusBadge/ElectionStatusBadge'
 import { useElectionDetails } from '@features/elections/hooks/useElectionDetails'
 import { useVotingCandidates, useVotingParticipation, useCastVote } from '../../hooks'
@@ -44,8 +44,27 @@ export function StudentVotingPage() {
       </nav>
 
       {isLoading && (
-        <div className="svp-page__state">
-          <LoadingSpinner label="Loading voting session…" />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }} role="status" aria-label="Loading voting session">
+          <header className="svp-page__header" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <Skeleton width="60%" height="28px" />
+            <Skeleton width="40%" height="18px" />
+            <Skeleton width="100%" height="48px" borderRadius="8px" />
+          </header>
+          <div className="svp-page__candidates-grid">
+            {[1, 2].map((i) => (
+              <div key={i} className="svp-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <Skeleton width="20px" height="20px" borderRadius="50%" />
+                  <Skeleton width="50%" height="22px" />
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <Skeleton width="80px" height="20px" borderRadius="10px" />
+                  <Skeleton width="60px" height="20px" borderRadius="10px" />
+                </div>
+                <Skeleton width="100%" height="40px" borderRadius="6px" />
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

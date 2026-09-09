@@ -4,6 +4,8 @@ import { authSessionStorage } from './auth-session.storage'
 import { authService } from '@features/auth/services/AuthService'
 import { AUTH_SESSION_EXPIRED_EVENT } from '@core/constants/auth.constants'
 import { studentService } from '@features/students/services/StudentService'
+import { studentKeys } from '@core/query/queryKeys'
+import { currentStudentProfileQueryOptions } from '@features/profile/hooks/useCurrentStudentProfile'
 import type { AuthContextValue, AuthSession, LoginRequest } from './auth.types'
 import { useCallback, useEffect, useMemo, useState, type PropsWithChildren } from 'react'
 
@@ -33,23 +35,29 @@ export function AuthProvider({ children }: PropsWithChildren) {
       const currentUser = { userId, email, role, approvalStatus: profile.approvalStatus } as const
 
       if (profile.approvalStatus === 'Approved') {
+        queryClient.setQueryData(currentStudentProfileQueryOptions().queryKey, profile)
         const nextSession = { accessToken, currentUser }
         authSessionStorage.setSession(nextSession)
         setSession(nextSession)
+      } else {
+        queryClient.removeQueries({ queryKey: studentKeys.currentProfile(), exact: true })
       }
 
       return currentUser
     }
 
+    queryClient.removeQueries({ queryKey: studentKeys.currentProfile(), exact: true })
     const currentUser = { userId, email, role } as const
     const nextSession = { accessToken, currentUser }
     authSessionStorage.setSession(nextSession)
     setSession(nextSession)
     return currentUser
-  }, [])
+  }, [queryClient])
 
   const refreshStudentApproval = useCallback(async () => {
     const profile = await studentService.getCurrentStudent()
+    queryClient.setQueryData(currentStudentProfileQueryOptions().queryKey, profile)
+
     if (profile.approvalStatus === 'Approved') {
       setSession((currentSession) => {
         if (!currentSession || currentSession.currentUser.role !== 'Student') return currentSession
@@ -65,7 +73,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       })
     }
     return profile.approvalStatus
-  }, [])
+  }, [queryClient])
 
   const value = useMemo<AuthContextValue>(
     () => ({

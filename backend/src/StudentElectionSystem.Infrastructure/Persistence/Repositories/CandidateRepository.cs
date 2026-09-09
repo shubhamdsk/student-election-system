@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using StudentElectionSystem.Application.DTOs.Candidate;
+using StudentElectionSystem.Application.DTOs.Voting;
 using StudentElectionSystem.Application.Interfaces.Persistence;
 using StudentElectionSystem.Domain.Entities;
 
@@ -54,16 +55,29 @@ public class CandidateRepository : ICandidateRepository
             .CountAsync(c => c.ElectionId == electionId && c.IsApproved && !c.IsRejected, cancellationToken);
     }
 
-    public async Task<IEnumerable<Candidate>> GetApplicationsByStudentIdAsync(Guid studentId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<MyCandidateApplicationDto>> GetApplicationsByStudentIdAsync(Guid studentId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Candidates
-            .Include(c => c.Election)
             .Where(c => c.StudentId == studentId)
             .OrderByDescending(c => c.CreatedAt)
+            .Select(c => new MyCandidateApplicationDto
+            {
+                CandidateId = c.Id,
+                ElectionId = c.ElectionId,
+                ElectionTitle = c.Election.Title,
+                ElectionStatus = c.Election.Status,
+                Status = c.IsApproved ? "Approved" : c.IsRejected ? "Rejected" : "Pending",
+                Manifesto = c.Manifesto,
+                CreatedAt = c.CreatedAt,
+                ApprovedAt = c.ApprovedAt,
+                RejectedAt = c.RejectedAt,
+                RejectionReason = c.RejectionReason
+            })
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<(IEnumerable<Candidate> Items, int TotalCount)> GetPendingCandidatesAsync(
+    public async Task<(IEnumerable<PendingCandidateDto> Items, int TotalCount)> GetPendingCandidatesAsync(
         int page,
         int pageSize,
         string? search,
@@ -71,8 +85,6 @@ public class CandidateRepository : ICandidateRepository
         CancellationToken cancellationToken = default)
     {
         var query = _dbContext.Candidates
-            .Include(c => c.Election)
-            .Include(c => c.Student)
             .Where(c => !c.IsApproved && !c.IsRejected)
             .AsQueryable();
 
@@ -83,14 +95,14 @@ public class CandidateRepository : ICandidateRepository
 
         if (!string.IsNullOrWhiteSpace(search))
         {
-            var normalizedSearch = search.Trim().ToUpperInvariant();
+            var normalizedSearch = search.Trim();
             query = query.Where(c =>
-                c.Student.FullName.ToUpper().Contains(normalizedSearch) ||
-                c.Student.RegistrationNumber.ToUpper().Contains(normalizedSearch) ||
-                c.Election.Title.ToUpper().Contains(normalizedSearch) ||
+                c.Student.FullName.Contains(normalizedSearch) ||
+                c.Student.RegistrationNumber.Contains(normalizedSearch) ||
+                c.Election.Title.Contains(normalizedSearch) ||
                 _dbContext.Users.Any(u =>
                     u.Id == c.Student.UserId &&
-                    u.NormalizedEmail.Contains(normalizedSearch)));
+                    u.NormalizedEmail.Contains(normalizedSearch.ToUpperInvariant())));
         }
 
         var totalCount = await query.CountAsync(cancellationToken);
@@ -100,6 +112,21 @@ public class CandidateRepository : ICandidateRepository
             .ThenBy(c => c.Id)
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
+            .Select(c => new PendingCandidateDto
+            {
+                CandidateId = c.Id,
+                ElectionId = c.ElectionId,
+                ElectionTitle = c.Election.Title,
+                StudentId = c.StudentId,
+                StudentFullName = c.Student.FullName,
+                StudentRegistrationNumber = c.Student.RegistrationNumber,
+                StudentEmail = _dbContext.Users
+                    .Where(u => u.Id == c.Student.UserId)
+                    .Select(u => u.Email)
+                    .FirstOrDefault() ?? string.Empty,
+                NominatedAt = c.NominatedAt
+            })
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
             
         return (items, totalCount);
@@ -113,11 +140,18 @@ public class CandidateRepository : ICandidateRepository
             .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
     }
 
-    public async Task<IEnumerable<Candidate>> GetApprovedCandidatesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<VotingCandidateDto>> GetApprovedCandidatesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Candidates
-            .Include(c => c.Student)
-            .Where(c => c.ElectionId == electionId && c.IsApproved)
+            .Where(c => c.ElectionId == electionId && c.IsApproved && !c.IsRejected)
+            .Select(c => new VotingCandidateDto(
+                c.Id,
+                c.StudentId,
+                c.Student.FullName,
+                c.Student.Department,
+                c.Student.YearOfStudy,
+                c.Manifesto ?? string.Empty))
+            .AsNoTracking()
             .ToListAsync(cancellationToken);
     }
 

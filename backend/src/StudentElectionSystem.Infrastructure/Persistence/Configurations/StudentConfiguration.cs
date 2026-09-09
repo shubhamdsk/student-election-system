@@ -64,5 +64,6 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
         // Indexes
         builder.HasIndex(s => s.UserId).IsUnique();
         builder.HasIndex(s => s.RegistrationNumber).IsUnique();
+        builder.HasIndex(s => new { s.ApprovalStatus, s.CreatedAt });
     }
 }

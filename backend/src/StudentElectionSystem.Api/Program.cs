@@ -31,6 +31,8 @@ using StudentElectionSystem.Application.UseCases.Voting.CastVote;
 using StudentElectionSystem.Application.UseCases.Voting.GetParticipation;
 using StudentElectionSystem.Application.UseCases.Voting.GetVotingCandidates;
 using StudentElectionSystem.Application.UseCases.Voting.StartVoting;
+using StudentElectionSystem.Application.UseCases.Notification;
+using StudentElectionSystem.Application.Services;
 using StudentElectionSystem.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -141,6 +143,11 @@ builder.Services.AddScoped<ICastVoteUseCase, CastVoteUseCase>();
 builder.Services.AddScoped<ICloseVotingUseCase, CloseVotingUseCase>();
 builder.Services.AddScoped<IPublishResultsUseCase, PublishResultsUseCase>();
 builder.Services.AddScoped<IGetElectionResultsUseCase, GetElectionResultsUseCase>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IGetMyNotificationsUseCase, GetMyNotificationsUseCase>();
+builder.Services.AddScoped<IGetUnreadNotificationCountUseCase, GetUnreadNotificationCountUseCase>();
+builder.Services.AddScoped<IMarkNotificationReadUseCase, MarkNotificationReadUseCase>();
+builder.Services.AddScoped<IMarkAllNotificationsReadUseCase, MarkAllNotificationsReadUseCase>();
 
 // API-level services
 builder.Services.AddScoped<ICurrentUserService, CurrentUserServiceImpl>();

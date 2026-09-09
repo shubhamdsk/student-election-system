@@ -5,6 +5,7 @@ using StudentElectionSystem.Application.Interfaces.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using StudentElectionSystem.Domain.Enums;
 
 namespace StudentElectionSystem.Application.UseCases.Student;
 
@@ -12,11 +13,13 @@ public class RejectStudentUseCase : IRejectStudentUseCase
 {
     private readonly IStudentRepository _studentRepository;
     private readonly ICurrentUserService _currentUserService;
+    private readonly INotificationService _notificationService;
 
-    public RejectStudentUseCase(IStudentRepository studentRepository, ICurrentUserService currentUserService)
+    public RejectStudentUseCase(IStudentRepository studentRepository, ICurrentUserService currentUserService, INotificationService notificationService)
     {
         _studentRepository = studentRepository;
         _currentUserService = currentUserService;
+        _notificationService = notificationService;
     }
 
     public async Task ExecuteAsync(Guid studentId, RejectStudentRequest request, CancellationToken cancellationToken = default)
@@ -37,6 +40,7 @@ public class RejectStudentUseCase : IRejectStudentUseCase
         try
         {
             student.Reject(adminId, request.Reason);
+            await _notificationService.CreateForUserAsync(student.UserId, NotificationType.StudentRejected, "Registration rejected", "Your student registration has been rejected.", student.Id, NotificationEntityType.Student, cancellationToken);
             await _studentRepository.SaveChangesAsync(cancellationToken);
         }
         catch (InvalidOperationException ex)

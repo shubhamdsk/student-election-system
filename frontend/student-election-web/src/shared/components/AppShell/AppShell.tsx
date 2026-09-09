@@ -1,10 +1,11 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '@core/hooks/useAuth'
 import type { AppShellProps } from '@shared/types/component.types'
+import { NotificationBell } from '@features/notifications'
 import './AppShell.scss'
 
 export function AppShell({ title, navigationItems, isWideContent = false }: AppShellProps) {
-  const { logout } = useAuth()
+  const { logout, role } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -16,7 +17,7 @@ export function AppShell({ title, navigationItems, isWideContent = false }: AppS
     <div className="app-shell">
       <header className="app-shell__header">
         <h1 className="app-shell__title">{title}</h1>
-        <button className="app-shell__logout" type="button" onClick={handleLogout} aria-label="Logout from current session">Logout</button>
+        <div className="app-shell__header-actions">{role && <NotificationBell role={role} />}<button className="app-shell__logout" type="button" onClick={handleLogout} aria-label="Logout from current session">Logout</button></div>
       </header>
       <nav className="app-shell__nav" aria-label={`${title} navigation`}>
         {navigationItems.map((item) => (

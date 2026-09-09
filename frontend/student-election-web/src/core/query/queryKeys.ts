@@ -41,3 +41,11 @@ export const resultKeys = {
   details: () => [...resultKeys.all, 'detail'] as const,
   detail: (electionId?: string) => [...resultKeys.details(), electionId] as const,
 }
+
+export const notificationKeys = {
+  all: ['notifications'] as const,
+  lists: () => [...notificationKeys.all, 'list'] as const,
+  list: (pageNumber: number, pageSize: number, isRead?: boolean) =>
+    [...notificationKeys.lists(), { pageNumber, pageSize, isRead: isRead ?? null }] as const,
+  unreadCount: () => [...notificationKeys.all, 'unread-count'] as const,
+}

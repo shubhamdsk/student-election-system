@@ -49,4 +49,12 @@ public class UserRepository : IUserRepository
         return await _dbContext.Users
             .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
+
+    public async Task<IReadOnlyList<Guid>> GetActiveAdminIdsAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Users.AsNoTracking()
+            .Where(user => user.Role == UserRole.Admin && user.IsActive)
+            .Select(user => user.Id)
+            .ToListAsync(cancellationToken);
+    }
 }

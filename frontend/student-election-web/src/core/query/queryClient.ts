@@ -3,7 +3,7 @@ import { QueryCache, QueryClient } from '@tanstack/react-query'
 
 export function createQueryClient(onQueryError: (error: unknown) => void) {
   return new QueryClient({
-    queryCache: new QueryCache({ onError: onQueryError }),
+    queryCache: new QueryCache({ onError: (error, query) => { if (!query.meta?.suppressGlobalError) onQueryError(error) } }),
     defaultOptions: {
       queries: {
         staleTime: 1000 * 60 * 1, // 1 minute stale time

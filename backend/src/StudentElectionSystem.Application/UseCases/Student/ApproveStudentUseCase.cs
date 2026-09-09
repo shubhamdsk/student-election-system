@@ -4,6 +4,7 @@ using StudentElectionSystem.Application.Interfaces.Services;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using StudentElectionSystem.Domain.Enums;
 
 namespace StudentElectionSystem.Application.UseCases.Student;
 
@@ -11,11 +12,13 @@ public class ApproveStudentUseCase : IApproveStudentUseCase
 {
     private readonly IStudentRepository _studentRepository;
     private readonly ICurrentUserService _currentUserService;
+    private readonly INotificationService _notificationService;
 
-    public ApproveStudentUseCase(IStudentRepository studentRepository, ICurrentUserService currentUserService)
+    public ApproveStudentUseCase(IStudentRepository studentRepository, ICurrentUserService currentUserService, INotificationService notificationService)
     {
         _studentRepository = studentRepository;
         _currentUserService = currentUserService;
+        _notificationService = notificationService;
     }
 
     public async Task ExecuteAsync(Guid studentId, CancellationToken cancellationToken = default)
@@ -31,6 +34,7 @@ public class ApproveStudentUseCase : IApproveStudentUseCase
         try
         {
             student.Approve(adminId);
+            await _notificationService.CreateForUserAsync(student.UserId, NotificationType.StudentApproved, "Registration approved", "Your student registration has been approved.", student.Id, NotificationEntityType.Student, cancellationToken);
             await _studentRepository.SaveChangesAsync(cancellationToken);
         }
         catch (InvalidOperationException ex)

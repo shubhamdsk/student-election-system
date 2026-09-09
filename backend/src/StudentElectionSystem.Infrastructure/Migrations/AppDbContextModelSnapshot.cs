@@ -158,6 +158,55 @@ namespace StudentElectionSystem.Infrastructure.Migrations
                     b.ToTable("ElectionParticipations");
                 });
 
+            modelBuilder.Entity("StudentElectionSystem.Domain.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("RelatedEntityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("RelatedEntityType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "CreatedAt");
+
+                    b.HasIndex("UserId", "IsRead", "CreatedAt");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("StudentElectionSystem.Domain.Entities.Student", b =>
                 {
                     b.Property<Guid>("Id")
@@ -308,17 +357,21 @@ namespace StudentElectionSystem.Infrastructure.Migrations
                         .HasForeignKey("ApprovedByAdminId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("StudentElectionSystem.Domain.Entities.Election", null)
+                    b.HasOne("StudentElectionSystem.Domain.Entities.Election", "Election")
                         .WithMany("Candidates")
                         .HasForeignKey("ElectionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("StudentElectionSystem.Domain.Entities.Student", null)
+                    b.HasOne("StudentElectionSystem.Domain.Entities.Student", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Election");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("StudentElectionSystem.Domain.Entities.Election", b =>
@@ -343,6 +396,17 @@ namespace StudentElectionSystem.Infrastructure.Migrations
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("StudentElectionSystem.Domain.Entities.Notification", b =>
+                {
+                    b.HasOne("StudentElectionSystem.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StudentElectionSystem.Domain.Entities.Student", b =>

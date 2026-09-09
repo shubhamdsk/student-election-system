@@ -20,7 +20,7 @@ export function useCandidateApplication() {
     },
     onError: (error: unknown) => {
       if (error instanceof ApiError && error.status === 409) {
-        showWarning(error.message || 'You have already applied to this election.')
+        showWarning(error.message || 'You have already applied to this election.', 8000)
         void queryClient.invalidateQueries({ queryKey: candidateKeys.myApplications() })
       } else {
         showError(error instanceof Error ? error.message : 'Unable to submit candidate application.')

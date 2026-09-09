@@ -4,6 +4,8 @@ import { candidateKeys, electionKeys } from '@core/query/queryKeys'
 import { useSnackbar } from '@shared/hooks/useSnackbar'
 import { candidateService } from '../services/CandidateService'
 
+export type CandidateApplicationOutcome = 'submitted' | 'conflict' | 'failed'
+
 export function useCandidateApplication() {
   const { showSuccess, showError, showWarning } = useSnackbar()
   const queryClient = useQueryClient()
@@ -27,7 +29,14 @@ export function useCandidateApplication() {
   })
 
   return {
-    apply: (electionId: string, manifesto: string) => mutation.mutateAsync({ electionId, manifesto }),
+    apply: async (electionId: string, manifesto: string): Promise<CandidateApplicationOutcome> => {
+      try {
+        await mutation.mutateAsync({ electionId, manifesto })
+        return 'submitted'
+      } catch (error: unknown) {
+        return error instanceof ApiError && error.status === 409 ? 'conflict' : 'failed'
+      }
+    },
     isSubmitting: mutation.isPending,
   }
 }

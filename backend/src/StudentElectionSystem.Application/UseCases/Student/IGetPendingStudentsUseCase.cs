@@ -7,5 +7,5 @@ namespace StudentElectionSystem.Application.UseCases.Student;
 
 public interface IGetPendingStudentsUseCase
 {
-    Task<PagedResult<PendingStudentDto>> ExecuteAsync(int pageNumber, int pageSize, string? search, CancellationToken cancellationToken = default);
+    Task<PagedResult<PendingStudentDto>> ExecuteAsync(int pageNumber, int pageSize, string? search, string? department, int? yearOfStudy, CancellationToken cancellationToken = default);
 }

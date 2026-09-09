@@ -33,13 +33,13 @@ public class RegisterStudentUseCase : IRegisterStudentUseCase
             throw new ConflictException("Email is already registered.");
         }
 
-        var registrationExists = await _studentRepository.ExistsByRegistrationNumberAsync(request.RegistrationNumber, cancellationToken);
-        if (registrationExists)
-        {
-            throw new ConflictException("Registration number is already registered.");
-        }
-
         var passwordHash = _passwordHasherService.HashPassword(request.Password);
+        string registrationNumber;
+        do
+        {
+            registrationNumber = $"STU-{DateTime.UtcNow:yyyy}-{Guid.NewGuid():N}"[..30].ToUpperInvariant();
+        }
+        while (await _studentRepository.ExistsByRegistrationNumberAsync(registrationNumber, cancellationToken));
 
         var user = new User(request.Email, passwordHash, UserRole.Student);
         await _userRepository.AddAsync(user, cancellationToken);
@@ -47,7 +47,7 @@ public class RegisterStudentUseCase : IRegisterStudentUseCase
         var student = new Domain.Entities.Student(
             userId: user.Id,
             fullName: request.FullName,
-            registrationNumber: request.RegistrationNumber,
+            registrationNumber: registrationNumber,
             department: request.Department,
             yearOfStudy: request.YearOfStudy,
             gender: request.Gender,

@@ -1,17 +1,39 @@
 import type { StudentSearchProps } from '../../types/admin-student.types'
+import { YEAR_OF_STUDY_OPTIONS } from '../../constants/student.constants'
+import { SelectDropdown } from '@shared/components/SelectDropdown/SelectDropdown'
 import './StudentSearch.scss'
 
-export function StudentSearch({ value, onChange }: StudentSearchProps) {
+const YEAR_FILTER_OPTIONS = [
+  { value: '', label: 'All years' },
+  ...YEAR_OF_STUDY_OPTIONS.map((year) => ({ value: String(year), label: `Year ${year}` })),
+]
+
+export function StudentSearch({
+  value, department, departments, yearOfStudy, onChange, onDepartmentChange, onYearOfStudyChange, onClear,
+}: StudentSearchProps) {
+  const hasFilters = Boolean(value.trim() || department.trim() || yearOfStudy)
+
   return (
     <div className="student-search">
-      <label htmlFor="pending-student-search">Search students</label>
-      <input
-        id="pending-student-search"
-        type="search"
-        value={value}
-        placeholder="Search by name, registration number, or email"
-        onChange={(event) => onChange(event.target.value)}
+      <div className="student-search__field student-search__field--query">
+        <label htmlFor="pending-student-search">Search</label>
+        <input id="pending-student-search" type="search" value={value} placeholder="Search name, registration no. or email" onChange={(event) => onChange(event.target.value)} />
+      </div>
+      <SelectDropdown
+        className="student-search__field"
+        label="Department"
+        value={department}
+        options={[{ value: '', label: 'All departments' }, ...departments.map((name) => ({ value: name, label: name }))]}
+        onChange={onDepartmentChange}
       />
+      <SelectDropdown
+        className="student-search__field student-search__field--year"
+        label="Year"
+        value={String(yearOfStudy)}
+        options={YEAR_FILTER_OPTIONS}
+        onChange={(selectedYear) => onYearOfStudyChange(selectedYear ? Number(selectedYear) : '')}
+      />
+      <button className="student-search__clear" type="button" onClick={onClear} disabled={!hasFilters}>Clear</button>
     </div>
   )
 }

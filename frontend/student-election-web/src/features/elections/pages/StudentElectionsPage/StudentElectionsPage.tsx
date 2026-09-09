@@ -5,6 +5,7 @@ import { formatUtcDateTime } from '@core/utils/date'
 import { useDebouncedValue } from '@shared/hooks/useDebouncedValue'
 import { Button } from '@shared/components/Button/Button'
 import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
+import { SelectDropdown } from '@shared/components/SelectDropdown/SelectDropdown'
 import { ElectionStatusBadge } from '../../components/ElectionStatusBadge/ElectionStatusBadge'
 import { StudentElectionDetailsDialog } from '../../components/StudentElectionDetailsDialog/StudentElectionDetailsDialog'
 import { useElections } from '../../hooks/useElections'
@@ -82,13 +83,13 @@ function ElectionCard({ election, application, onViewDetails, onApply, onVote, o
         <div className="se-card__schedule-row">
           <span className="se-card__schedule-label">Nominations</span>
           <span className="se-card__schedule-range">
-            {formatUtcDateTime(election.nominationStartAt)} – {formatUtcDateTime(election.nominationEndAt)}
+            {formatUtcDateTime(election.nominationStartAt)} - {formatUtcDateTime(election.nominationEndAt)}
           </span>
         </div>
         <div className="se-card__schedule-row">
           <span className="se-card__schedule-label">Voting</span>
           <span className="se-card__schedule-range">
-            {formatUtcDateTime(election.votingStartAt)} – {formatUtcDateTime(election.votingEndAt)}
+            {formatUtcDateTime(election.votingStartAt)} - {formatUtcDateTime(election.votingEndAt)}
           </span>
         </div>
       </div>
@@ -146,8 +147,10 @@ export function StudentElectionsPage() {
 
   const handleApplySubmit = async (manifesto: string) => {
     if (!applyElection) return
-    await apply(applyElection.id, manifesto)
-    setApplyElection(undefined)
+    const outcome = await apply(applyElection.id, manifesto)
+    if (outcome === 'submitted' || outcome === 'conflict') {
+      setApplyElection(undefined)
+    }
   }
 
   return (
@@ -170,20 +173,13 @@ export function StudentElectionsPage() {
             aria-label="Search elections"
           />
         </div>
-        <div className="se-page__filter-wrap">
-          <label htmlFor="se-status-filter" className="sr-only">Filter by status</label>
-          <select
-            id="se-status-filter"
-            className="se-page__status-filter"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as ElectionStatus | '')}
-            aria-label="Filter by election status"
-          >
-            {ELECTION_STATUSES.map((opt) => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
-        </div>
+        <SelectDropdown
+          className="se-page__filter-wrap"
+          label="Status"
+          value={status}
+          options={ELECTION_STATUSES}
+          onChange={(value) => setStatus(value as ElectionStatus | '')}
+        />
       </div>
 
       {(isLoading || applicationsLoading) && (

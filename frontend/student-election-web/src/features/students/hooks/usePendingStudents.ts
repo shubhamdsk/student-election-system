@@ -13,16 +13,25 @@ const EMPTY_RESULT: PagedResult<PendingStudent> = {
   totalPages: 0,
 }
 
-export function usePendingStudents(pageNumber: number, pageSize: number, search: string) {
+export function usePendingStudents(
+  pageNumber: number,
+  pageSize: number,
+  search: string,
+  department = '',
+  yearOfStudy: number | '' = '',
+) {
   const trimmedSearch = search.trim()
+  const trimmedDepartment = department.trim()
 
   const { data, error, isLoading, isFetching, refetch } = useQuery({
-    queryKey: studentKeys.pending(pageNumber, pageSize, trimmedSearch),
+    queryKey: studentKeys.pending(pageNumber, pageSize, trimmedSearch, trimmedDepartment, yearOfStudy || undefined),
     queryFn: () =>
       studentService.getPendingStudents({
         pageNumber,
         pageSize,
         search: trimmedSearch || undefined,
+        department: trimmedDepartment || undefined,
+        yearOfStudy: yearOfStudy || undefined,
       }),
     placeholderData: (previousData) => previousData,
   })

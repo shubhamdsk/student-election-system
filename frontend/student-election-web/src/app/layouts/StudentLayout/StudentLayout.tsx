@@ -1,9 +1,10 @@
 import { AppShell } from '@shared/components/AppShell/AppShell'
 
 const navigationItems = [
-  { label: 'Home', to: '/student' }, { label: 'Elections', to: '/student/elections' },
-  { label: 'Candidates', to: '/student/candidates' }, { label: 'Voting', to: '/student/voting' },
-  { label: 'Results', to: '/student/results' },
+  { label: 'Dashboard', to: '/student' },
+  { label: 'Elections', to: '/student/elections' },
+  { label: 'My Applications', to: '/student/candidates' },
+  { label: 'Profile', to: '/student/profile' },
 ]
 
 export function StudentLayout() { return <AppShell title="Student portal" navigationItems={navigationItems} /> }

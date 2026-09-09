@@ -16,10 +16,19 @@ export function AppShell({ title, navigationItems, isWideContent = false }: AppS
     <div className="app-shell">
       <header className="app-shell__header">
         <h1 className="app-shell__title">{title}</h1>
-        <button className="app-shell__logout" type="button" onClick={handleLogout}>Logout</button>
+        <button className="app-shell__logout" type="button" onClick={handleLogout} aria-label="Logout from current session">Logout</button>
       </header>
       <nav className="app-shell__nav" aria-label={`${title} navigation`}>
-        {navigationItems.map((item) => <NavLink key={item.to} to={item.to} end>{item.label}</NavLink>)}
+        {navigationItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.to === '/student' || item.to === '/admin'}
+            className={({ isActive }) => (isActive ? 'app-shell__nav-link app-shell__nav-link--active' : 'app-shell__nav-link')}
+          >
+            {item.label}
+          </NavLink>
+        ))}
       </nav>
       <main className={`app-shell__content${isWideContent ? ' app-shell__content--wide' : ''}`}><Outlet /></main>
     </div>

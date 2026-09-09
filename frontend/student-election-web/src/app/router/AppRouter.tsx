@@ -14,10 +14,11 @@ import { StudentDashboardPage } from '@features/dashboard/pages/StudentDashboard
 import { AdminDashboardPage } from '@features/dashboard/pages/AdminDashboardPage/AdminDashboardPage'
 import { RegistrationPage } from '@features/students/pages/RegistrationPage/RegistrationPage'
 import { AdminStudentsPage } from '@features/students/pages/AdminStudentsPage/AdminStudentsPage'
-import { PlaceholderPage } from '@shared/components/PlaceholderPage/PlaceholderPage'
 import { HomePage } from '@shared/pages/HomePage/HomePage'
 import { NotFoundPage } from '@shared/pages/NotFoundPage/NotFoundPage'
 import { UnauthorizedPage } from '@shared/pages/UnauthorizedPage/UnauthorizedPage'
+import { StudentProfilePage } from '@features/profile/pages/StudentProfilePage/StudentProfilePage'
+import { AdminProfilePage } from '@features/profile/pages/AdminProfilePage/AdminProfilePage'
 import { ProtectedRoute } from './ProtectedRoute'
 import { RoleRoute } from './RoleRoute'
 import { ApprovedStudentRoute } from './ApprovedStudentRoute'
@@ -42,7 +43,7 @@ export function AppRouter() {
               <Route path="elections/:electionId/results" element={<StudentResultsPage />} />
               <Route path="candidates" element={<StudentCandidatesPage />} />
               <Route path="voting" element={<StudentVotingListPage />} />
-              <Route path="results" element={<PlaceholderPage title="Results" />} />
+              <Route path="profile" element={<StudentProfilePage />} />
             </Route>
           </Route>
         </Route>
@@ -53,7 +54,7 @@ export function AppRouter() {
             <Route path="students" element={<AdminStudentsPage />} />
             <Route path="elections" element={<AdminElectionsPage />} />
             <Route path="candidates" element={<AdminCandidatesPage />} />
-            <Route path="results" element={<PlaceholderPage title="Election results" />} />
+            <Route path="profile" element={<AdminProfilePage />} />
           </Route>
         </Route>
       </Route>

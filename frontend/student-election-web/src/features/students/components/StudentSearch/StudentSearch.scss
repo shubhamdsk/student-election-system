@@ -2,9 +2,24 @@
 @use '@shared/styles/variables' as *;
 
 .student-search {
-  display: grid;
-  gap: $space-xs;
-  width: min(100%, 32rem);
+  display: flex;
+  align-items: flex-end;
+  gap: $space-md;
+  width: 100%;
+
+  &__field {
+    display: grid;
+    gap: $space-xs;
+    width: min(100%, 18rem);
+
+    &--query {
+      width: min(100%, 30rem);
+    }
+
+    &--year {
+      width: 9rem;
+    }
+  }
 
   label {
     font-weight: 600;
@@ -31,6 +46,46 @@
       outline: none;
       border-color: $color-primary;
       box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
+  }
+
+  &__clear {
+    min-height: 2.75rem;
+    padding: $space-sm $space-md;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    background: transparent;
+    color: $color-text;
+    font: inherit;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      background: $color-surface-hover;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $color-primary;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      color: $color-text-tertiary;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  @media (max-width: 52rem) {
+    flex-wrap: wrap;
+
+    &__field,
+    &__field--query {
+      flex: 1 1 16rem;
+      width: auto;
+    }
+
+    &__field--year {
+      flex: 0 1 9rem;
     }
   }
 }

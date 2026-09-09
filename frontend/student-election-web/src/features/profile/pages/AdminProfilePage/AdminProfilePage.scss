@@ -1,0 +1,78 @@
+@use '@shared/styles/variables' as *;
+
+.admin-profile-page {
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $space-md;
+    margin-top: $space-sm;
+
+    &__eyebrow {
+      margin: 0 0 $space-xs;
+      color: $color-accent;
+      font-size: $font-size-xs;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    &__title {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 2.5rem);
+      line-height: 1.1;
+      color: $color-heading;
+    }
+  }
+
+  .profile-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-md;
+    min-height: 6.5rem;
+    padding: $space-lg;
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-card;
+
+    &__eyebrow {
+      margin: 0 0 $space-xs;
+      color: $color-text-secondary;
+      font-size: $font-size-xs;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    &__name {
+      margin: 0;
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      color: $color-heading;
+    }
+  }
+
+  .profile-grid {
+    display: grid;
+    gap: $space-lg;
+  }
+
+  .profile-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: $space-md;
+    margin: 0;
+  }
+
+  @media (max-width: 48rem) {
+    .page-header,
+    .profile-summary {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}

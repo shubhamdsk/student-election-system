@@ -69,9 +69,11 @@ public class StudentsController : ControllerBase
         [FromQuery] int pageNumber = 1, 
         [FromQuery] int pageSize = 10, 
         [FromQuery] string? search = null,
+        [FromQuery] string? department = null,
+        [FromQuery] int? yearOfStudy = null,
         CancellationToken cancellationToken = default)
     {
-        var result = await _getPendingStudentsUseCase.ExecuteAsync(pageNumber, pageSize, search, cancellationToken);
+        var result = await _getPendingStudentsUseCase.ExecuteAsync(pageNumber, pageSize, search, department, yearOfStudy, cancellationToken);
         return Ok(ApiResponse.Success(result, "Pending students retrieved successfully."));
     }
 

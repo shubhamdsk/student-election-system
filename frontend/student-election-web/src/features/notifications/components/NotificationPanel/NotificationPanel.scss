@@ -1,0 +1,141 @@
+@use '@shared/styles/variables' as *;
+
+.notification-panel {
+  position: absolute;
+  z-index: 2100;
+  top: calc(100% + $space-sm);
+  right: 0;
+  width: min(25rem, calc(100vw - 2rem));
+  overflow: hidden;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  background: #172033;
+  color: $color-text;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.55);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-sm;
+    padding: $space-md;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__header h2 {
+    margin: 0;
+    color: $color-heading;
+    font-size: $font-size-md;
+  }
+
+  &__header button {
+    border: 0;
+    background: transparent;
+    color: #a5b4fc;
+    font: inherit;
+    font-size: $font-size-sm;
+    cursor: pointer;
+  }
+
+  &__header button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &__header button:focus-visible {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+
+  &__content {
+    display: grid;
+    max-height: min(32rem, 70vh);
+    overflow-y: auto;
+  }
+
+  &__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__state {
+    display: grid;
+    place-items: center;
+    gap: $space-sm;
+    min-height: 10rem;
+    padding: $space-lg;
+    text-align: center;
+    color: $color-text-secondary;
+  }
+
+  &__state p {
+    margin: 0;
+  }
+}
+
+.notification-item {
+  border-bottom: 1px solid $color-border;
+}
+
+.notification-item:last-child {
+  border-bottom: 0;
+}
+
+.notification-item--unread {
+  background: rgba(99, 102, 241, .1);
+  border-left: 3px solid $color-primary;
+}
+
+.notification-item__action {
+  display: grid;
+  gap: $space-xs;
+  width: 100%;
+  padding: $space-md;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.notification-item__action:hover {
+  background: rgba(255, 255, 255, .04);
+}
+
+.notification-item__action:focus-visible {
+  outline: 2px solid $color-primary;
+  outline-offset: -2px;
+}
+
+.notification-item__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: $space-sm;
+  color: $color-heading;
+}
+
+.notification-item__unread {
+  font-size: $font-size-xs;
+  color: #a5b4fc;
+}
+
+.notification-item__message {
+  font-size: $font-size-sm;
+  line-height: 1.4;
+}
+
+.notification-item__time {
+  color: $color-text-secondary;
+  font-size: $font-size-xs;
+}
+
+@media (max-width: 36rem) {
+  .notification-panel {
+    position: fixed;
+    top: 4rem;
+    right: $space-sm;
+    left: $space-sm;
+    width: auto;
+  }
+}

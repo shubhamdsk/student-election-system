@@ -8,6 +8,8 @@
   overflow: hidden;
 
   &__header {
+    position: relative;
+    z-index: 2000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,6 +26,12 @@
     font-weight: 700;
     color: $color-heading;
     letter-spacing: -0.01em;
+  }
+
+  &__header-actions {
+    display: flex;
+    align-items: center;
+    gap: $space-sm;
   }
 
   &__logout {
@@ -93,6 +101,7 @@
     &::-webkit-scrollbar {
       display: none;
     }
+
     /* Hide scrollbar for IE, Edge and Firefox */
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -108,6 +117,7 @@
 
 @media (max-width: 48rem) {
   .app-shell {
+
     &__header,
     &__nav {
       padding: $space-sm $space-md;

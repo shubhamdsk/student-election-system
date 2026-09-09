@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<StudentElectionSystem.Application.Interfaces.Persistence.IVoteRepository, StudentElectionSystem.Infrastructure.Persistence.Repositories.VoteRepository>();
         services.AddScoped<StudentElectionSystem.Application.Interfaces.Persistence.IElectionParticipationRepository, StudentElectionSystem.Infrastructure.Persistence.Repositories.ElectionParticipationRepository>();
         services.AddScoped<StudentElectionSystem.Application.Interfaces.Persistence.IUnitOfWork, StudentElectionSystem.Infrastructure.Persistence.UnitOfWork>();
+        services.AddScoped<StudentElectionSystem.Application.Interfaces.Persistence.INotificationRepository, StudentElectionSystem.Infrastructure.Persistence.Repositories.NotificationRepository>();
 
         // Authentication Services
         services.AddScoped<IPasswordHasherService, PasswordHasherServiceImpl>();

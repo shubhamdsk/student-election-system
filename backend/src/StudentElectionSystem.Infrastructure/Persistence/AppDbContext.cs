@@ -16,6 +16,7 @@ public class AppDbContext : DbContext
     public DbSet<Candidate> Candidates => Set<Candidate>();
     public DbSet<Vote> Votes => Set<Vote>();
     public DbSet<ElectionParticipation> ElectionParticipations => Set<ElectionParticipation>();
+    public DbSet<Notification> Notifications => Set<Notification>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

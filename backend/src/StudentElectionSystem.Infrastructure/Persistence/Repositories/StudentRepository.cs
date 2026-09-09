@@ -116,6 +116,14 @@ public class StudentRepository : IStudentRepository
         return await query.AsNoTracking().FirstOrDefaultAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<Guid>> GetApprovedStudentUserIdsAsync(CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Students.AsNoTracking()
+            .Where(student => student.ApprovalStatus == ApprovalStatus.Approved)
+            .Select(student => student.UserId)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await _dbContext.SaveChangesAsync(cancellationToken);

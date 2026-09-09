@@ -15,17 +15,20 @@ public class ApplyCandidateUseCase : IApplyCandidateUseCase
     private readonly IStudentRepository _studentRepository;
     private readonly IElectionRepository _electionRepository;
     private readonly ICurrentUserService _currentUserService;
+    private readonly INotificationService _notificationService;
 
     public ApplyCandidateUseCase(
         ICandidateRepository candidateRepository,
         IStudentRepository studentRepository,
         IElectionRepository electionRepository,
-        ICurrentUserService currentUserService)
+        ICurrentUserService currentUserService,
+        INotificationService notificationService)
     {
         _candidateRepository = candidateRepository;
         _studentRepository = studentRepository;
         _electionRepository = electionRepository;
         _currentUserService = currentUserService;
+        _notificationService = notificationService;
     }
 
     public async Task<MyCandidateApplicationDto> ExecuteAsync(Guid electionId, ApplyCandidateRequest request, CancellationToken cancellationToken = default)
@@ -66,6 +69,7 @@ public class ApplyCandidateUseCase : IApplyCandidateUseCase
         var candidate = new Domain.Entities.Candidate(student.Id, electionId, request.Manifesto);
         
         await _candidateRepository.AddAsync(candidate, cancellationToken);
+        await _notificationService.CreateForAdminsAsync(NotificationType.CandidateApplicationSubmitted, "New candidate application", $"A candidate application was submitted for {election.Title}.", candidate.Id, NotificationEntityType.Candidate, cancellationToken);
         await _candidateRepository.SaveChangesAsync(cancellationToken);
 
         return new MyCandidateApplicationDto

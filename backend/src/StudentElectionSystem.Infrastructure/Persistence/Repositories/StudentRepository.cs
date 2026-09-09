@@ -39,7 +39,7 @@ public class StudentRepository : IStudentRepository
             .FirstOrDefaultAsync(s => s.UserId == userId, cancellationToken);
     }
 
-    public async Task<PagedResult<PendingStudentDto>> GetPendingStudentsAsync(int pageNumber, int pageSize, string? search, CancellationToken cancellationToken = default)
+    public async Task<PagedResult<PendingStudentDto>> GetPendingStudentsAsync(int pageNumber, int pageSize, string? search, string? department, int? yearOfStudy, CancellationToken cancellationToken = default)
     {
         var query = from s in _dbContext.Students
                     join u in _dbContext.Users on s.UserId equals u.Id
@@ -53,6 +53,17 @@ public class StudentRepository : IStudentRepository
                 x.s.FullName.Contains(search) || 
                 x.s.RegistrationNumber.Contains(search) || 
                 x.Email.Contains(search));
+        }
+
+        if (!string.IsNullOrWhiteSpace(department))
+        {
+            department = department.Trim();
+            query = query.Where(x => x.s.Department == department);
+        }
+
+        if (yearOfStudy.HasValue)
+        {
+            query = query.Where(x => x.s.YearOfStudy == yearOfStudy.Value);
         }
 
         var totalCount = await query.CountAsync(cancellationToken);

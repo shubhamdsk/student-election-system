@@ -48,6 +48,12 @@ public class CandidateRepository : ICandidateRepository
             .CountAsync(c => c.ElectionId == electionId && !c.IsRejected, cancellationToken);
     }
 
+    public async Task<int> CountApprovedCandidatesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken = default)
+    {
+        return await _dbContext.Candidates
+            .CountAsync(c => c.ElectionId == electionId && c.IsApproved && !c.IsRejected, cancellationToken);
+    }
+
     public async Task<IEnumerable<Candidate>> GetApplicationsByStudentIdAsync(Guid studentId, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Candidates

@@ -11,7 +11,6 @@ import type { RegisterStudentRequest, RegisterStudentResponse, RegistrationField
 const REGISTRATION_FIELDS: readonly RegistrationField[] = [
   'email',
   'password',
-  'registrationNumber',
   'fullName',
   'department',
   'yearOfStudy',

@@ -4,7 +4,6 @@ import type { FieldErrors } from '@core/utils/form-errors'
 export interface RegisterStudentRequest {
   email: string
   password: string
-  registrationNumber: string
   fullName: string
   department: string
   yearOfStudy: number
@@ -43,14 +42,19 @@ export interface StudentDetails extends PendingStudent {
 }
 
 export interface RejectStudentRequest { reason: string }
-export interface PendingStudentsQuery { pageNumber?: number; pageSize?: number; search?: string }
+export interface PendingStudentsQuery {
+  pageNumber?: number
+  pageSize?: number
+  search?: string
+  department?: string
+  yearOfStudy?: number
+}
 
 export type RegistrationField = keyof RegisterStudentRequest
 
 export interface RegistrationFormValues {
   email: string
   password: string
-  registrationNumber: string
   fullName: string
   department: string
   yearOfStudy: string

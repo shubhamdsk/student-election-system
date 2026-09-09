@@ -1,0 +1,38 @@
+@use '@shared/styles/variables' as *;
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 14rem;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+
+  &__header {
+    padding: $space-lg $space-lg 0;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $font-size-lg;
+    font-weight: 700;
+    color: $color-heading;
+  }
+
+  &__description {
+    margin: $space-xs 0 0;
+    color: $color-text-secondary;
+    font-size: $font-size-sm;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: $space-md;
+    padding: $space-lg;
+    height: 100%;
+    align-content: start;
+  }
+}

@@ -1,0 +1,30 @@
+@use '@shared/styles/variables' as *;
+
+.profile-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: $space-xs $space-sm;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: $font-size-sm;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+
+  &--pending {
+    color: #fbbf24;
+    background: rgba(245, 158, 11, 0.12);
+  }
+
+  &--approved {
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.12);
+  }
+
+  &--rejected {
+    color: #fca5a5;
+    background: rgba(239, 68, 68, 0.12);
+  }
+}

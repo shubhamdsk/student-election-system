@@ -15,10 +15,6 @@ public class RegisterStudentRequest
     public string Password { get; set; } = string.Empty;
 
     [Required]
-    [StringLength(30)]
-    public string RegistrationNumber { get; set; } = string.Empty;
-
-    [Required]
     [StringLength(150)]
     public string FullName { get; set; } = string.Empty;
 

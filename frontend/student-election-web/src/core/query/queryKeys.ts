@@ -3,10 +3,11 @@
 export const studentKeys = {
   all: ['students'] as const,
   pendingAll: () => [...studentKeys.all, 'pending'] as const,
-  pending: (pageNumber: number, pageSize: number, search?: string) =>
-    [...studentKeys.pendingAll(), { pageNumber, pageSize, search: search || '' }] as const,
+  pending: (pageNumber: number, pageSize: number, search?: string, department?: string, yearOfStudy?: number) =>
+    [...studentKeys.pendingAll(), { pageNumber, pageSize, search: search || '', department: department || '', yearOfStudy: yearOfStudy ?? '' }] as const,
   details: () => [...studentKeys.all, 'detail'] as const,
   detail: (id?: string) => [...studentKeys.details(), id] as const,
+  currentProfile: () => [...studentKeys.all, 'me'] as const,
 }
 
 export const electionKeys = {

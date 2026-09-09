@@ -16,7 +16,7 @@ public class GetPendingStudentsUseCase : IGetPendingStudentsUseCase
         _studentRepository = studentRepository;
     }
 
-    public async Task<PagedResult<PendingStudentDto>> ExecuteAsync(int pageNumber, int pageSize, string? search, CancellationToken cancellationToken = default)
+    public async Task<PagedResult<PendingStudentDto>> ExecuteAsync(int pageNumber, int pageSize, string? search, string? department, int? yearOfStudy, CancellationToken cancellationToken = default)
     {
         // Default pagination if invalid values are provided
         if (pageNumber < 1) pageNumber = 1;
@@ -25,6 +25,6 @@ public class GetPendingStudentsUseCase : IGetPendingStudentsUseCase
         // Cap max page size to 100
         if (pageSize > 100) pageSize = 100;
 
-        return await _studentRepository.GetPendingStudentsAsync(pageNumber, pageSize, search, cancellationToken);
+        return await _studentRepository.GetPendingStudentsAsync(pageNumber, pageSize, search, department, yearOfStudy, cancellationToken);
     }
 }

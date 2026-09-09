@@ -14,6 +14,7 @@ public interface ICandidateRepository
     
     Task<bool> HasStudentAppliedToElectionAsync(Guid studentId, Guid electionId, CancellationToken cancellationToken = default);
     Task<int> CountCandidatesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken = default);
+    Task<int> CountApprovedCandidatesByElectionIdAsync(Guid electionId, CancellationToken cancellationToken = default);
     
     Task<IEnumerable<Candidate>> GetApplicationsByStudentIdAsync(Guid studentId, CancellationToken cancellationToken = default);
     

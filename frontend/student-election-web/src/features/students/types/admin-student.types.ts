@@ -2,13 +2,19 @@ import type { PendingStudent, StudentDetails } from './student.types'
 
 export interface StudentSearchProps {
   value: string
+  department: string
+  departments: string[]
+  yearOfStudy: number | ''
   onChange(value: string): void
+  onDepartmentChange(value: string): void
+  onYearOfStudyChange(value: number | ''): void
+  onClear(): void
 }
 
 export interface PendingStudentsTableProps {
   students: PendingStudent[]
   isLoading: boolean
-  hasSearch: boolean
+  hasFilters: boolean
   actionStudentId?: string
   onView(student: PendingStudent): void
   onApprove(student: PendingStudent): void

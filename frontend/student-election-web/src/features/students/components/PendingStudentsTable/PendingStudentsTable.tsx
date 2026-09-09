@@ -12,7 +12,7 @@ import './PendingStudentsTable.scss'
 export function PendingStudentsTable({
   students,
   isLoading,
-  hasSearch,
+  hasFilters,
   actionStudentId,
   onView,
   onApprove,
@@ -79,7 +79,7 @@ export function PendingStudentsTable({
       keyExtractor={(student) => student.studentId}
       loading={isLoading}
       loadingContent={<LoadingSpinner label="Loading pending students" />}
-      emptyMessage={hasSearch ? 'No students match your search.' : 'No pending student registrations found.'}
+      emptyMessage={hasFilters ? 'No students match the current search and filters.' : 'No pending student registrations found.'}
       caption="Pending student registrations"
       className="pending-students-table__container"
     />

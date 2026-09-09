@@ -12,8 +12,11 @@
     color: $color-text;
   }
 
-  &__required {
+  &__required,
+  &__label span {
     color: $color-danger;
+    font-weight: 700;
+    margin-left: 0.15rem;
   }
 
   &__input {

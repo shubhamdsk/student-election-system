@@ -5,7 +5,6 @@ export { Badge, type BadgeProps, type BadgeVariant } from "./Badge/Badge";
 export { Modal, type ModalProps } from "./Modal/Modal";
 export { Dropdown, type DropdownProps } from "./Dropdown/Dropdown";
 export { Card, type CardProps } from "./Card/Card";
-export { Table, type TableProps, type Column } from "./Table/Table";
 export { Pagination, type PaginationProps } from "./Pagination/Pagination";
 export { Spinner, type SpinnerProps } from "./Spinner/Spinner";
 export { Skeleton, type SkeletonProps } from "./Skeleton/Skeleton";

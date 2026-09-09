@@ -40,7 +40,3 @@ export interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputEl
   label: string
   error?: string
 }
-
-export interface PlaceholderPageProps {
-  title: string
-}

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { ApiError } from '@core/api/ApiError'
+import { Skeleton } from '@components/Skeleton/Skeleton'
 import { Button } from '@shared/components/Button/Button'
-import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
 import { useElectionResults } from '../../hooks/useElectionResults'
 import { formatVoteCount } from '../../utils/vote-label'
 import './StudentResultsPage.scss'
@@ -21,9 +21,25 @@ export function StudentResultsPage() {
 
   if (isLoading) {
     return (
-      <section className="sr-page sr-page--state" aria-label="Election results">
-        <LoadingSpinner label="Loading election results…" />
-      </section>
+      <main className="sr-page" aria-label="Loading election results">
+        <Skeleton width="120px" height="32px" borderRadius="6px" />
+        <header className="sr-page__header" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <Skeleton width="100px" height="16px" />
+          <Skeleton width="60%" height="32px" />
+        </header>
+        <section className="sr-page__standings" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="sr-standing" style={{ padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <Skeleton width="48px" height="48px" borderRadius="8px" />
+              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <Skeleton width="40%" height="20px" />
+                <Skeleton width="60%" height="16px" />
+              </div>
+              <Skeleton width="60px" height="24px" />
+            </div>
+          ))}
+        </section>
+      </main>
     )
   }
 

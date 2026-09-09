@@ -18,7 +18,7 @@
   width: 100%;
   max-width: 560px;
   max-height: 90vh;
-  overflow-y: auto;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -30,10 +30,15 @@
   color: $color-text;
   animation: dialog-in 0.2s ease;
 
+  &:not([open]) {
+    display: none !important;
+  }
+
   &__header {
     position: relative;
     padding: $space-lg $space-lg $space-md;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
   }
 
   &__title {
@@ -60,32 +65,50 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border: none;
-    border-radius: $radius-sm;
-    background: transparent;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
     color: $color-text-secondary;
     cursor: pointer;
-    font-size: $font-size-sm;
-    transition: background 0.15s ease, color 0.15s ease;
+    font-size: $font-size-md;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
 
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.12);
       color: $color-heading;
+      transform: scale(1.05);
     }
 
     &:focus-visible {
       outline: 2px solid $color-primary;
       outline-offset: 2px;
     }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
   &__form {
     display: flex;
     flex-direction: column;
-    gap: $space-lg;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
     padding: $space-lg;
+    display: flex;
+    flex-direction: column;
+    gap: $space-lg;
   }
 
   &__field {
@@ -102,6 +125,8 @@
 
   &__required {
     color: $color-danger;
+    font-weight: 700;
+    margin-left: 0.15rem;
   }
 
   &__hint {
@@ -174,9 +199,12 @@
   &__footer {
     display: flex;
     justify-content: flex-end;
-    gap: $space-sm;
-    padding-top: $space-xs;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    align-items: center;
+    gap: $space-md;
+    padding: $space-md $space-lg;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.4);
+    flex-shrink: 0;
   }
 }
 

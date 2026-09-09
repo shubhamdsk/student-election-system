@@ -2,10 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { ElectionStatus } from '@core/types/enums'
 import { formatUtcDateTime } from '@core/utils/date'
-import { useDebouncedValue } from '@shared/hooks/useDebouncedValue'
+import { useDebouncedSearch } from '@shared/hooks/useDebouncedSearch'
 import { Button } from '@shared/components/Button/Button'
-import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
+import { Skeleton } from '@components/Skeleton/Skeleton'
 import { SelectDropdown } from '@shared/components/SelectDropdown/SelectDropdown'
+import { SearchInput } from '@shared/components/SearchInput/SearchInput'
 import { ElectionStatusBadge } from '../../components/ElectionStatusBadge/ElectionStatusBadge'
 import { StudentElectionDetailsDialog } from '../../components/StudentElectionDetailsDialog/StudentElectionDetailsDialog'
 import { useElections } from '../../hooks/useElections'
@@ -128,7 +129,7 @@ export function StudentElectionsPage() {
   const [detailsId, setDetailsId] = useState<string>()
   const [applyElection, setApplyElection] = useState<ElectionListItem>()
 
-  const debouncedSearch = useDebouncedValue(search, 400)
+  const debouncedSearch = useDebouncedSearch(search, 300, 3)
   const { result, isLoading } = useElections({
     pageNumber: 1,
     pageSize: 100,
@@ -161,18 +162,15 @@ export function StudentElectionsPage() {
       </header>
 
       <div className="se-page__toolbar">
-        <div className="se-page__search-wrap">
-          <label htmlFor="se-search" className="sr-only">Search elections</label>
-          <input
-            id="se-search"
-            className="se-page__search"
-            type="search"
-            placeholder="Search elections…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            aria-label="Search elections"
-          />
-        </div>
+        <SearchInput
+          id="se-search"
+          className="se-page__search-wrap"
+          label="Search elections"
+          value={search}
+          onChange={setSearch}
+          placeholder="Search elections…"
+          minChars={3}
+        />
         <SelectDropdown
           className="se-page__filter-wrap"
           label="Status"
@@ -181,10 +179,25 @@ export function StudentElectionsPage() {
           onChange={(value) => setStatus(value as ElectionStatus | '')}
         />
       </div>
-
       {(isLoading || applicationsLoading) && (
-        <div className="se-page__state">
-          <LoadingSpinner label="Loading elections…" />
+        <div className="se-page__grid" role="status" aria-label="Loading elections">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="se-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Skeleton width="90px" height="22px" borderRadius="12px" />
+                <Skeleton width="110px" height="16px" />
+              </div>
+              <Skeleton width="75%" height="24px" />
+              <Skeleton width="50%" height="16px" />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <Skeleton width="100%" height="16px" />
+                <Skeleton width="100%" height="16px" />
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <Skeleton width="100px" height="32px" borderRadius="6px" />
+              </div>
+            </div>
+          ))}
         </div>
       )}
 

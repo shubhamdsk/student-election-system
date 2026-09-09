@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Table } from '@components'
+import Table from '@components/Table/Table'
 import { formatUtcDateTime } from '@core/utils/date'
 import { Button } from '@shared/components/Button/Button'
 import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
@@ -17,14 +17,16 @@ export function CandidatesTable({ candidates, isLoading, hasSearch, actionCandid
     { key: 'electionTitle', header: 'Election', width: '17rem' },
     { key: 'status', header: 'Status', width: '7rem', align: 'center', sortable: false, filterable: false, render: () => <CandidateStatusBadge status="Pending" /> },
     { key: 'nominatedAt', header: 'Applied At', width: '13rem', render: (candidate) => formatUtcDateTime(candidate.nominatedAt) },
-    { key: 'actions', header: 'Actions', width: '16rem', sticky: 'right', sortable: false, filterable: false, render: (candidate) => {
-      const isBusy = actionCandidateId === candidate.candidateId
-      return <div className="candidates-table__actions">
-        <Button variant="ghost" size="small" disabled={Boolean(actionCandidateId)} onClick={() => onView(candidate)}>View</Button>
-        <Button variant="success" size="small" disabled={Boolean(actionCandidateId)} isLoading={isBusy && actionType === 'approve'} loadingLabel="Approving" onClick={() => onApprove(candidate)}>Approve</Button>
-        <Button variant="danger" size="small" disabled={Boolean(actionCandidateId)} isLoading={isBusy && actionType === 'reject'} loadingLabel="Rejecting" onClick={() => onReject(candidate)}>Reject</Button>
-      </div>
-    } },
+    {
+      key: 'actions', header: 'Actions', width: '16rem', sticky: 'right', sortable: false, filterable: false, render: (candidate) => {
+        const isBusy = actionCandidateId === candidate.candidateId
+        return <div className="candidates-table__actions">
+          <Button variant="ghost" size="small" disabled={Boolean(actionCandidateId)} onClick={() => onView(candidate)}>View</Button>
+          <Button variant="success" size="small" disabled={Boolean(actionCandidateId)} isLoading={isBusy && actionType === 'approve'} loadingLabel="Approving" onClick={() => onApprove(candidate)}>Approve</Button>
+          <Button variant="danger" size="small" disabled={Boolean(actionCandidateId)} isLoading={isBusy && actionType === 'reject'} loadingLabel="Rejecting" onClick={() => onReject(candidate)}>Reject</Button>
+        </div>
+      }
+    },
   ], [actionCandidateId, actionType, onApprove, onReject, onView])
 
   return <Table columns={columns} data={candidates} keyExtractor={(candidate: PendingCandidate) => candidate.candidateId} loading={isLoading} loadingContent={<LoadingSpinner label="Loading pending candidates" />} emptyMessage={hasSearch ? 'No candidates match the current search.' : 'No pending candidate applications found.'} caption="Pending candidate applications" className="candidates-table__container" />

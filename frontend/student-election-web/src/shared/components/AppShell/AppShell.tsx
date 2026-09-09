@@ -1,6 +1,8 @@
+import { Suspense } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '@core/hooks/useAuth'
 import type { AppShellProps } from '@shared/types/component.types'
+import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
 import { NotificationBell } from '@features/notifications'
 import './AppShell.scss'
 
@@ -31,7 +33,11 @@ export function AppShell({ title, navigationItems, isWideContent = false }: AppS
           </NavLink>
         ))}
       </nav>
-      <main className={`app-shell__content${isWideContent ? ' app-shell__content--wide' : ''}`}><Outlet /></main>
+      <main className={`app-shell__content${isWideContent ? ' app-shell__content--wide' : ''}`}>
+        <Suspense fallback={<div className="page-loading-fallback"><LoadingSpinner label="Loading section..." /></div>}>
+          <Outlet />
+        </Suspense>
+      </main>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useElections } from '@features/elections/hooks/useElections'
 import { Pagination } from '@shared/components/Pagination/Pagination'
-import { useDebouncedValue } from '@shared/hooks/useDebouncedValue'
+import { useDebouncedSearch } from '@shared/hooks/useDebouncedSearch'
 import { ApproveCandidateDialog } from '../../components/ApproveCandidateDialog/ApproveCandidateDialog'
 import { CandidateDetailsDialog } from '../../components/CandidateDetailsDialog/CandidateDetailsDialog'
 import { CandidateToolbar } from '../../components/CandidateToolbar/CandidateToolbar'
@@ -14,7 +14,6 @@ import type { PendingCandidate } from '../../types/candidate.types'
 import './AdminCandidatesPage.scss'
 
 const DEFAULT_PAGE_SIZE = 10
-const SEARCH_DELAY_MS = 400
 
 export function AdminCandidatesPage() {
   const [pageNumber, setPageNumber] = useState(1)
@@ -24,7 +23,7 @@ export function AdminCandidatesPage() {
   const [detailsId, setDetailsId] = useState<string>()
   const [approvalCandidate, setApprovalCandidate] = useState<PendingCandidate>()
   const [rejectionCandidate, setRejectionCandidate] = useState<PendingCandidate>()
-  const debouncedSearch = useDebouncedValue(search, SEARCH_DELAY_MS).trim()
+  const debouncedSearch = useDebouncedSearch(search, 300, 3)
   const candidates = usePendingCandidates(pageNumber, pageSize, debouncedSearch, electionId || undefined)
   const electionOptions = useElections({ pageNumber: 1, pageSize: 100 })
   const details = useCandidateDetails(detailsId)

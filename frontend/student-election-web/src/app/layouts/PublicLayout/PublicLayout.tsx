@@ -1,6 +1,7 @@
-// src/app/layouts/PublicLayout/PublicLayout.tsx
+import { Suspense } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import { useAuth } from '@core/hooks/useAuth'
+import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
 import './PublicLayout.scss'
 
 export function PublicLayout() {
@@ -39,7 +40,9 @@ export function PublicLayout() {
         </nav>
       </header>
       <main className="public-layout__content">
-        <Outlet />
+        <Suspense fallback={<div className="page-loading-fallback"><LoadingSpinner label="Loading page..." /></div>}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   )

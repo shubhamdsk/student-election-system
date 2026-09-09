@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { ElectionStatus } from '@core/types/enums'
 import { Pagination } from '@shared/components/Pagination/Pagination'
-import { useDebouncedValue } from '@shared/hooks/useDebouncedValue'
+import { useDebouncedSearch } from '@shared/hooks/useDebouncedSearch'
 import { ElectionActionDialog } from '../../components/ElectionActionDialog/ElectionActionDialog'
 import { ElectionDetailsDialog } from '../../components/ElectionDetailsDialog/ElectionDetailsDialog'
 import { ElectionFormDialog } from '../../components/ElectionFormDialog/ElectionFormDialog'
@@ -26,7 +26,7 @@ export function AdminElectionsPage() {
   const [editId, setEditId] = useState<string>()
   const [detailsId, setDetailsId] = useState<string>()
   const [actionSelection, setActionSelection] = useState<ElectionActionSelection>()
-  const debouncedSearch = useDebouncedValue(search, 400)
+  const debouncedSearch = useDebouncedSearch(search, 300, 3)
   const elections = useElections({ pageNumber, pageSize, search: debouncedSearch, status: status || undefined })
   const details = useElectionDetails(detailsId)
   const editDetails = useElectionDetails(editId)

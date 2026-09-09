@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { formatUtcDateTime } from '@core/utils/date'
 import { ElectionStatusBadge } from '@features/elections/components/ElectionStatusBadge/ElectionStatusBadge'
 import { Button } from '@shared/components/Button/Button'
-import { LoadingSpinner } from '@shared/components/LoadingSpinner/LoadingSpinner'
+import { Skeleton } from '@components/Skeleton/Skeleton'
 import { useAdminDashboard } from '../../hooks/useAdminDashboard'
 import './AdminDashboardPage.scss'
 
@@ -34,7 +34,12 @@ export function AdminDashboardPage() {
           {!isAttentionLoading && <span>{dashboard.attentionItems.length} items</span>}
         </div>
         {isAttentionLoading ? (
-          <div className="ad-section__state"><LoadingSpinner label="Checking administrative activity…" /></div>
+          <div className="ad-attention-list" role="status" aria-label="Checking administrative activity">
+            <div className="ad-attention" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              <Skeleton width="50%" height="20px" />
+              <Skeleton width="80%" height="16px" />
+            </div>
+          </div>
         ) : dashboard.attentionItems.length > 0 ? (
           <div className="ad-attention-list" role="list">
             {dashboard.attentionItems.map((item) => (
@@ -70,7 +75,11 @@ export function AdminDashboardPage() {
               {!dashboard.isStudentsLoading && !dashboard.studentsError && <strong>{dashboard.students.totalCount}</strong>}
             </div>
             {dashboard.isStudentsLoading ? (
-              <div className="ad-review__state"><LoadingSpinner label="Loading students…" /></div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1rem 0' }} role="status">
+                <Skeleton width="100%" height="24px" />
+                <Skeleton width="100%" height="24px" />
+                <Skeleton width="100%" height="24px" />
+              </div>
             ) : dashboard.studentsError ? (
               <div className="ad-review__state" role="alert"><span>Unable to load pending students.</span><Button variant="secondary" size="small" onClick={() => void dashboard.retryStudents()}>Retry</Button></div>
             ) : dashboard.students.items.length > 0 ? (
@@ -89,7 +98,11 @@ export function AdminDashboardPage() {
               {!dashboard.isCandidatesLoading && !dashboard.candidatesError && <strong>{dashboard.candidates.totalCount}</strong>}
             </div>
             {dashboard.isCandidatesLoading ? (
-              <div className="ad-review__state"><LoadingSpinner label="Loading candidates…" /></div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', padding: '1rem 0' }} role="status">
+                <Skeleton width="100%" height="24px" />
+                <Skeleton width="100%" height="24px" />
+                <Skeleton width="100%" height="24px" />
+              </div>
             ) : dashboard.candidatesError ? (
               <div className="ad-review__state" role="alert"><span>Unable to load pending candidates.</span><Button variant="secondary" size="small" onClick={() => void dashboard.retryCandidates()}>Retry</Button></div>
             ) : dashboard.candidates.items.length > 0 ? (
@@ -110,7 +123,14 @@ export function AdminDashboardPage() {
           <Link to="/admin/elections">Manage all</Link>
         </div>
         {dashboard.isElectionsLoading ? (
-          <div className="ad-section__state"><LoadingSpinner label="Loading recent elections…" /></div>
+          <div className="ad-election-list" role="status" aria-label="Loading recent elections">
+            {[1, 2].map((i) => (
+              <div key={i} className="ad-election" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <Skeleton width="140px" height="18px" borderRadius="10px" />
+                <Skeleton width="60%" height="20px" />
+              </div>
+            ))}
+          </div>
         ) : dashboard.electionsError ? (
           <div className="ad-section__state" role="alert"><span>Unable to load elections.</span><Button variant="secondary" size="small" onClick={() => void dashboard.retryElections()}>Try Again</Button></div>
         ) : dashboard.elections.length > 0 ? (

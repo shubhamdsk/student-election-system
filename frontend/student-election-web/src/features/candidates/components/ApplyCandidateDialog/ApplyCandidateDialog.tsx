@@ -53,37 +53,39 @@ export function ApplyCandidateDialog({ election, isSubmitting, onClose, onSubmit
         </header>
 
         <form className="apply-dialog__form" onSubmit={handleSubmit} noValidate>
-          <div className="apply-dialog__field">
-            <label className="apply-dialog__label" htmlFor="apply-manifesto">
-              Manifesto
-              <span className="apply-dialog__required" aria-hidden="true"> *</span>
-            </label>
-            <p className="apply-dialog__hint">
-              Tell voters who you are and why they should vote for you.
-            </p>
-            <textarea
-              id="apply-manifesto"
-              className={`apply-dialog__textarea${error ? ' apply-dialog__textarea--error' : ''}`}
-              value={values.manifesto}
-              onChange={(e) => handleManifestoChange(e.target.value)}
-              maxLength={MANIFESTO_MAX_LENGTH}
-              rows={7}
-              placeholder="Write your manifesto here…"
-              aria-required="true"
-              aria-describedby={error ? 'apply-manifesto-error apply-manifesto-count' : 'apply-manifesto-count'}
-              disabled={isSubmitting}
-            />
-            <div className="apply-dialog__meta">
-              {error ? (
-                <span className="apply-dialog__error" id="apply-manifesto-error" role="alert">{error}</span>
-              ) : <span />}
-              <span
-                className={`apply-dialog__char-count${remainingChars < 100 ? ' apply-dialog__char-count--warn' : ''}`}
-                id="apply-manifesto-count"
-                aria-live="polite"
-              >
-                {remainingChars} remaining
-              </span>
+          <div className="apply-dialog__body">
+            <div className="apply-dialog__field">
+              <label className="apply-dialog__label" htmlFor="apply-manifesto">
+                Manifesto
+                <span className="apply-dialog__required" aria-hidden="true"> *</span>
+              </label>
+              <p className="apply-dialog__hint">
+                Tell voters who you are and why they should vote for you.
+              </p>
+              <textarea
+                id="apply-manifesto"
+                className={`apply-dialog__textarea${error ? ' apply-dialog__textarea--error' : ''}`}
+                value={values.manifesto}
+                onChange={(e) => handleManifestoChange(e.target.value)}
+                maxLength={MANIFESTO_MAX_LENGTH}
+                rows={7}
+                placeholder="Write your manifesto here…"
+                aria-required="true"
+                aria-describedby={error ? 'apply-manifesto-error apply-manifesto-count' : 'apply-manifesto-count'}
+                disabled={isSubmitting}
+              />
+              <div className="apply-dialog__meta">
+                {error ? (
+                  <span className="apply-dialog__error" id="apply-manifesto-error" role="alert">{error}</span>
+                ) : <span />}
+                <span
+                  className={`apply-dialog__char-count${remainingChars < 100 ? ' apply-dialog__char-count--warn' : ''}`}
+                  id="apply-manifesto-count"
+                  aria-live="polite"
+                >
+                  {remainingChars} remaining
+                </span>
+              </div>
             </div>
           </div>
 

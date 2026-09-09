@@ -8,7 +8,8 @@ import './ElectionFormDialog.scss'
 
 function initialValues({ election }: ElectionFormDialogProps): ElectionFormValues {
   return {
-    title: election?.title ?? '', description: election?.description ?? '',
+    title: election?.title ?? '',
+    description: election?.description ?? '',
     nominationStartAt: election ? toLocalDateTimeInput(election.nominationStartAt) : '',
     nominationEndAt: election ? toLocalDateTimeInput(election.nominationEndAt) : '',
     votingStartAt: election ? toLocalDateTimeInput(election.votingStartAt) : '',
@@ -40,19 +41,97 @@ export function ElectionFormDialog(props: ElectionFormDialogProps) {
   const [values, setValues] = useState(() => initialValues(props))
   const [localErrors, setLocalErrors] = useState<FieldErrors<ElectionFormField>>({})
   const errors = { ...localErrors, ...serverErrors }
+
   useEffect(() => { if (dialogRef.current && !dialogRef.current.open) dialogRef.current.showModal() }, [])
-  const update = (field: ElectionFormField, value: string) => { setValues((current) => ({ ...current, [field]: value })); setLocalErrors((current) => ({ ...current, [field]: undefined })) }
+
+  const update = (field: ElectionFormField, value: string) => {
+    setValues((current) => ({ ...current, [field]: value }))
+    setLocalErrors((current) => ({ ...current, [field]: undefined }))
+  }
+
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const nextErrors = validate(values)
     setLocalErrors(nextErrors)
     if (Object.keys(nextErrors).length > 0) return
-    onSubmit({ title: values.title.trim(), description: values.description.trim() || null, nominationStartAt: toUtcIsoString(values.nominationStartAt), nominationEndAt: toUtcIsoString(values.nominationEndAt), votingStartAt: toUtcIsoString(values.votingStartAt), votingEndAt: toUtcIsoString(values.votingEndAt), maxCandidates: Number(values.maxCandidates) })
+    onSubmit({
+      title: values.title.trim(),
+      description: values.description.trim() || null,
+      nominationStartAt: toUtcIsoString(values.nominationStartAt),
+      nominationEndAt: toUtcIsoString(values.nominationEndAt),
+      votingStartAt: toUtcIsoString(values.votingStartAt),
+      votingEndAt: toUtcIsoString(values.votingEndAt),
+      maxCandidates: Number(values.maxCandidates),
+    })
   }
-  const field = (name: ElectionFormField, label: string, type = 'text') => <div className="election-form__field"><label htmlFor={`election-${name}`}>{label} <span aria-hidden="true">*</span></label><input id={`election-${name}`} type={type} value={values[name]} disabled={isSubmitting} maxLength={name === 'title' ? 200 : undefined} aria-invalid={Boolean(errors[name])} aria-describedby={`${name}-error`} onChange={(event) => update(name, event.target.value)} /><p id={`${name}-error`} className="election-form__error">{errors[name] && `Error: ${errors[name]}`}</p></div>
-  return <dialog ref={dialogRef} className="election-dialog" aria-labelledby="election-form-title" onCancel={(event) => { if (isSubmitting) event.preventDefault(); else onClose() }}>
-    <form onSubmit={submit} noValidate><header className="election-dialog__header"><h2 id="election-form-title">{mode === 'create' ? 'Create election' : 'Edit election'}</h2><Button variant="ghost" disabled={isSubmitting} onClick={onClose}>Close</Button></header>
-      <div className="election-dialog__content">{isLoading ? <span>Loading election...</span> : isUnavailable ? <p>Election details could not be loaded.</p> : <div className="election-form">{field('title', 'Title')}<div className="election-form__field election-form__field--wide"><label htmlFor="election-description">Description</label><textarea id="election-description" value={values.description} maxLength={2000} disabled={isSubmitting} aria-invalid={Boolean(errors.description)} aria-describedby="description-error" onChange={(event) => update('description', event.target.value)} /><p id="description-error" className="election-form__error">{errors.description && `Error: ${errors.description}`}</p></div>{field('nominationStartAt', 'Nomination start', 'datetime-local')}{field('nominationEndAt', 'Nomination end', 'datetime-local')}{field('votingStartAt', 'Voting start', 'datetime-local')}{field('votingEndAt', 'Voting end', 'datetime-local')}{field('maxCandidates', 'Maximum candidates', 'number')}</div>}</div>
-      <div className="election-dialog__actions"><Button variant="secondary" disabled={isSubmitting} onClick={onClose}>Cancel</Button><Button type="submit" isLoading={isSubmitting} loadingLabel="Saving" disabled={isLoading || isUnavailable}>{mode === 'create' ? 'Create Election' : 'Save Changes'}</Button></div></form>
-  </dialog>
+
+  const field = (name: ElectionFormField, label: string, type = 'text') => (
+    <div className="election-form__field">
+      <label htmlFor={`election-${name}`}>{label} <span aria-hidden="true">*</span></label>
+      <input
+        id={`election-${name}`}
+        type={type}
+        value={values[name]}
+        disabled={isSubmitting}
+        maxLength={name === 'title' ? 200 : undefined}
+        aria-invalid={Boolean(errors[name])}
+        aria-describedby={`${name}-error`}
+        onChange={(event) => update(name, event.target.value)}
+      />
+      <p id={`${name}-error`} className="election-form__error">{errors[name] && `Error: ${errors[name]}`}</p>
+    </div>
+  )
+
+  return (
+    <dialog
+      ref={dialogRef}
+      className="election-dialog"
+      aria-labelledby="election-form-title"
+      onCancel={(event) => { if (isSubmitting) event.preventDefault(); else onClose() }}
+    >
+      <form onSubmit={submit} noValidate style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0 }}>
+        <header className="election-dialog__header">
+          <h2 id="election-form-title">{mode === 'create' ? 'Create election' : 'Edit election'}</h2>
+          <button type="button" className="election-dialog__close" aria-label="Close dialog" disabled={isSubmitting} onClick={onClose}>
+            ✕
+          </button>
+        </header>
+        <div className="election-dialog__content">
+          {isLoading ? (
+            <span>Loading election...</span>
+          ) : isUnavailable ? (
+            <p>Election details could not be loaded.</p>
+          ) : (
+            <div className="election-form">
+              {field('title', 'Title')}
+              <div className="election-form__field election-form__field--wide">
+                <label htmlFor="election-description">Description</label>
+                <textarea
+                  id="election-description"
+                  value={values.description}
+                  maxLength={2000}
+                  disabled={isSubmitting}
+                  aria-invalid={Boolean(errors.description)}
+                  aria-describedby="description-error"
+                  onChange={(event) => update('description', event.target.value)}
+                />
+                <p id="description-error" className="election-form__error">{errors.description && `Error: ${errors.description}`}</p>
+              </div>
+              {field('nominationStartAt', 'Nomination start', 'datetime-local')}
+              {field('nominationEndAt', 'Nomination end', 'datetime-local')}
+              {field('votingStartAt', 'Voting start', 'datetime-local')}
+              {field('votingEndAt', 'Voting end', 'datetime-local')}
+              {field('maxCandidates', 'Maximum candidates', 'number')}
+            </div>
+          )}
+        </div>
+        <div className="election-dialog__actions">
+          <Button variant="secondary" disabled={isSubmitting} onClick={onClose}>Cancel</Button>
+          <Button type="submit" isLoading={isSubmitting} loadingLabel="Saving" disabled={isLoading || isUnavailable}>
+            {mode === 'create' ? 'Create Election' : 'Save Changes'}
+          </Button>
+        </div>
+      </form>
+    </dialog>
+  )
 }

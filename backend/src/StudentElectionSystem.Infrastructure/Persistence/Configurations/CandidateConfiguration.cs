@@ -58,5 +58,7 @@ public class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
         // Indexes
         // A student cannot be nominated twice for the same election
         builder.HasIndex(c => new { c.StudentId, c.ElectionId }).IsUnique();
+        builder.HasIndex(c => new { c.IsApproved, c.IsRejected, c.CreatedAt });
+        builder.HasIndex(c => new { c.ElectionId, c.IsApproved, c.IsRejected });
     }
 }

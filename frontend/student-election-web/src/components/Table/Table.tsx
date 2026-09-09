@@ -114,12 +114,12 @@ export function Table<T>({
   })
 
   const safeData = Array.isArray(data) ? data : []
-  const tableClassName = [styles.tableWrapper, isMaximized ? styles.maximized : '', className]
+  const tableClassName = [styles.table, isMaximized ? styles['table--maximized'] : '', className]
     .filter(Boolean)
     .join(' ')
   if (loading) {
     return (
-      <div className={`${tableClassName} ${styles.state}`} role="status" aria-busy="true">
+      <div className={`${tableClassName} ${styles['table__state']}`} role="status" aria-busy="true">
         <div style={{ width: '100%', padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
             {columns.slice(0, 5).map((col, idx) => (
@@ -140,7 +140,7 @@ export function Table<T>({
 
   if (safeData.length === 0) {
     return (
-      <div className={`${tableClassName} ${styles.state}`} role="status">
+      <div className={`${tableClassName} ${styles['table__state']}`} role="status">
         {emptyMessage}
       </div>
     )
@@ -150,9 +150,9 @@ export function Table<T>({
     <div className={tableClassName} role="region" aria-label={caption}>
       {/* Maximize button — only visible in normal mode, inside the controls bar */}
       {canMaximize && !isMaximized && (
-        <div className={styles.tableControls}>
+        <div className={styles['table__controls']}>
           <Button
-            className={styles.maximizeButton}
+            className={styles['table__button']}
             variant="secondary"
             size="small"
             aria-label="Maximize table"
@@ -163,7 +163,7 @@ export function Table<T>({
           </Button>
         </div>
       )}
-      <div className={styles.grid}>
+      <div className={styles['table__grid']}>
         <AgGridReact<T>
           theme={darkTheme}
           rowData={safeData}
@@ -184,9 +184,9 @@ export function Table<T>({
   // AG Grid's internal stacking contexts
   const restorePortal = canMaximize && isMaximized
     ? createPortal(
-      <div className={styles.restoreButtonPortal}>
+      <div className={styles['table__restore-portal']}>
         <Button
-          className={styles.maximizeButton}
+          className={styles['table__button']}
           variant="secondary"
           size="small"
           aria-label="Restore table"

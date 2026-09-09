@@ -4,7 +4,6 @@ using StudentElectionSystem.Application.Interfaces.Persistence;
 using StudentElectionSystem.Application.Interfaces.Services;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,25 +35,6 @@ public class GetMyCandidateApplicationsUseCase : IGetMyCandidateApplicationsUseC
 
         var candidates = await _candidateRepository.GetApplicationsByStudentIdAsync(student.Id, cancellationToken);
 
-        return candidates.Select(c => new MyCandidateApplicationDto
-        {
-            CandidateId = c.Id,
-            ElectionId = c.ElectionId,
-            ElectionTitle = c.Election?.Title ?? "Unknown",
-            ElectionStatus = c.Election?.Status ?? Domain.Enums.ElectionStatus.Draft,
-            Status = GetCandidateStatus(c),
-            Manifesto = c.Manifesto,
-            CreatedAt = c.CreatedAt,
-            ApprovedAt = c.ApprovedAt,
-            RejectedAt = c.RejectedAt,
-            RejectionReason = c.RejectionReason
-        });
-    }
-
-    private static string GetCandidateStatus(Domain.Entities.Candidate candidate)
-    {
-        if (candidate.IsApproved) return "Approved";
-        if (candidate.IsRejected) return "Rejected";
-        return "Pending";
+        return candidates;
     }
 }

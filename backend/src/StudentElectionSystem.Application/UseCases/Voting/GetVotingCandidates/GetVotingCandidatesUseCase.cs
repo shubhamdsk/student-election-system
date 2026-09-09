@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using StudentElectionSystem.Application.DTOs.Voting;
@@ -34,13 +33,6 @@ public class GetVotingCandidatesUseCase : IGetVotingCandidatesUseCase
         
         var candidates = await _candidateRepository.GetApprovedCandidatesByElectionIdAsync(electionId, cancellationToken);
 
-        return candidates.Select(c => new VotingCandidateDto(
-            c.Id,
-            c.StudentId,
-            c.Student.FullName,
-            c.Student.Department,
-            c.Student.YearOfStudy,
-            c.Manifesto ?? string.Empty
-        ));
+        return candidates;
     }
 }
